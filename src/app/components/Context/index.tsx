@@ -53,10 +53,11 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
     return url;
   };
 
-  useEffect(() => {
-    const element = selected && document.getElementById(selected[0]);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  }, [selected]);
+  // Think what to do with this
+  // useEffect(() => {
+  //   const element = selected && document.getElementById(selected[0]);
+  //   element?.scrollIntoView({ behavior: 'smooth' });
+  // }, [selected]);
 
   const DropdownLabel: React.FC<
     React.PropsWithChildren<{ htmlFor: string }>
