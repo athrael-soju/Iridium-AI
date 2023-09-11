@@ -87,7 +87,7 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
 
   return (
     <div
-      className={`flex flex-col border-2 overflow-y-auto rounded-lg border-gray-500 w-full ${className}`}
+      className={`flex flex-col overflow-y-auto rounded-lg  w-full ${className}`}
     >
       <div className="flex flex-col items-start sticky top-0 w-full">
         <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
@@ -105,7 +105,7 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
               onChange={(e) => setNewURL(e.target.value)}
             />
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-            Add URL ⮐
+              Add URL ⮐
             </span>
           </form>
           <div className="flex justify-between">
@@ -134,21 +134,24 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
           </div>
         </div>
         <div className="flex p-2"></div>
-        <div className="text-left w-full flex flex-col rounded-b-lg bg-gray-600 p-3 subpixel-antialiased">
-          <DropdownLabel htmlFor="splittingMethod">
-            Splitting Method:
-          </DropdownLabel>
-          <div className="relative w-full">
-            <select
-              id="splittingMethod"
-              value={splittingMethod}
-              className="p-2 bg-gray-700 rounded text-white w-full appearance-none hover:cursor-pointer"
-              onChange={(e) => setSplittingMethod(e.target.value)}
-            >
-              <option value="recursive">Recursive Text Splitting</option>
-              <option value="markdown">Markdown Splitting</option>
-            </select>
+        <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
+          <div className="flex">
+            <DropdownLabel htmlFor="splittingMethod">
+              Splitting Method:
+            </DropdownLabel>
+            <div className="relative w-full flex-1 rounded-lg border-2 border-gray-500">
+              <select
+                id="splittingMethod"
+                value={splittingMethod}
+                className="p-2 bg-gray-700 rounded text-white w-full appearance-none hover:cursor-pointer"
+                onChange={(e) => setSplittingMethod(e.target.value)}
+              >
+                <option value="recursive">Recursive Text Splitting</option>
+                <option value="markdown">Markdown Splitting</option>
+              </select>
+            </div>
           </div>
+
           {splittingMethod === 'recursive' && (
             <div className="my-4 flex flex-col">
               <div className="flex flex-col w-full">

@@ -78,3 +78,19 @@
 .animate-pulse-once {
   animation: pulse 5s cubic-bezier(0, 0, 0.2, 1) 1;
 }
+
+/* scrollbar.css */
+
+/* For Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 6px; /* Make it thinner */
+}
+
+::-webkit-scrollbar-track {
+  background: #707070; /* Light gray track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555; /* Darker gray thumb */
+}
+

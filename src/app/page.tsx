@@ -78,13 +78,14 @@ const Page: React.FC = () => {
           messages={messages}
           isLoading={isLoading}
         />
+
         <div
-          className="absolute right-0 w-2/3 transition-transform duration-500 ease-in-out transform translate-x-full overflow-hidden lg:w-2/5 lg:mx-2 rounded-lg"
+          className="absolute right-0 w-2/3 transition-transform duration-500 ease-in-out transform translate-x-full lg:w-2/5 lg:mx-2 rounded-lg border border-gray-500"
           id="contextWrapper"
-          style={{ transform: 'translateX(110%)' }}
+          style={{ transform: 'translateX(110%)', bottom: 0, top: 0 }}
         >
           <div
-            className="h-full bg-gray-700 overflow-y-auto max-h-[77.5vh]"
+            className="bg-gray-700 overflow-y-auto h-full rounded-lg border-gray-500 border-2"
             id="contextOverlay"
           >
             <Context className="" selected={context} />
