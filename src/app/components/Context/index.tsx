@@ -90,9 +90,6 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
       className={`flex flex-col overflow-y-auto rounded-lg  w-full ${className}`}
     >
       <div className="flex flex-col items-start sticky top-0 w-full">
-        <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
-          {buttons}
-        </div>
         <div className="flex-grow w-full px-4">
           <form
             onSubmit={handleNewURLSubmit}
@@ -182,6 +179,9 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
               </div>
             </div>
           )}
+        </div>        
+        <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
+          {buttons}
         </div>
       </div>
       <div className="flex flex-wrap w-full">

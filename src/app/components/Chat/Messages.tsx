@@ -13,35 +13,34 @@ const speak = (text: string) => {
   const utterance = new SpeechSynthesisUtterance(text);
   speechSynthesis.speak(utterance);
 };
+
 export default function Messages({
   messages,
   isLoading,
+  isWebSpeechEnabled,
 }: {
   messages: Message[];
   isLoading: boolean;
+  isWebSpeechEnabled: boolean;
 }) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
   const leIndex = useRef<number>(0);
 
   useEffect(() => {
-    if (!isLoading && sentences.current.length > 0) {
-        process.env.NEXT_PUBLIC_SPEECH_ENABLED === 'true'
-        ? speak(sentences.current[leIndex.current])
-        : ''; // add to queue for audio conversion
+    if (isWebSpeechEnabled && !isLoading && sentences.current.length > 0) {
+      speak(sentences.current[leIndex.current]);
       leIndex.current = 0;
       sentences.current = [];
     }
-  }, [isLoading]);
+  }, [isLoading, isWebSpeechEnabled]);
 
   useEffect(() => {
-    if (sentences.current.length > 1) {
-process.env.NEXT_PUBLIC_SPEECH_ENABLED === 'true'
-        ? speak(sentences.current[leIndex.current])
-        : ''; // add to queue for audio conversion
+    if (isWebSpeechEnabled && sentences.current.length > 1) {
+      speak(sentences.current[leIndex.current]);
       leIndex.current++;
     }
-  }, [sentences.current.length]);
+  }, [isWebSpeechEnabled, sentences.current.length]);
 
   useEffect(() => {
     if (messages.length > 0 && isLoading) {
