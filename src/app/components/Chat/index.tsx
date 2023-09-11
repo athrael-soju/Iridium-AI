@@ -10,7 +10,7 @@ import React, {
 import Messages from './Messages';
 import { Message } from 'ai/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRecordVinyl, faStop } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -104,7 +104,15 @@ const Chat: React.FC<ChatProps> = ({
             onClick={toggleListening}
             disabled={!isWebSpeechEnabled}
           >
-            <FontAwesomeIcon icon={isRecording ? faStop : faRecordVinyl} />
+            <FontAwesomeIcon
+              icon={isRecording ? faStop : faMicrophone}
+              beat={isRecording}
+              title={
+                isWebSpeechEnabled
+                  ? 'Record a Message'
+                  : 'Enable Web Speech to Record a Message'
+              }
+            />
           </button>
         </span>
       </form>

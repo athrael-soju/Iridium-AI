@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faVolumeMute,
   faVolumeUp,
-  faBars,
+  faGear,
 } from '@fortawesome/free-solid-svg-icons';
 
 const Page: React.FC = () => {
@@ -18,6 +18,8 @@ const Page: React.FC = () => {
   const [context, setContext] = useState<string[] | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
+  const [isGearSpinning, setGearSpinning] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
@@ -27,6 +29,17 @@ const Page: React.FC = () => {
     });
 
   const prevMessagesLengthRef = useRef(messages.length);
+
+  const handleGearClick = () => {
+    setGearSpinning(true);
+    setTimeout(() => setGearSpinning(false), 1000); // Turn off spin after 1 second
+  };
+
+  const handleVoiceClick = () => {
+    setIsShaking(true);
+    setWebSpeechEnabled(!isWebSpeechEnabled);
+    setTimeout(() => setIsShaking(false), 820); // Turn off shake after animation duration
+  };
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,11 +72,18 @@ const Page: React.FC = () => {
       <div className="fixed right-6 top-12 md:right-6 md:top-14 flex space-x-2">
         <button
           className="text-white flex items-center"
-          onClick={() => setWebSpeechEnabled(!isWebSpeechEnabled)}
+          onClick={() => {
+            setWebSpeechEnabled(!isWebSpeechEnabled);
+            handleVoiceClick();
+          }}
         >
           <FontAwesomeIcon
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
+            title={
+              isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+            }
+            shake={isShaking}
           />
         </button>
         <button
@@ -77,9 +97,15 @@ const Page: React.FC = () => {
                 ? 'translateX(0%)'
                 : 'translateX(110%)';
             }
+            handleGearClick();
           }}
         >
-          <FontAwesomeIcon icon={faBars} size="2x" />
+          <FontAwesomeIcon
+            icon={faGear}
+            size="2x"
+            spin={isGearSpinning}
+            title="Settings"
+          />
         </button>
       </div>
       <InstructionModal
