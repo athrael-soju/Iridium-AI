@@ -103,15 +103,15 @@ const Chat: React.FC<ChatProps> = ({
             }`}
             onClick={toggleListening}
             disabled={!isWebSpeechEnabled}
+            title={
+              isWebSpeechEnabled
+                ? 'Record a Message'
+                : 'Enable Web Speech to Record a Message'
+            }
           >
             <FontAwesomeIcon
               icon={isRecording ? faStop : faMicrophone}
               beat={isRecording}
-              title={
-                isWebSpeechEnabled
-                  ? 'Record a Message'
-                  : 'Enable Web Speech to Record a Message'
-              }
             />
           </button>
         </span>

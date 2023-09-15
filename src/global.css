@@ -1,6 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @keyframes slideInFromBottom {
   0% {
@@ -94,3 +94,31 @@
   background: #555; /* Darker gray thumb */
 }
 
+/* FilePind styling to stop container from moving vertically */
+.fileUpload {
+  position: absolute;
+  top: 5%;
+  width: 100%;
+  transform: scale(1);
+  animation: fadeIn 2s;
+}
+
+.filepond--root .filepond--panel-root {
+  background-color: transparent !important;
+  border: 2px solid rgb(107 114 128 / var(--tw-border-opacity));
+}
+
+.filepond--label-idle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 20px;
+}
+
+.filepond--drop-label {
+  color: white !important;
+}
+
+.filepond--credits {
+  display: none;
+}

@@ -3,9 +3,8 @@ import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
-
 import { Button } from './Button';
-
+import FileUpload from '../FileUpload';
 interface ContextProps {
   className: string;
   selected: string[] | null;
@@ -91,10 +90,14 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
     >
       <div className="flex flex-col items-start sticky top-0 w-full">
         <div className="flex-grow w-full px-4">
+          <div className="my-2">
+            <FileUpload username={''} namespace={''} />
+          </div>
           <form
             onSubmit={handleNewURLSubmit}
             className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
           >
+            {/* <hr className='py-2 px-3' style={{borderColor: 'gray'}}/> */}
             <input
               type="text"
               className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-gray-600 border-gray-600 transition-shadow duration-200"
@@ -130,7 +133,6 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
             </Button>
           </div>
         </div>
-        <div className="flex p-2"></div>
         <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
           <div className="flex">
             <DropdownLabel htmlFor="splittingMethod">
@@ -179,7 +181,7 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
               </div>
             </div>
           )}
-        </div>        
+        </div>
         <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
           {buttons}
         </div>

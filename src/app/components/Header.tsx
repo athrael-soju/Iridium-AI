@@ -11,7 +11,6 @@ export default function Header({ className }: { className?: string }) {
         src={iridiumAILogo}
         alt="pinecone-logo"
         width="300"
-        height="50"
         className="ml-3"
         onClick={() => {
           window.open(

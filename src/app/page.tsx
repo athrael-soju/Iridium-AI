@@ -76,13 +76,13 @@ const Page: React.FC = () => {
             setWebSpeechEnabled(!isWebSpeechEnabled);
             handleVoiceClick();
           }}
+          title={
+            isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+          }
         >
           <FontAwesomeIcon
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
-            title={
-              isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
-            }
             shake={isShaking}
           />
         </button>
@@ -99,14 +99,11 @@ const Page: React.FC = () => {
             }
             handleGearClick();
           }}
+          title="Settings"
         >
-          <FontAwesomeIcon
-            icon={faGear}
-            size="2x"
-            spin={isGearSpinning}
-            title="Settings"
-          />
+          <FontAwesomeIcon icon={faGear} size="2x" spin={isGearSpinning} />
         </button>
+        <div />
       </div>
       <InstructionModal
         isOpen={isModalOpen}
