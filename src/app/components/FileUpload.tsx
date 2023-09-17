@@ -37,10 +37,10 @@ const FileUpload: React.FC<FileUploaderProps> = ({ username, namespace }) => {
             abort
           ) => {
             let formData = new FormData();
-            formData.append(fieldName, file, file.name);
+            formData.set('file', file);
             console.log('File Upload Initiated...');
             const request = new XMLHttpRequest();
-            request.open('POST', '/api/processUpload');
+            request.open('POST', '/api/upload');
 
             // Use `request.upload.onprogress` to handle progress updates
             request.upload.onprogress = (e) => {
@@ -53,10 +53,8 @@ const FileUpload: React.FC<FileUploaderProps> = ({ username, namespace }) => {
                 load(request.responseText);
                 // After successful upload, call another API.
                 formData = new FormData();
-                formData.append('username', username);
-                formData.append('namespace', namespace);
                 const anotherRequest = new XMLHttpRequest();
-                anotherRequest.open('POST', '/api/processIngest', true);
+                anotherRequest.open('POST', '/api/ingest', true);
                 setIngesting(true);
                 anotherRequest.send(formData);
                 anotherRequest.onload = function () {
