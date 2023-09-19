@@ -91,13 +91,16 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
       <div className="flex flex-col items-start sticky top-0 w-full">
         <div className="flex-grow w-full px-4">
           <div className="my-2">
-            <FileUpload username={''} namespace={''} />
+            <FileUpload
+              splittingMethod={splittingMethod}
+              chunkSize={chunkSize}
+              overlap={overlap}
+            />
           </div>
           <form
             onSubmit={handleNewURLSubmit}
             className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
           >
-            {/* <hr className='py-2 px-3' style={{borderColor: 'gray'}}/> */}
             <input
               type="text"
               className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-gray-600 border-gray-600 transition-shadow duration-200"
