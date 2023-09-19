@@ -7,7 +7,6 @@ export async function POST(req: Request) {
   const { filename, options } = await req.json();
   try {
     const topK = process.env.PINECONE_TOPK ?? '10';
-    console.log('filename', filename);
     const documents = await seed(
       filename,
       path,
