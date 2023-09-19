@@ -14,12 +14,14 @@ interface FileUploaderProps {
   splittingMethod: string;
   chunkSize: number;
   overlap: number;
+  setCards: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const FileUpload: React.FC<FileUploaderProps> = ({
   splittingMethod,
   chunkSize,
   overlap,
+  setCards,
 }) => {
   const [files, setFiles] = useState<any[]>([]);
   const [ingesting, setIngesting] = useState(false);
@@ -70,8 +72,11 @@ const FileUpload: React.FC<FileUploaderProps> = ({
                     options: options,
                   }),
                 });
+
                 if (response.status === 200) {
                   console.log('File Ingest  Successful');
+                  const { documents } = await response.json();
+                  setCards(documents);
                 } else {
                   console.log('File Ingest  Failed');
                 }

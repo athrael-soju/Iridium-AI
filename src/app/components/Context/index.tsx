@@ -95,6 +95,7 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
               splittingMethod={splittingMethod}
               chunkSize={chunkSize}
               overlap={overlap}
+              setCards={setCards}
             />
           </div>
           <form

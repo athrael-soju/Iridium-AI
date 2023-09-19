@@ -34,7 +34,6 @@ async function seed(
   try {
     //TODO:
     // Add topK support
-    // Add the returned chunks back to the sidebar.
 
     // Initialize the Pinecone client
     const pinecone = await getPineconeClient();
@@ -76,7 +75,6 @@ async function seed(
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
     });
-
     return documents[0];
   } catch (error) {
     console.error('Error seeding:', error);
