@@ -19,7 +19,7 @@ const Page: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
   const [isGearSpinning, setGearSpinning] = useState(false);
-  const [isShaking, setIsShaking] = useState(false);
+  const [isFading, setIsFading] = useState(false);
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
@@ -36,9 +36,9 @@ const Page: React.FC = () => {
   };
 
   const handleVoiceClick = () => {
-    setIsShaking(true);
+    setIsFading(true);
     setWebSpeechEnabled(!isWebSpeechEnabled);
-    setTimeout(() => setIsShaking(false), 820); // Turn off shake after animation duration
+    setTimeout(() => setIsFading(false), 820); // Turn off animation
   };
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -83,7 +83,7 @@ const Page: React.FC = () => {
           <FontAwesomeIcon
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
-            shake={isShaking}
+            fade={isFading}
           />
         </button>
         <button

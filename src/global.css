@@ -69,14 +69,20 @@
   0%,
   100% {
     color: white;
+    scale: 1;
   }
   50% {
-    color: #f59e0b; /* Tailwind's yellow-500 */
+    color: #f5de0b;
+    scale: 1.5;
+  }
+  100% {
+    color: white;
+    scale: 1;
   }
 }
 
 .animate-pulse-once {
-  animation: pulse 5s cubic-bezier(0, 0, 0.2, 1) 1;
+  animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) 1;
 }
 
 /* scrollbar.css */
