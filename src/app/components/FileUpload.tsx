@@ -48,6 +48,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
             progress,
             abort
           ) => {
+            // TODO: Use fetch instead of XMLHttpRequest
             let formData = new FormData();
             formData.set('file', file);
             console.log('File Upload Initiated...');
