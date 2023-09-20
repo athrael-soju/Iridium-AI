@@ -19,7 +19,7 @@ const Page: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
   const [isGearSpinning, setGearSpinning] = useState(false);
-  const [isShaking, setIsShaking] = useState(false);
+  const [isFading, setIsFading] = useState(false);
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
@@ -36,9 +36,9 @@ const Page: React.FC = () => {
   };
 
   const handleVoiceClick = () => {
-    setIsShaking(true);
+    setIsFading(true);
     setWebSpeechEnabled(!isWebSpeechEnabled);
-    setTimeout(() => setIsShaking(false), 820); // Turn off shake after animation duration
+    setTimeout(() => setIsFading(false), 820); // Turn off animation
   };
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -76,14 +76,14 @@ const Page: React.FC = () => {
             setWebSpeechEnabled(!isWebSpeechEnabled);
             handleVoiceClick();
           }}
+          title={
+            isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+          }
         >
           <FontAwesomeIcon
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
-            title={
-              isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
-            }
-            shake={isShaking}
+            fade={isFading}
           />
         </button>
         <button
@@ -99,14 +99,11 @@ const Page: React.FC = () => {
             }
             handleGearClick();
           }}
+          title="Settings"
         >
-          <FontAwesomeIcon
-            icon={faGear}
-            size="2x"
-            spin={isGearSpinning}
-            title="Settings"
-          />
+          <FontAwesomeIcon icon={faGear} size="2x" spin={isGearSpinning} />
         </button>
+        <div />
       </div>
       <InstructionModal
         isOpen={isModalOpen}
