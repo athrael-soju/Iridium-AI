@@ -27,7 +27,7 @@ const getMatchesFromEmbeddings = async (embeddings: number[], topK: number, name
   }
 
   // Get the Pinecone index
-  const index = pinecone!.Index(process.env.PINECONE_INDEX!);
+  const index = pinecone.Index(process.env.PINECONE_INDEX!);
 
   // Define the query request
   const queryRequest = {
