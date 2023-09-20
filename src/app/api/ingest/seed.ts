@@ -1,4 +1,5 @@
 import { readdirSync, unlinkSync } from 'fs';
+import md5 from 'md5';
 import { getEmbeddings } from '@/utils/embeddings';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
@@ -6,7 +7,6 @@ import { DocxLoader } from 'langchain/document_loaders/fs/docx';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { getPineconeClient } from '@/utils/pinecone';
 import { utils as PineconeUtils, Vector } from '@pinecone-database/pinecone';
-import md5 from 'md5';
 import { truncateStringByBytes } from '@/utils/truncateString';
 
 import {
@@ -32,8 +32,7 @@ async function seed(
   options: SeedOptions
 ) {
   try {
-    //TODO:
-    // Add topK support
+    //TODO: Add topK support
 
     // Initialize the Pinecone client
     const pinecone = await getPineconeClient();
@@ -59,7 +58,7 @@ async function seed(
       docs.map((doc) => prepareDocument(doc, filename, splitter))
     );
 
-    await createIndexIfNotExists(pinecone!, index, 1536);
+    await createIndexIfNotExists(pinecone, index, 1536);
 
     // Get the vector embeddings for the documents
     // Warning: For larger files, the chunk size should be increased accordingly.

@@ -66,7 +66,7 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
     </label>
   );
 
-  const buttons = entries.map((entry: IUrlEntry, key: any) => (
+  const buttons = entries.map((entry: IUrlEntry, key: number) => (
     <div className="" key={`${key}-${entry.loading}`}>
       <UrlButton
         entry={entry}

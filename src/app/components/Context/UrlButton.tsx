@@ -1,8 +1,6 @@
-import { Button } from "./Button";
-import React, { FC } from "react";
-import { IconContext } from "react-icons";
-import { AiOutlineLink } from "react-icons/ai";
-import Link from "next/link";
+import { Button } from './Button';
+import React, { FC } from 'react';
+import { AiOutlineLink } from 'react-icons/ai';
 
 export interface IUrlEntry {
   url: string;
@@ -20,11 +18,11 @@ const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
   <div key={`${entry.url}-${entry.seeded}`} className="pr-2 lg:flex-grow">
     <Button
       className={`relative overflow-hidden w-full my-1 lg:my-2 mx-2 ${
-        entry.loading ? "shimmer" : ""
+        entry.loading ? 'shimmer' : ''
       }`}
       style={{
-        backgroundColor: entry.seeded ? "green" : "bg-gray-800",
-        color: entry.seeded ? "white" : "text-gray-200",
+        backgroundColor: entry.seeded ? 'green' : 'bg-gray-800',
+        color: entry.seeded ? 'white' : 'text-gray-200',
       }}
       onClick={onClick}
     >
@@ -46,8 +44,8 @@ const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
           style={{
             zIndex: -1,
             background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
-            animation: "shimmer 2s infinite",
+              'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
+            animation: 'shimmer 2s infinite',
           }}
         ></div>
       )}

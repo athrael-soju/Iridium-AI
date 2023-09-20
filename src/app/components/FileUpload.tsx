@@ -57,7 +57,9 @@ const FileUpload: React.FC<FileUploaderProps> = ({
             // Use `request.upload.onprogress` to handle progress updates
             request.upload.onprogress = (e) => {
               progress(e.lengthComputable, e.loaded, e.total);
+              setIngesting(true);
             };
+
             // Use `request.onload` to handle the response from the server
             request.onload = async function () {
               if (request.status >= 200 && request.status < 300) {
@@ -73,39 +75,21 @@ const FileUpload: React.FC<FileUploaderProps> = ({
                   }),
                 });
 
-                if (response.status === 200) {
+                if (response.status >= 200 && response.status < 300) {
                   console.log('File Ingest  Successful');
                   const { documents } = await response.json();
                   setCards(documents);
+                  setIngesting(false);
                 } else {
                   console.log('File Ingest  Failed');
+                  throw new Error('File Ingest Failed');
                 }
-                setIngesting(false); // End the Ingesting state
-
-                // formData = new FormData();
-                // formData.set('filename', JSON.stringify(file.name));
-                // formData.append('options', JSON.stringify(options));
-                // const anotherRequest = new XMLHttpRequest();
-                // anotherRequest.open('POST', '/api/ingest', true);
-                // setIngesting(true);
-                // anotherRequest.send(formData);
-                // anotherRequest.onload = function () {
-                //   load(anotherRequest.responseText);
-                //   console.log(anotherRequest.responseText);
-                //   if (
-                //     anotherRequest.status >= 200 &&
-                //     anotherRequest.status < 300
-                //   ) {
-                //     setIngesting(false); // End the Ingesting state
-                //     console.log('File Ingest Successful');
-                //   } else {
-                //     console.log('File Ingest Failed');
-                //   }
-                // };
               } else {
                 error('File Upload Failed');
+                throw new Error('File Upload Failed');
               }
             };
+
             request.send(formData);
             // Return an abort method to stop the request
             return {
