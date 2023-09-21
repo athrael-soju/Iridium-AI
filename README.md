@@ -1,4 +1,4 @@
-<p align="center">
+[<p align="center">
   <a href="" rel="noopener">
  <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
 </p>
@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> IridiumAI is an open source project, heavily inspired by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>.
     <br> 
 </p>
 
@@ -112,3 +112,4 @@ See also the list of [contributors](https://github.com/kylelobo/The-Documentatio
 - Hat tip to anyone whose code was used
 - Inspiration
 - References
+](https://github.com/athrael-soju/iridium-ai/edit/main/README.md)https://github.com/athrael-soju/iridium-ai/edit/main/README.md
