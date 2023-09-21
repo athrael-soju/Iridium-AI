@@ -38,7 +38,7 @@ const Page: React.FC = () => {
   const handleVoiceClick = () => {
     setIsFading(true);
     setWebSpeechEnabled(!isWebSpeechEnabled);
-    setTimeout(() => setIsFading(false), 820); // Turn off animation
+    setTimeout(() => setIsFading(false), 820); // Turn off animation after 820 ms
   };
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -67,11 +67,10 @@ const Page: React.FC = () => {
   }, [messages, gotMessages]);
 
   return (
-    <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full">
+    <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
       <Header className="my-5" />
-      <div className="fixed right-6 top-12 md:right-6 md:top-14 flex space-x-2">
+      <div className="fixed right-6 top-12 md:right-6 md:top-12 flex space-x-2">
         <button
-          className="text-white flex items-center"
           onClick={() => {
             setWebSpeechEnabled(!isWebSpeechEnabled);
             handleVoiceClick();
@@ -84,10 +83,10 @@ const Page: React.FC = () => {
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
             fade={isFading}
+            style={{ color: 'white' }}
           />
         </button>
         <button
-          className="text-white"
           onClick={() => {
             const contextWrapper = document.getElementById('contextWrapper');
             if (contextWrapper instanceof HTMLElement) {
@@ -101,8 +100,14 @@ const Page: React.FC = () => {
           }}
           title="Settings"
         >
-          <FontAwesomeIcon icon={faGear} size="2x" spin={isGearSpinning} />
+          <FontAwesomeIcon
+            icon={faGear}
+            size="2x"
+            spin={isGearSpinning}
+            style={{ color: 'white' }}
+          />
         </button>
+
         <div />
       </div>
       <InstructionModal
