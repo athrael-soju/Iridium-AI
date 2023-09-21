@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> Iridium-AI is an Open Source application, heavily inspired by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>.
     <br> 
 </p>
 
@@ -24,91 +24,73 @@
 
 - [About](#about)
 - [Getting Started](#getting_started)
+- [Setup](#setup)
 - [Deployment](#deployment)
-- [Usage](#usage)
 - [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+Iridium-AI provides functionality by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>, but adds several new features, such as:
+- Multi-file Upload via [FilePond](https://www.npmjs.com/package/filepond).
+- Bi-directional Audio via [Web-Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).
+- Extended web crawl functionality to allow custom URL's, or google search.
+- Enhanced UI, for more chat screen space and the ability to Hide/show settings in both desktop & mobile view.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them.
-
-```
-Give examples
+All you need to get started is to create a new ```env.local``` file in the project root folder and add required values:
 ```
 
-### Installing
+# Optional, defaults to gtp-3.5-turbo
+OPENAI_API_MODEL=
 
-A step by step series of examples that tell you how to get a development env running.
+# Required
+OPENAI_API_KEY=
 
-Say what the step will be
+# Optional, defaults to text-embedding-ada-002
+OPENAI_API_EMBEDDING_MODEL=
 
-```
-Give the example
-```
+# Required
+PINECONE_API_KEY=
+PINECONE_ENVIRONMENT=
+PINECONE_INDEX=
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+# Optional, defaults to 10
+PINECONE_TOPK=10
 ```
 
-### And coding style tests
+See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
-Explain what these tests test and why
+## 🎈 Setup <a name="setup"></a>
+Once you clone/fork the repo, you will need access to:
+- OpenAI Account & API key
+- Pinecone Account & API key
+
+Then,
 
 ```
-Give an example
+npm install
+npm run dev
 ```
-
-## 🎈 Usage <a name="usage"></a>
-
-Add notes about how to use the system.
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
-Add additional notes about how to deploy this on a live system.
+You can use Vercel to deploy the application + add your environment variables in one click!
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [Next.js](https://www.mongodb.com/) - Front & Backend.
+- [Vercel](https://vercel.com/) - Platform for Rapid build and deployment of web apps.
+- [Pinecone](https://www.pinecone.io/) - Vector Database.
+- [Langchain](https://python.langchain.com/docs/get_started/introduction) -  Framework for developing applications powered by language models
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+- [@athrael-soju](https://github.com/athrael-soju) - Idea & Initial work
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
+- Huge thanks to the Pinecone Team for implementing <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>, which Iridium-AI is based on.
