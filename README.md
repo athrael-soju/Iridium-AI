@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center"> Iridium-AI is an Open Source application, heavily inspired by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>.
+<p align="center"> Iridium-AI is an Open Source application, heavily inspired by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>. Fell free to clone/Fork, or even use as a template.
     <br> 
 </p>
 
