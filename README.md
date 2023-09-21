@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+ <img width=200px height=200px src="https://github.com/athrael-soju/iridium-ai/assets/25455658/f6c56b69-8960-4a00-819a-c700987b90c1" alt="Project logo"></a>
 </p>
 
 <h3 align="center">iridium-ai</h3>
@@ -32,7 +32,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Iridium-AI provides functionality by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>, but adds several new features, such as:
+Iridium-AI is based on <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>, but adds several new features, such as:
 - Multi-file Upload via [FilePond](https://www.npmjs.com/package/filepond).
 - Bi-directional Audio via [Web-Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).
 - Extended web crawl functionality to allow custom URL's, or google search.
