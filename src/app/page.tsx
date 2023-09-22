@@ -11,6 +11,7 @@ import {
   faVolumeMute,
   faVolumeUp,
   faGear,
+  faCloudArrowUp
 } from '@fortawesome/free-solid-svg-icons';
 
 const Page: React.FC = () => {
@@ -69,7 +70,7 @@ const Page: React.FC = () => {
   return (
     <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
       <Header className="my-5" />
-      <div className="fixed right-6 top-12 md:right-6 md:top-12 flex space-x-2">
+      <div className="fixed right-4 top-16 md:right-4 md:top-16 flex space-x-2">
         <button
           onClick={() => {
             setWebSpeechEnabled(!isWebSpeechEnabled);
@@ -107,7 +108,17 @@ const Page: React.FC = () => {
             style={{ color: 'white' }}
           />
         </button>
-
+        <button
+        onClick={() => {
+          window.open(
+            'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fathrael-soju%2Firidium-ai&env=OPENAI_API_MODEL,OPENAI_API_KEY,OPENAI_API_EMBEDDING_MODEL,PINECONE_API_KEY,PINECONE_ENVIRONMENT,PINECONE_INDEX,PINECONE_TOPK',
+            '_blank'
+          );
+        }}
+        title="Deploy with Vercel"
+      >
+        <FontAwesomeIcon icon={faCloudArrowUp} size="2x" style={{ color: '#97978D' }} />
+      </button>
         <div />
       </div>
       <InstructionModal
