@@ -25,20 +25,32 @@ export default function Messages({
 }) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
-  const leIndex = useRef<number>(0);
+  const speechIndex = useRef<number>(0);
+
+  // Web Speech API Hooks
+  useEffect(() => {
+    if (isWebSpeechEnabled) {
+      sentences.current = [];
+    }
+  }, [isWebSpeechEnabled]);
 
   useEffect(() => {
-    if (isWebSpeechEnabled && !isLoading && sentences.current.length > 0) {
-      speak(sentences.current[leIndex.current]);
-      leIndex.current = 0;
+    if (
+      isWebSpeechEnabled &&
+      !isLoading &&
+      sentences.current.length > 0 &&
+      speechIndex.current !== 0
+    ) {
+      speak(sentences.current[speechIndex.current]);
+      speechIndex.current = 0;
       sentences.current = [];
     }
   }, [isLoading, isWebSpeechEnabled]);
 
   useEffect(() => {
     if (isWebSpeechEnabled && sentences.current.length > 1) {
-      speak(sentences.current[leIndex.current]);
-      leIndex.current++;
+      speak(sentences.current[speechIndex.current]);
+      speechIndex.current++;
     }
   }, [isWebSpeechEnabled, sentences.current.length]);
 
@@ -51,7 +63,8 @@ export default function Messages({
       }
     }
   }, [isLoading, messages]);
-
+  // End Web Speech API Hooks
+  
   return (
     <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col justify-end bg-gray-700">
       {messages.map((msg, index) => {
