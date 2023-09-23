@@ -77,7 +77,7 @@ npm run dev
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
-You can use Vercel to deploy the application + add your environment variables in one click!
+You can use Vercel to deploy the application + add your environment variables in just a few clicks!
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
