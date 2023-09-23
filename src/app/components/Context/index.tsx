@@ -191,10 +191,9 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
         </div>
       </div>
       <div className="flex flex-wrap w-full">
-        {cards &&
-          cards.map((card, key) => (
-            <Card key={key} card={card} selected={selected} />
-          ))}
+        {cards?.map((card) => (
+          <Card key={card.metadata.hash} card={card} selected={selected} />
+        ))}
       </div>
     </div>
   );

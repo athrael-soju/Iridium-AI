@@ -64,13 +64,13 @@ export default function Messages({
     }
   }, [isLoading, messages]);
   // End Web Speech API Hooks
-  
+
   return (
     <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col justify-end bg-gray-700">
-      {messages.map((msg, index) => {
+      {messages.map((msg) => {
         return (
           <div
-            key={index}
+            key={msg.id}
             className={`${
               msg.role === 'assistant' ? 'text-green-300' : 'text-blue-300'
             } my-2 p-3 rounded shadow-md hover:shadow-lg transition-shadow duration-200 flex slide-in-bottom bg-gray-800 border border-gray-600 message-glow`}
