@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getPineconeClient } from "@/utils/pinecone";
+import { NextResponse } from 'next/server';
+import { Pinecone } from '@pinecone-database/pinecone';
 
-export async function POST(req: Request) {
-  const pinecone = await getPineconeClient()
-  const index = pinecone.Index(process.env.PINECONE_INDEX!)
-  await index.delete1({
-    deleteAll: true
-  });
+export async function POST() {
+  const pinecone = new Pinecone();
+  pinecone.Index(process.env.PINECONE_INDEX!).deleteAll();
   return NextResponse.json({
-    success: true
-  })
+    success: true,
+  });
 }

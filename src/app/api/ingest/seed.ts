@@ -5,8 +5,8 @@ import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import { DocxLoader } from 'langchain/document_loaders/fs/docx';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
-import { getPineconeClient } from '@/utils/pinecone';
-import { utils as PineconeUtils, Vector } from '@pinecone-database/pinecone';
+import { chunkedUpsert, createIndexIfNotExists } from '@/utils/pinecone';
+import { Pinecone, PineconeRecord } from '@pinecone-database/pinecone';
 import { truncateStringByBytes } from '@/utils/truncateString';
 
 import {
@@ -22,8 +22,6 @@ interface SeedOptions {
 }
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
 
-const { chunkedUpsert, createIndexIfNotExists } = PineconeUtils;
-
 async function seed(
   filename: string,
   path: string,
@@ -35,7 +33,7 @@ async function seed(
     //TODO: Add topK support
 
     // Initialize the Pinecone client
-    const pinecone = await getPineconeClient();
+    const pinecone = new Pinecone();
 
     // Destructure the options object
     const { splittingMethod, chunkSize, chunkOverlap } = options;
@@ -81,7 +79,7 @@ async function seed(
   }
 }
 
-async function embedDocument(doc: Document): Promise<Vector> {
+async function embedDocument(doc: Document): Promise<PineconeRecord> {
   try {
     // Generate OpenAI embeddings for the document content
     const embedding = await getEmbeddings(doc.pageContent);
@@ -100,7 +98,7 @@ async function embedDocument(doc: Document): Promise<Vector> {
         filename: doc.metadata.filename as string, // The URL where the document was found
         hash: doc.metadata.hash as string, // The hash of the document content
       },
-    } as Vector;
+    } as PineconeRecord;
   } catch (error) {
     console.log('Error embedding document: ', error);
     throw error;
