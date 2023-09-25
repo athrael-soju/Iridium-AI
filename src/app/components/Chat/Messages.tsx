@@ -66,7 +66,7 @@ export default function Messages({
   // End Web Speech API Hooks
 
   return (
-    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col justify-end bg-gray-700">
+    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
       {messages.map((msg) => {
         return (
           <div
