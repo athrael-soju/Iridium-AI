@@ -38,7 +38,7 @@ const Chat: React.FC<ChatProps> = ({
   isWebSpeechEnabled,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const { transcript, browserSupportsSpeechRecognition } =
+  const { transcript } =
     useSpeechRecognition();
   const handleInputChangeRef = useRef(handleInputChange);
 
@@ -70,10 +70,6 @@ const Chat: React.FC<ChatProps> = ({
     }
     setIsRecording(!isRecording);
   };
-
-  if (!browserSupportsSpeechRecognition) {
-    console.log('Browser does not support speech recognition.');
-  }
 
   return (
     <div id="chat" className="flex flex-col w-full lg:w-3/5 px-2 flex-grow">
