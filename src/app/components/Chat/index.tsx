@@ -27,6 +27,7 @@ interface ChatProps {
   messages: Message[];
   isLoading: boolean;
   isWebSpeechEnabled: boolean;
+  isSpeechStopped: boolean;
 }
 
 const Chat: React.FC<ChatProps> = ({
@@ -36,10 +37,11 @@ const Chat: React.FC<ChatProps> = ({
   messages,
   isLoading,
   isWebSpeechEnabled,
+  isSpeechStopped,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const { transcript, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
+  const { transcript } = useSpeechRecognition();
+  const [isStopFading, setIsStopFading] = useState(false);
   const handleInputChangeRef = useRef(handleInputChange);
 
   useEffect(() => {
@@ -55,6 +57,13 @@ const Chat: React.FC<ChatProps> = ({
   };
   const stopListening = () => {
     SpeechRecognition.stopListening();
+  };
+
+  const stopSpeaking = () => {
+    setIsStopFading(true);
+    setTimeout(() => setIsStopFading(false), 1000); // Turn off spin after 1 second
+    speechSynthesis.cancel();
+    setIsRecording(false);
   };
 
   const toggleListening = async () => {
@@ -77,6 +86,7 @@ const Chat: React.FC<ChatProps> = ({
         messages={messages}
         isLoading={isLoading}
         isWebSpeechEnabled={isWebSpeechEnabled}
+        isSpeechStopped={isSpeechStopped}
       />
       <form
         onSubmit={handleMessageSubmit}
@@ -90,26 +100,44 @@ const Chat: React.FC<ChatProps> = ({
         />
         <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
           Send Message ⮐
-          <button
-            type="button"
-            className={`ml-2 ${
-              isWebSpeechEnabled
-                ? 'text-gray-400 animate-pulse-once'
-                : 'text-gray-500 cursor-not-allowed'
-            }`}
-            onClick={toggleListening}
-            disabled={!isWebSpeechEnabled}
-            title={
-              isWebSpeechEnabled
-                ? 'Record a Message'
-                : 'Enable Web Speech to Record a Message'
-            }
-          >
-            <FontAwesomeIcon
-              icon={isRecording ? faStop : faMicrophone}
-              beat={isRecording}
-            />
-          </button>
+          <div>
+            <button
+              type="button"
+              className={`ml-2 ${
+                isWebSpeechEnabled
+                  ? 'text-gray-400 animate-pulse-once'
+                  : 'text-gray-500 cursor-not-allowed'
+              }`}
+              onClick={toggleListening}
+              disabled={!isWebSpeechEnabled}
+              title={
+                isWebSpeechEnabled && !isRecording
+                  ? 'Record a Message'
+                  : isWebSpeechEnabled && isRecording
+                  ? 'Send Message'
+                  : 'Enable Web Speech to Record a Message'
+              }
+            >
+              <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
+            </button>
+            <button
+              type="button"
+              className={`ml-2 ${
+                isWebSpeechEnabled
+                  ? 'text-gray-400 animate-pulse-once'
+                  : 'text-gray-500 cursor-not-allowed'
+              }`}
+              onClick={stopSpeaking}
+              disabled={!isWebSpeechEnabled}
+              title={
+                isWebSpeechEnabled
+                  ? 'Stop Message'
+                  : 'Enable Web Speech to Stop ongoing Messages'
+              }
+            >
+              <FontAwesomeIcon icon={faStop} fade={isStopFading} />
+            </button>
+          </div>
         </span>
       </form>
     </div>
