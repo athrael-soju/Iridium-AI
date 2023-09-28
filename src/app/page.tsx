@@ -21,7 +21,7 @@ const Page: React.FC = () => {
   const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
   const [isGearSpinning, setGearSpinning] = useState(false);
   const [isFading, setIsFading] = useState(false);
-
+  const [isSpeechStopped, setIsSpeechStopped] = useState(false);
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       onFinish: async () => {
@@ -47,6 +47,7 @@ const Page: React.FC = () => {
     handleSubmit(e);
     setContext(null);
     setGotMessages(false);
+    setIsSpeechStopped(false)
   };
 
   useEffect(() => {
@@ -139,6 +140,7 @@ const Page: React.FC = () => {
           messages={messages}
           isLoading={isLoading}
           isWebSpeechEnabled={isWebSpeechEnabled}
+          isSpeechStopped={isSpeechStopped}
         />
 
         <div
