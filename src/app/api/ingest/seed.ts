@@ -67,11 +67,7 @@ async function seed(
     // Upsert vectors into the Pinecone index
     await chunkedUpsert(pinecone?.Index(index)!, vectors, '', 10);
     const filesToDelete = readdirSync(path);
-    // TODO: Decided if this is needed.
-    // .filter(
-    //   (file) =>
-    //     file.endsWith('.pdf') || file.endsWith('.docx') || file.endsWith('.txt')
-    // );
+
     filesToDelete.forEach((file) => {
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
