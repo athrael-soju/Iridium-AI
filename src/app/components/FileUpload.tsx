@@ -65,8 +65,10 @@ const FileUpload: React.FC<FileUploaderProps> = ({
             request.onload = async function () {
               if (request.status >= 200 && request.status < 300) {
                 load(request.responseText);
+                console.log('File Upload Successful...');
                 // After successful upload, call another API.
                 let filename = file.name;
+                console.log('File Ingest Initiated...');
                 const response = await fetch('/api/ingest', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -77,12 +79,12 @@ const FileUpload: React.FC<FileUploaderProps> = ({
                 });
 
                 if (response.status >= 200 && response.status < 300) {
-                  console.log('File Ingest  Successful');
+                  console.log('File Ingest Successful');
                   const { documents } = await response.json();
                   setCards(documents);
                   setIngesting(false);
                 } else {
-                  console.log('File Ingest  Failed');
+                  console.log('File Ingest Failed');
                   throw new Error('File Ingest Failed');
                 }
               } else {

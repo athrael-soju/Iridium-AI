@@ -1,5 +1,4 @@
 import { readdirSync, unlinkSync } from 'fs';
-import md5 from 'md5';
 import { getEmbeddings } from '@/utils/embeddings';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
@@ -8,6 +7,7 @@ import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { getPineconeClient } from '@/utils/pinecone';
 import { utils as PineconeUtils, Vector } from '@pinecone-database/pinecone';
 import { truncateStringByBytes } from '@/utils/truncateString';
+import md5 from 'md5';
 
 import {
   Document,
@@ -56,25 +56,23 @@ async function seed(
     // Prepare documents by splitting the pages
     const documents = await Promise.all(
       docs.map((doc) => prepareDocument(doc, filename, splitter))
-    );
+    ).then((docs) => docs.flat());
 
     await createIndexIfNotExists(pinecone, index, 1536);
 
     // Get the vector embeddings for the documents
     // Warning: For larger files, the chunk size should be increased accordingly.
-    const vectors = await Promise.all(documents.flat().map(embedDocument));
+    const vectors = await Promise.all(documents.map(embedDocument));
 
     // Upsert vectors into the Pinecone index
     await chunkedUpsert(pinecone?.Index(index)!, vectors, '', 10);
-    const filesToDelete = readdirSync(path).filter(
-      (file) =>
-        file.endsWith('.pdf') || file.endsWith('.docx') || file.endsWith('.txt')
-    );
+    const filesToDelete = readdirSync(path);
+
     filesToDelete.forEach((file) => {
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
     });
-    return documents[0];
+    return documents;
   } catch (error) {
     console.error('Error seeding:', error);
     throw error;
