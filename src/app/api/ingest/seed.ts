@@ -1,5 +1,4 @@
 import { readdirSync, unlinkSync } from 'fs';
-import md5 from 'md5';
 import { getEmbeddings } from '@/utils/embeddings';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
@@ -8,6 +7,7 @@ import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { getPineconeClient } from '@/utils/pinecone';
 import { utils as PineconeUtils, Vector } from '@pinecone-database/pinecone';
 import { truncateStringByBytes } from '@/utils/truncateString';
+import md5 from 'md5';
 
 import {
   Document,
@@ -66,10 +66,12 @@ async function seed(
 
     // Upsert vectors into the Pinecone index
     await chunkedUpsert(pinecone?.Index(index)!, vectors, '', 10);
-    const filesToDelete = readdirSync(path).filter(
-      (file) =>
-        file.endsWith('.pdf') || file.endsWith('.docx') || file.endsWith('.txt')
-    );
+    const filesToDelete = readdirSync(path);
+    // TODO: Decided if this is needed.
+    // .filter(
+    //   (file) =>
+    //     file.endsWith('.pdf') || file.endsWith('.docx') || file.endsWith('.txt')
+    // );
     filesToDelete.forEach((file) => {
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);

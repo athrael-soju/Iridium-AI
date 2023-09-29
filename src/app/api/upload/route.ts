@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises';
+import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -11,8 +11,14 @@ export async function POST(request: NextRequest) {
     }
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const path = `src/app/api/upload/tmp/${file.name}`;
-    await writeFile(path, buffer);
+
+    const path = 'src/app/api/upload/tmp/';
+
+    if (!existsSync(path)) {
+      mkdirSync(path, { recursive: true });
+    }
+
+    writeFileSync(path + file.name, buffer);
     console.log(`Successfullly uploaded ${file.name}`);
 
     return NextResponse.json({ success: true });
