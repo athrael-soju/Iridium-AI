@@ -18,10 +18,12 @@ export default function Messages({
   messages,
   isLoading,
   isWebSpeechEnabled,
+  isSpeechStopped,
 }: {
   messages: Message[];
   isLoading: boolean;
   isWebSpeechEnabled: boolean;
+  isSpeechStopped: boolean;
 }) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
@@ -39,20 +41,25 @@ export default function Messages({
       isWebSpeechEnabled &&
       !isLoading &&
       sentences.current.length > 0 &&
-      speechIndex.current !== 0
+      speechIndex.current !== 0 &&
+      !isSpeechStopped
     ) {
       speak(sentences.current[speechIndex.current]);
       speechIndex.current = 0;
       sentences.current = [];
     }
-  }, [isLoading, isWebSpeechEnabled]);
+  }, [isLoading, isSpeechStopped, isWebSpeechEnabled]);
 
   useEffect(() => {
-    if (isWebSpeechEnabled && sentences.current.length > 1) {
+    if (
+      isWebSpeechEnabled &&
+      sentences.current.length > 1 &&
+      !isSpeechStopped
+    ) {
       speak(sentences.current[speechIndex.current]);
       speechIndex.current++;
     }
-  }, [isWebSpeechEnabled, sentences.current.length]);
+  }, [isSpeechStopped, isWebSpeechEnabled, sentences.current.length]);
 
   useEffect(() => {
     if (messages.length > 0 && isLoading) {
@@ -66,7 +73,7 @@ export default function Messages({
   // End Web Speech API Hooks
 
   return (
-    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col justify-end bg-gray-700">
+    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
       {messages.map((msg) => {
         return (
           <div

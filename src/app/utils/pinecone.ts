@@ -2,8 +2,7 @@ import {
   Index,
   Pinecone,
   PineconeRecord,
-  RecordMetadata,
-  ScoredPineconeRecord,
+  type ScoredPineconeRecord,
 } from '@pinecone-database/pinecone';
 
 const indexExists = async (client: Pinecone, indexName: string) => {
@@ -43,20 +42,20 @@ const sliceIntoChunks = <T>(arr: T[], chunkSize: number) => {
 };
 
 const chunkedUpsert = async (
-  index: Index<RecordMetadata>,
-  vectors: PineconeRecord[],
+  index: Index,
+  vectors: Array<PineconeRecord>,
   namespace: string,
   chunkSize = 10
 ) => {
-  // Split the records into chunks
+  // Split the vectors into chunks
   const chunks = sliceIntoChunks<PineconeRecord>(vectors, chunkSize);
 
   try {
-    // Upsert each chunk of records into the index
+    // Upsert each chunk of vectors into the index
     await Promise.allSettled(
       chunks.map(async (chunk) => {
         try {
-          await index.namespace(namespace).upsert(chunk);
+          await index.namespace(namespace).upsert(vectors);
         } catch (e) {
           console.log('Error upserting chunk', e);
         }
@@ -84,7 +83,7 @@ const getMatchesFromEmbeddings = async (
   }
 
   // Get the Pinecone index
-  const index = pinecone!.Index(process.env.PINECONE_INDEX!);
+  const index = pinecone.Index(process.env.PINECONE_INDEX!);
 
   // Get the namespace
   const pineconeNamespace = index.namespace(namespace ?? '');
