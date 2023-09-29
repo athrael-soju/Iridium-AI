@@ -107,7 +107,7 @@ async function prepareDocument(
         url: page.url,
         // Truncate the text to a maximum byte length
         text: truncateStringByBytes(pageContent, 36000),
-              },
+      },
     }),
   ]);
 
