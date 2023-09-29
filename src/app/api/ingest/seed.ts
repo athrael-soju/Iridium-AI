@@ -56,13 +56,13 @@ async function seed(
     // Prepare documents by splitting the pages
     const documents = await Promise.all(
       docs.map((doc) => prepareDocument(doc, filename, splitter))
-    );
+    ).then((docs) => docs.flat());
 
     await createIndexIfNotExists(pinecone, index, 1536);
 
     // Get the vector embeddings for the documents
     // Warning: For larger files, the chunk size should be increased accordingly.
-    const vectors = await Promise.all(documents.flat().map(embedDocument));
+    const vectors = await Promise.all(documents.map(embedDocument));
 
     // Upsert vectors into the Pinecone index
     await chunkedUpsert(pinecone?.Index(index)!, vectors, '', 10);
@@ -76,7 +76,7 @@ async function seed(
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
     });
-    return documents[0];
+    return documents;
   } catch (error) {
     console.error('Error seeding:', error);
     throw error;
