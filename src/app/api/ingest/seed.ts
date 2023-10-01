@@ -72,7 +72,9 @@ async function seed(
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
     });
-    return documents;
+    // TODO: Implement Pagination, or infinite scrolling to avoid performance issues, then remove the limit
+    // Return the first 25 documents
+    return documents.slice(0, 25);
   } catch (error) {
     console.error('Error seeding:', error);
     throw error;
