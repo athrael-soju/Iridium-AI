@@ -73,8 +73,7 @@ async function seed(
       unlinkSync(`${path}/${file}`);
     });
     // TODO: Implement Pagination, or infinite scrolling to avoid performance issues, then remove the limit
-    // Return the first 25 documents
-    return documents.slice(0, 25);
+    return documents.slice(0, 25); // Return the first 25 documents
   } catch (error) {
     console.error('Error seeding:', error);
     throw error;
