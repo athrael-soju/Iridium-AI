@@ -4,13 +4,11 @@ import {
   MarkdownTextSplitter,
   RecursiveCharacterTextSplitter,
 } from '@pinecone-database/doc-splitter';
-import { utils as PineconeUtils, Vector } from '@pinecone-database/pinecone';
+import { Pinecone, PineconeRecord } from '@pinecone-database/pinecone';
+import { chunkedUpsert } from '../../utils/chunkedUpsert';
 import md5 from 'md5';
-import { getPineconeClient } from '@/utils/pinecone';
 import { Crawler, Page } from './crawler';
 import { truncateStringByBytes } from '@/utils/truncateString';
-
-const { chunkedUpsert, createIndexIfNotExists } = PineconeUtils;
 
 interface SeedOptions {
   splittingMethod: string;
@@ -28,7 +26,7 @@ async function seed(
 ) {
   try {
     // Initialize the Pinecone client
-    const pinecone = await getPineconeClient();
+    const pinecone = new Pinecone();
 
     // Destructure the options object
     const { splittingMethod, chunkSize, chunkOverlap } = options;
@@ -37,7 +35,7 @@ async function seed(
     const crawler = new Crawler(1, limit || 100);
 
     // Crawl the given URL and get the pages
-    const pages = await crawler.crawl(url);
+    const pages = (await crawler.crawl(url)) as Page[];
 
     // Choose the appropriate document splitter based on the splitting method
     const splitter: DocumentSplitter =
@@ -51,14 +49,23 @@ async function seed(
     );
 
     // Create Pinecone index if it does not exist
-    await createIndexIfNotExists(pinecone, indexName, 1536);
-    const index = pinecone?.Index(indexName);
+    const indexList = await pinecone.listIndexes();
+    const indexExists = indexList.some((index) => index.name === indexName);
+    if (!indexExists) {
+      await pinecone.createIndex({
+        name: indexName,
+        dimension: 1536,
+        waitUntilReady: true,
+      });
+    }
+
+    const index = pinecone.Index(indexName);
 
     // Get the vector embeddings for the documents
     const vectors = await Promise.all(documents.flat().map(embedDocument));
 
     // Upsert vectors into the Pinecone index
-    await chunkedUpsert(index, vectors, '', 10);
+    await chunkedUpsert(index!, vectors, '', 10);
 
     // Return the first document
     return documents[0];
@@ -68,7 +75,7 @@ async function seed(
   }
 }
 
-async function embedDocument(doc: Document): Promise<Vector> {
+async function embedDocument(doc: Document): Promise<PineconeRecord> {
   try {
     // Generate OpenAI embeddings for the document content
     const embedding = await getEmbeddings(doc.pageContent);
@@ -87,7 +94,7 @@ async function embedDocument(doc: Document): Promise<Vector> {
         url: doc.metadata.url as string, // The URL where the document was found
         hash: doc.metadata.hash as string, // The hash of the document content
       },
-    } as Vector;
+    } as PineconeRecord;
   } catch (error) {
     console.log('Error embedding document: ', error);
     throw error;
@@ -109,7 +116,7 @@ async function prepareDocument(
         url: page.url,
         // Truncate the text to a maximum byte length
         text: truncateStringByBytes(pageContent, 36000),
-              },
+      },
     }),
   ]);
 
