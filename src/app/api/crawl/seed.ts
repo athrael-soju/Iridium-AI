@@ -35,7 +35,7 @@ async function seed(
     const crawler = new Crawler(1, limit || 100);
 
     // Crawl the given URL and get the pages
-    const pages = (await crawler.crawl(url)) as Page[];
+    const pages = await crawler.crawl(url);
 
     // Choose the appropriate document splitter based on the splitting method
     const splitter: DocumentSplitter =
@@ -65,7 +65,7 @@ async function seed(
     const vectors = await Promise.all(documents.flat().map(embedDocument));
 
     // Upsert vectors into the Pinecone index
-    await chunkedUpsert(index!, vectors, '', 10);
+    await chunkedUpsert(index, vectors, '', 10);
 
     // Return the first document
     return documents[0];

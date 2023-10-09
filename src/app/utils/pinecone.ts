@@ -31,7 +31,7 @@ const getMatchesFromEmbeddings = async (
   }
 
   // Get the Pinecone index
-  const index = pinecone!.Index<Metadata>(indexName);
+  const index = pinecone.Index<Metadata>(indexName);
 
   // Get the namespace
   const pineconeNamespace = index.namespace(namespace ?? '');
