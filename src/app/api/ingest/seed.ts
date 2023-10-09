@@ -4,8 +4,8 @@ import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import { DocxLoader } from 'langchain/document_loaders/fs/docx';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
-import { getPineconeClient } from '@/utils/pinecone';
-import { utils as PineconeUtils, Vector } from '@pinecone-database/pinecone';
+import { Pinecone, PineconeRecord } from '@pinecone-database/pinecone';
+import { chunkedUpsert } from '../../utils/chunkedUpsert';
 import { truncateStringByBytes } from '@/utils/truncateString';
 import md5 from 'md5';
 
@@ -22,20 +22,18 @@ interface SeedOptions {
 }
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
 
-const { chunkedUpsert, createIndexIfNotExists } = PineconeUtils;
-
 async function seed(
   filename: string,
   path: string,
   topK: string,
-  index: string,
+  indexName: string,
   options: SeedOptions
 ) {
   try {
     //TODO: Add topK support
 
     // Initialize the Pinecone client
-    const pinecone = await getPineconeClient();
+    const pinecone = new Pinecone();
 
     // Destructure the options object
     const { splittingMethod, chunkSize, chunkOverlap } = options;
@@ -58,14 +56,22 @@ async function seed(
       docs.map((doc) => prepareDocument(doc, filename, splitter))
     ).then((docs) => docs.flat());
 
-    await createIndexIfNotExists(pinecone, index, 1536);
+    const indexList = await pinecone.listIndexes();
+    const indexExists = indexList.some((index) => index.name === indexName);
+    if (!indexExists) {
+      await pinecone.createIndex({
+        name: indexName,
+        dimension: 1536,
+        waitUntilReady: true,
+      });
+    }
 
     // Get the vector embeddings for the documents
     // Warning: For larger files, the chunk size should be increased accordingly.
     const vectors = await Promise.all(documents.map(embedDocument));
 
     // Upsert vectors into the Pinecone index
-    await chunkedUpsert(pinecone?.Index(index)!, vectors, '', 10);
+    await chunkedUpsert(pinecone?.Index(indexName)!, vectors, '', 10);
     const filesToDelete = readdirSync(path);
 
     filesToDelete.forEach((file) => {
@@ -80,7 +86,7 @@ async function seed(
   }
 }
 
-async function embedDocument(doc: Document): Promise<Vector> {
+async function embedDocument(doc: Document): Promise<PineconeRecord> {
   try {
     // Generate OpenAI embeddings for the document content
     const embedding = await getEmbeddings(doc.pageContent);
@@ -99,7 +105,7 @@ async function embedDocument(doc: Document): Promise<Vector> {
         filename: doc.metadata.filename as string, // The URL where the document was found
         hash: doc.metadata.hash as string, // The hash of the document content
       },
-    } as Vector;
+    } as PineconeRecord;
   } catch (error) {
     console.log('Error embedding document: ', error);
     throw error;
