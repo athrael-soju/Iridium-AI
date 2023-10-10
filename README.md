@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center"> Iridium-AI is an Open Source application, heavily inspired by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>. Fell free to clone/Fork, or even use as a template.
+<p align="center"> Iridium-AI is an Open Source Conversational Assistant, heavily inspired by <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>. Fell free to clone/Fork, or even use as a template.
     <br> 
 </p>
 
@@ -36,7 +36,9 @@ Iridium-AI is based on <a href ="https://github.com/pinecone-io/pinecone-vercel-
 - Multi-file Upload via [FilePond](https://www.npmjs.com/package/filepond).
 - Bi-directional Audio via [Web-Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).
 - Extended web crawl functionality to allow custom URL's, or google search.
-- Enhanced UI, for more chat screen space and the ability to Hide/show settings in both desktop & mobile view.
+- Enhanced UI, with a retractable configuration pane, larger chat window and Web Speech options.
+  
+![ezgif com-gif-maker](https://github.com/athrael-soju/Iridium-AI/assets/25455658/602a1c17-bd8b-4a36-a69d-a71112debb4e)
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -88,7 +90,7 @@ You can use Vercel to deploy the application + add your environment variables in
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@athrael-soju](https://github.com/athrael-soju) - Idea & Initial work
+- [@athrael-soju](https://github.com/athrael-soju)
 
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
