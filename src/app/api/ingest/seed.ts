@@ -19,6 +19,7 @@ interface SeedOptions {
   splittingMethod: string;
   chunkSize: number;
   chunkOverlap: number;
+  namespace: string;
 }
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
 
@@ -36,7 +37,7 @@ async function seed(
     const pinecone = new Pinecone();
 
     // Destructure the options object
-    const { splittingMethod, chunkSize, chunkOverlap } = options;
+    const { splittingMethod, chunkSize, chunkOverlap, namespace } = options;
 
     const directoryLoader = new DirectoryLoader(path, {
       '.pdf': (path) => new PDFLoader(path),
@@ -71,7 +72,7 @@ async function seed(
     const vectors = await Promise.all(documents.map(embedDocument));
 
     // Upsert vectors into the Pinecone index
-    await chunkedUpsert(pinecone?.Index(indexName)!, vectors, '', 10);
+    await chunkedUpsert(pinecone?.Index(indexName)!, vectors, namespace, 10);
     const filesToDelete = readdirSync(path);
 
     filesToDelete.forEach((file) => {

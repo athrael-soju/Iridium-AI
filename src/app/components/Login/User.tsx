@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { signIn, signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -20,10 +20,17 @@ interface UserProps {
 }
 
 const User: React.FC<UserProps> = ({ session }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Component will mount only on client side
+    setIsClient(true);
+  }, []);
+
   const renderUser = () => {
     if (!session) {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-end gap-2">
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -31,23 +38,27 @@ const User: React.FC<UserProps> = ({ session }) => {
             }}
             title="Sign in"
           >
-            <FontAwesomeIcon
-              icon={faRightToBracket}
-              size="2x"
-              style={{ color: 'white' }}
-            />
+            {isClient && (
+              <FontAwesomeIcon
+                icon={faRightToBracket}
+                size="2x"
+                style={{ color: 'white' }}
+              />
+            )}
           </button>
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            size="2x"
-            style={{ color: 'lightgray' }}
-            title="Signed Out"
-          />
+          {isClient && (
+            <FontAwesomeIcon
+              icon={faUserCircle}
+              size="4x"
+              style={{ color: 'lightgray' }}
+              title="Signed Out"
+            />
+          )}
         </div>
       );
-    } else if (session && session.user) {
+    } else if (session?.user) {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-end gap-2">
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -55,24 +66,22 @@ const User: React.FC<UserProps> = ({ session }) => {
             }}
             title="Sign Out"
           >
-            <FontAwesomeIcon
-              icon={faUpRightFromSquare}
-              size="2x"
-              style={{ color: 'white' }}
-            />
+            {isClient && (
+              <FontAwesomeIcon
+                icon={faUpRightFromSquare}
+                size="2x"
+                style={{ color: 'white' }}
+              />
+            )}
           </button>
-          <div className="relative w-8 h-8">
-            <FontAwesomeIcon
-              icon={faUserCircle}
-              size="2x"
-              className="absolute top-0 left-0"
-            />
+          <div className="relative" style={{ width: '4em', height: '4em' }}>
             <picture>
               <img
-                src={session.user.image || ''}
+                src={session.user.image ?? ''}
                 alt="User"
                 className="absolute top-0 left-0 w-full h-full rounded-full object-cover"
-                title={session.user.email || ''}
+                title={session.user.email ?? ''}
+                style={{ width: '4em', height: '4em' }}
               />
             </picture>
           </div>

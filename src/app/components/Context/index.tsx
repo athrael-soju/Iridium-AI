@@ -8,9 +8,14 @@ import FileUpload from '../FileUpload';
 interface ContextProps {
   className: string;
   selected: string[] | null;
+  namespace: string;
 }
 
-export const Context: React.FC<ContextProps> = ({ className, selected }) => {
+export const Context: React.FC<ContextProps> = ({
+  className,
+  selected,
+  namespace,
+}) => {
   const [entries, setEntries] = useState(getURLs);
   const [cards, setCards] = useState<ICard[]>([]);
 
@@ -77,7 +82,8 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
             setCards,
             splittingMethod,
             chunkSize,
-            overlap
+            overlap,
+            namespace
           )
         }
       />
@@ -131,7 +137,7 @@ export const Context: React.FC<ContextProps> = ({ className, selected }) => {
                 color: 'white',
                 width: '48%',
               }}
-              onClick={() => clearIndex(setEntries, setCards)}
+              onClick={() => clearIndex(setEntries, setCards, namespace)}
             >
               Clear Index
             </Button>

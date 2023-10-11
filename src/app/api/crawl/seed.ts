@@ -14,6 +14,7 @@ interface SeedOptions {
   splittingMethod: string;
   chunkSize: number;
   chunkOverlap: number;
+  namespace: string;
 }
 
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
@@ -29,7 +30,7 @@ async function seed(
     const pinecone = new Pinecone();
 
     // Destructure the options object
-    const { splittingMethod, chunkSize, chunkOverlap } = options;
+    const { splittingMethod, chunkSize, chunkOverlap, namespace } = options;
 
     // Create a new Crawler with depth 1 and maximum pages as limit
     const crawler = new Crawler(1, limit || 100);
@@ -65,7 +66,7 @@ async function seed(
     const vectors = await Promise.all(documents.flat().map(embedDocument));
 
     // Upsert vectors into the Pinecone index
-    await chunkedUpsert(index, vectors, '', 10);
+    await chunkedUpsert(index, vectors, namespace, 10);
 
     // Return the first document
     return documents[0];
