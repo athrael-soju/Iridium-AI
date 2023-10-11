@@ -5,6 +5,7 @@ import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
 import { useChat } from 'ai/react';
+import { useSession } from 'next-auth/react';
 import InstructionModal from './components/InstructionModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -13,8 +14,14 @@ import {
   faGear,
   faCloudArrowUp,
 } from '@fortawesome/free-solid-svg-icons';
-
+import User from '@/components/Login/User';
+import { v4 as uuidv4 } from 'uuid';
 const Page: React.FC = () => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated: () => {},
+  });
+  const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -28,9 +35,7 @@ const Page: React.FC = () => {
         setGotMessages(true);
       },
     });
-
   const prevMessagesLengthRef = useRef(messages.length);
-
   const handleGearClick = () => {
     setGearSpinning(true);
     setTimeout(() => setGearSpinning(false), 1000); // Turn off spin after 1 second
@@ -47,8 +52,25 @@ const Page: React.FC = () => {
     handleSubmit(e);
     setContext(null);
     setGotMessages(false);
-    setIsSpeechStopped(false)
+    setIsSpeechStopped(false);
   };
+
+  useEffect(() => {
+    const iconWrapper = document.getElementById('icon-wrapper');
+    if (iconWrapper) {
+      iconWrapper.style.display = 'flex';
+    }
+  }, []);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      namespace.current = `${session.user.email}_${session.user.name}`;
+    } else {
+      namespace.current = `${session?.user?.email ?? 'guest'}_${
+        session?.user?.name ?? uuidv4()
+      }`;
+    }
+  }, [session]);
 
   useEffect(() => {
     const getContext = async () => {
@@ -56,6 +78,7 @@ const Page: React.FC = () => {
         method: 'POST',
         body: JSON.stringify({
           messages,
+          namespace: namespace.current,
         }),
       });
       const { context } = await response.json();
@@ -71,7 +94,23 @@ const Page: React.FC = () => {
   return (
     <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
       <Header />
-      <div className="fixed right-4 top-16 md:right-4 md:top-16 flex space-x-2">
+      <div className="fixed items-end right-4 top-12 md:right-4 md:top-8 flex space-x-2">
+        <button
+          onClick={() => {
+            window.open(
+              'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fathrael-soju%2Firidium-ai&env=OPENAI_API_MODEL,OPENAI_API_KEY,OPENAI_API_EMBEDDING_MODEL,PINECONE_API_KEY,PINECONE_ENVIRONMENT,PINECONE_INDEX,PINECONE_TOPK',
+              '_blank',
+              'noopener noreferrer'
+            );
+          }}
+          title="Deploy with Vercel"
+        >
+          <FontAwesomeIcon
+            icon={faCloudArrowUp}
+            size="2x"
+            style={{ color: 'white' }} // #97978D
+          />
+        </button>
         <button
           onClick={() => {
             setWebSpeechEnabled(!isWebSpeechEnabled);
@@ -109,22 +148,7 @@ const Page: React.FC = () => {
             style={{ color: 'white' }}
           />
         </button>
-        <button
-          onClick={() => {
-            window.open(
-              'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fathrael-soju%2Firidium-ai&env=OPENAI_API_MODEL,OPENAI_API_KEY,OPENAI_API_EMBEDDING_MODEL,PINECONE_API_KEY,PINECONE_ENVIRONMENT,PINECONE_INDEX,PINECONE_TOPK',
-              '_blank',
-              'noopener noreferrer'
-            );
-          }}
-          title="Deploy with Vercel"
-        >
-          <FontAwesomeIcon
-            icon={faCloudArrowUp}
-            size="2x"
-            style={{ color: '#97978D' }}
-          />
-        </button>
+        <User session={session} />
         <div />
       </div>
       <InstructionModal
@@ -152,7 +176,11 @@ const Page: React.FC = () => {
             className="bg-gray-700 overflow-y-auto h-full rounded-lg border-gray-500 border-2"
             id="contextOverlay"
           >
-            <Context className="" selected={context} />
+            <Context
+              className=""
+              selected={context}
+              namespace={namespace.current}
+            />
           </div>
         </div>
       </div>

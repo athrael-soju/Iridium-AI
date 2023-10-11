@@ -61,7 +61,7 @@ const Chat: React.FC<ChatProps> = ({
 
   const stopSpeaking = () => {
     setIsStopFading(true);
-    setTimeout(() => setIsStopFading(false), 1000); // Turn off spin after 1 second
+    setTimeout(() => setIsStopFading(false), 1000);
     speechSynthesis.cancel();
     setIsRecording(false);
   };
@@ -78,6 +78,13 @@ const Chat: React.FC<ChatProps> = ({
       startListening();
     }
     setIsRecording(!isRecording);
+  };
+
+  // Extracted the nested ternary operation into a separate variable
+  const recordButtonTitle = () => {
+    if (isWebSpeechEnabled && !isRecording) return 'Record a Message';
+    if (isWebSpeechEnabled && isRecording) return 'Send Message';
+    return 'Enable Web Speech to Record a Message';
   };
 
   return (
@@ -110,13 +117,7 @@ const Chat: React.FC<ChatProps> = ({
               }`}
               onClick={toggleListening}
               disabled={!isWebSpeechEnabled}
-              title={
-                isWebSpeechEnabled && !isRecording
-                  ? 'Record a Message'
-                  : isWebSpeechEnabled && isRecording
-                  ? 'Send Message'
-                  : 'Enable Web Speech to Record a Message'
-              }
+              title={recordButtonTitle()} // Used the extracted logic here
             >
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
