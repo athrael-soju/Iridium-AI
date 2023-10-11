@@ -33,6 +33,7 @@
 ## 🧐 About <a name = "about"></a>
 
 Iridium-AI is based on <a href ="https://github.com/pinecone-io/pinecone-vercel-starter" target="_blank">pinecone-vercel-starter</a>, but adds several new features, such as:
+- Multi-user auth.
 - Multi-file Upload via [FilePond](https://www.npmjs.com/package/filepond).
 - Bi-directional Audio via [Web-Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).
 - Extended web crawl functionality to allow custom URL's, or google search.
