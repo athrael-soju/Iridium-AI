@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import iridiumAILogo from '../../../public/iridium-ai.svg';
+
 export default function Header() {
   return (
     <div>
@@ -7,7 +8,7 @@ export default function Header() {
         <Image
           src={iridiumAILogo}
           alt="iridium-logo"
-          width="300"          
+          width="300"
           className="my-5 ml-3" // lg:w-80 md:w-60 w-40
           onClick={() => {
             window.open(
