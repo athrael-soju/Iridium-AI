@@ -3,7 +3,7 @@ import seed from './seed';
 
 export async function POST(req: Request) {
   // Look into why this only works with parallel uploads = 1 only
-  const path = process.env.PINECONE_PATH ?? '/tmp/';
+  const path = process.env.FILE_UPLOAD_PATH ?? '/tmp/';
   try {
     const { filename, options } = await req.json();
     const topK = process.env.PINECONE_TOPK ?? '10';

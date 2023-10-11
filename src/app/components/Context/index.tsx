@@ -102,6 +102,7 @@ export const Context: React.FC<ContextProps> = ({
               chunkSize={chunkSize}
               overlap={overlap}
               setCards={setCards}
+              namespace={namespace}
             />
           </div>
           <form

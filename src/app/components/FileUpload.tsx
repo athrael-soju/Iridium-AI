@@ -15,6 +15,7 @@ interface FileUploaderProps {
   chunkSize: number;
   overlap: number;
   setCards: React.Dispatch<React.SetStateAction<any[]>>;
+  namespace: string;
 }
 
 const FileUpload: React.FC<FileUploaderProps> = ({
@@ -22,6 +23,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
   chunkSize,
   overlap,
   setCards,
+  namespace,
 }) => {
   const [files, setFiles] = useState<any[]>([]);
   const [ingesting, setIngesting] = useState(false);
@@ -29,6 +31,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
     splittingMethod,
     chunkSize,
     overlap,
+    namespace,
   };
   return (
     <div>
