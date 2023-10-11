@@ -4,6 +4,13 @@ import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
 const nlp = winkNLP(model);
 
+interface MessagesProps {
+  readonly messages: Message[];
+  readonly isLoading: boolean;
+  readonly isWebSpeechEnabled: boolean;
+  readonly isSpeechStopped: boolean;
+}
+
 let speechSynthesis: SpeechSynthesis;
 if (typeof window !== 'undefined') {
   speechSynthesis = window.speechSynthesis;
@@ -19,12 +26,7 @@ export default function Messages({
   isLoading,
   isWebSpeechEnabled,
   isSpeechStopped,
-}: {
-  messages: Message[];
-  isLoading: boolean;
-  isWebSpeechEnabled: boolean;
-  isSpeechStopped: boolean;
-}) {
+}: MessagesProps) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
   const speechIndex = useRef<number>(0);
