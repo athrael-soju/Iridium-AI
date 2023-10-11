@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const path = process.env.UPLOAD_PATH || './tmp/';
+    const path = process.env.UPLOAD_PATH || '/tmp/';
 
     if (!existsSync(path)) {
       mkdirSync(path, { recursive: true });
