@@ -94,7 +94,7 @@ const Page: React.FC = () => {
   return (
     <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
       <Header />
-      <div className="fixed items-end right-4 top-12 md:right-4 md:top-8 flex space-x-2">
+      <div className="fixed items-end right-4 top-8 md:right-4 md:top-8 flex space-x-2">
         <button
           onClick={() => {
             window.open(
