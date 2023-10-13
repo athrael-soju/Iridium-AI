@@ -97,27 +97,30 @@ const Chat: React.FC<ChatProps> = ({
       />
       <form
         onSubmit={handleMessageSubmit}
-        className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
+        className="mt-5 mb-2 relative bg-iridium-chat rounded-lg"
       >
         <input
           type="text"
-          className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-16 bg-gray-600 border-gray-600 transition-shadow duration-200"
+          className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-16 bg-iridium-chat border-gray-600 transition-shadow duration-200"
           value={input}
           onChange={handleInputChange}
         />
-        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+        <span
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
+          style={{ color: '#D2D6DC' }}
+        >
           Send Message ⮐
           <div>
             <button
               type="button"
               className={`ml-2 ${
                 isWebSpeechEnabled
-                  ? 'text-gray-400 animate-pulse-once'
+                  ? '#D2D6DC animate-pulse-once'
                   : 'text-gray-500 cursor-not-allowed'
               }`}
               onClick={toggleListening}
               disabled={!isWebSpeechEnabled}
-              title={recordButtonTitle()} // Used the extracted logic here
+              title={recordButtonTitle()}
             >
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
@@ -125,7 +128,7 @@ const Chat: React.FC<ChatProps> = ({
               type="button"
               className={`ml-2 ${
                 isWebSpeechEnabled
-                  ? 'text-gray-400 animate-pulse-once'
+                  ? '#D2D6DC animate-pulse-once'
                   : 'text-gray-500 cursor-not-allowed'
               }`}
               onClick={stopSpeaking}

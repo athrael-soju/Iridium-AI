@@ -42,7 +42,7 @@ const User: React.FC<UserProps> = ({ session }) => {
               <FontAwesomeIcon
                 icon={faRightToBracket}
                 size="2x"
-                style={{ color: 'white' }}
+                style={{ color: '#D2D6DC' }}
               />
             )}
           </button>
@@ -50,7 +50,7 @@ const User: React.FC<UserProps> = ({ session }) => {
             <FontAwesomeIcon
               icon={faUserCircle}
               size="4x"
-              style={{ color: 'lightgray' }}
+              style={{ color: '#D2D6DC' }}
               title="Signed Out"
             />
           )}

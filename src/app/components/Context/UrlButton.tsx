@@ -21,7 +21,7 @@ const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
         entry.loading ? 'shimmer' : ''
       }`}
       style={{
-        backgroundColor: entry.seeded ? 'green' : 'bg-gray-800',
+        backgroundColor: entry.seeded ? 'green' : 'bg-iridium',
         color: entry.seeded ? 'white' : 'text-gray-200',
       }}
       onClick={onClick}

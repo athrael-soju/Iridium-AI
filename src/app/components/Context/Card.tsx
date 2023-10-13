@@ -17,7 +17,7 @@ export const Card: FC<ICardProps> = ({ card, selected }) => (
   <div
     id={card.metadata.hash}
     className={`card w-full p-5 m-2 text-white ${
-      selected?.includes(card.metadata.hash) ? 'bg-gray-600' : 'bg-gray-800'
+      selected?.includes(card.metadata.hash) ? 'bg-iridium-chat' : 'bg-iridium'
     } ${
       selected?.includes(card.metadata.hash)
         ? 'border-double border-4 border-sky-500'

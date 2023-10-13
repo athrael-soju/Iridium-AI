@@ -107,15 +107,18 @@ export const Context: React.FC<ContextProps> = ({
           </div>
           <form
             onSubmit={handleNewURLSubmit}
-            className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
+            className="mt-5 mb-5 relative bg-iridium-chat rounded-lg"
           >
             <input
               type="text"
-              className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-gray-600 border-gray-600 transition-shadow duration-200"
+              className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-iridium-chat border-gray-600 transition-shadow duration-200"
               value={newURL}
               onChange={(e) => setNewURL(e.target.value)}
             />
-            <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+            <span
+              className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400"
+              style={{ color: '#D2D6DC' }}
+            >
               Add URL ⮐
             </span>
           </form>
@@ -123,8 +126,8 @@ export const Context: React.FC<ContextProps> = ({
             <Button
               className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
               style={{
-                backgroundColor: '#4f6574',
-                color: 'white',
+                backgroundColor: '#636365',
+                color: '#D2D6DC',
                 width: '48%',
               }}
               onClick={handleClearURLsSubmit}
@@ -134,8 +137,8 @@ export const Context: React.FC<ContextProps> = ({
             <Button
               className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
               style={{
-                backgroundColor: '#4f6574',
-                color: 'white',
+                backgroundColor: '#636365',
+                color: '#D2D6DC',
                 width: '48%',
               }}
               onClick={() => clearIndex(setEntries, setCards, namespace)}
@@ -147,17 +150,22 @@ export const Context: React.FC<ContextProps> = ({
         <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
           <div className="flex">
             <DropdownLabel htmlFor="splittingMethod">
-              Splitting Method:
+              <a style={{ color: '#D2D6DC' }}>Splitting Method:</a>
             </DropdownLabel>
             <div className="relative w-full flex-1 rounded-lg border-2 border-gray-500">
               <select
                 id="splittingMethod"
                 value={splittingMethod}
-                className="p-2 bg-gray-700 rounded text-white w-full appearance-none hover:cursor-pointer"
+                className="p-2 bg-iridium-chat rounded text-white w-full appearance-none hover:cursor-pointer"
                 onChange={(e) => setSplittingMethod(e.target.value)}
+                style={{ color: '#D2D6DC' }}
               >
-                <option value="recursive">Recursive Text Splitting</option>
-                <option value="markdown">Markdown Splitting</option>
+                <option value="recursive" style={{ color: '#D2D6DC' }}>
+                  Recursive Text Splitting
+                </option>
+                <option value="markdown" style={{ color: '#D2D6DC' }}>
+                  Markdown Splitting
+                </option>
               </select>
             </div>
           </div>
@@ -169,7 +177,7 @@ export const Context: React.FC<ContextProps> = ({
                   Chunk Size: {chunkSize}
                 </DropdownLabel>
                 <input
-                  className="p-2 bg-gray-700"
+                  className="p-2 bg-iridium-chat"
                   type="range"
                   id="chunkSize"
                   min={1}
@@ -182,7 +190,7 @@ export const Context: React.FC<ContextProps> = ({
                   Overlap: {overlap}
                 </DropdownLabel>
                 <input
-                  className="p-2 bg-gray-700"
+                  className="p-2 bg-iridium-chat"
                   type="range"
                   id="overlap"
                   min={1}

@@ -128,3 +128,11 @@
 .filepond--credits {
   display: none;
 }
+
+.bg-iridium {
+  background: #636365
+}
+
+.bg-iridium-chat {
+  background: #818181
+}

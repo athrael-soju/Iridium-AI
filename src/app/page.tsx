@@ -92,7 +92,7 @@ const Page: React.FC = () => {
   }, [messages, gotMessages]);
 
   return (
-    <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
+    <div className="flex flex-col justify-between h-screen bg-iridium p-2 mx-auto max-w-full ">
       <Header />
       <div className="fixed items-end right-4 top-8 md:right-4 md:top-8 flex space-x-2">
         <button
@@ -108,7 +108,7 @@ const Page: React.FC = () => {
           <FontAwesomeIcon
             icon={faCloudArrowUp}
             size="2x"
-            style={{ color: 'white' }} // #97978D
+            style={{ color: '#D2D6DC' }} // #97978D
           />
         </button>
         <button
@@ -124,7 +124,7 @@ const Page: React.FC = () => {
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
             fade={isFading}
-            style={{ color: 'white' }}
+            style={{ color: '#D2D6DC' }}
           />
         </button>
         <button
@@ -145,7 +145,7 @@ const Page: React.FC = () => {
             icon={faGear}
             size="2x"
             spin={isGearSpinning}
-            style={{ color: 'white' }}
+            style={{ color: '#D2D6DC' }}
           />
         </button>
         <User session={session} />
@@ -173,7 +173,7 @@ const Page: React.FC = () => {
           style={{ transform: 'translateX(110%)', bottom: 0, top: 0 }}
         >
           <div
-            className="bg-gray-700 overflow-y-auto h-full rounded-lg border-gray-500 border-2"
+            className="bg-iridium-chat overflow-y-auto h-full rounded-lg border-gray-500 border-2"
             id="contextOverlay"
           >
             <Context
