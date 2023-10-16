@@ -4,12 +4,13 @@ import { ScoredPineconeRecord } from '@pinecone-database/pinecone';
 
 export async function POST(req: Request) {
   try {
-    const { messages, namespace } = await req.json();
+    const { messages, namespace, topK } = await req.json();
     const lastMessage =
       messages.length > 1 ? messages[messages.length - 1] : messages[0];
     const context = (await getContext(
       lastMessage.content,
       namespace,
+      topK,
       10000,
       0.7,
       false

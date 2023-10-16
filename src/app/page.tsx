@@ -29,8 +29,13 @@ const Page: React.FC = () => {
   const [isGearSpinning, setGearSpinning] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const [isSpeechStopped, setIsSpeechStopped] = useState(false);
+  const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
+      body: {
+        namespace: namespace.current,
+        topK,
+      },
       onFinish: async () => {
         setGotMessages(true);
       },
@@ -79,6 +84,7 @@ const Page: React.FC = () => {
         body: JSON.stringify({
           messages,
           namespace: namespace.current,
+          topK,
         }),
       });
       const { context } = await response.json();
@@ -89,7 +95,7 @@ const Page: React.FC = () => {
     }
 
     prevMessagesLengthRef.current = messages.length;
-  }, [messages, gotMessages]);
+  }, [messages, gotMessages, topK]);
 
   return (
     <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
@@ -168,7 +174,7 @@ const Page: React.FC = () => {
         />
 
         <div
-          className="absolute right-0 w-2/3 transition-transform duration-500 ease-in-out transform translate-x-full lg:w-2/5 lg:mx-2 rounded-lg border border-gray-500"
+          className="absolute right-0 w-1/3 transition-transform duration-500 ease-in-out transform lg:w-1/4 lg:mx-2 rounded-lg border border-gray-500"
           id="contextWrapper"
           style={{ transform: 'translateX(110%)', bottom: 0, top: 0 }}
         >
