@@ -43,7 +43,6 @@ const Page: React.FC = () => {
         setGotMessages(true);
       },
       onError: async (res) => {
-        console.log(res?.message);
         api.error({
           message: 'Error',
           description: res?.message,
