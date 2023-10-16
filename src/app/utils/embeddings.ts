@@ -8,7 +8,7 @@ const openai = new OpenAIApi(config);
 export async function getEmbeddings(input: string) {
   if (!process.env.OPENAI_API_KEY) {
     return new Response(
-      'Missing OPENAI_API_KEY – make sure to add it to your .env file.',
+      'Missing OPENAI_API_KEY - make sure to add it to your .env file.',
       {
         status: 400,
       }
