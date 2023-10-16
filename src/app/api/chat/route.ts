@@ -1,6 +1,6 @@
-import { Configuration, OpenAIApi } from 'openai-edge';
-import { Message, OpenAIStream, StreamingTextResponse } from 'ai';
-import { getContext } from '@/utils/context';
+import { Configuration, OpenAIApi } from "openai-edge";
+import { Message, OpenAIStream, StreamingTextResponse } from "ai";
+import { getContext } from "@/utils/context";
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = new Configuration({
@@ -9,9 +9,17 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 // IMPORTANT! Set the runtime to edge
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function POST(req: Request) {
+  if (!process.env.PINECONE_ENVIRONMENT) {
+    return new Response(
+      "Missing PINECONE_ENVIRONMENT – make sure to add it to your .env file.",
+      {
+        status: 400,
+      }
+    );
+  }
   try {
     const { messages, namespace, topK } = await req.json();
 
@@ -23,7 +31,7 @@ export async function POST(req: Request) {
 
     const prompt = [
       {
-        role: 'system',
+        role: "system",
         content: `AI assistant is a brand new, powerful, human-like artificial intelligence.
       The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.
       AI is a well-behaved and well-mannered individual.
@@ -42,11 +50,11 @@ export async function POST(req: Request) {
 
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.createChatCompletion({
-      model: process.env.OPENAI_API_MODEL ?? 'gpt-3.5-turbo',
+      model: process.env.OPENAI_API_MODEL ?? "gpt-3.5-turbo",
       stream: true,
       messages: [
         ...prompt,
-        ...messages.filter((message: Message) => message.role === 'user'),
+        ...messages.filter((message: Message) => message.role === "user"),
       ],
     });
     // Convert the response into a friendly text-stream
