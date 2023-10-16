@@ -18,7 +18,11 @@ export const getContext = async (
   getOnlyText = true
 ): Promise<string | ScoredVector[]> => {
   // Get the embeddings of the input message
-  const embedding = await getEmbeddings(message);
+  const embedding: Response | number[] = await getEmbeddings(message);
+
+  if (embedding instanceof Response) {
+    return [];
+  }
 
   // Retrieve the matches for the embeddings from the specified namespace
   const matches = await getMatchesFromEmbeddings(embedding, topK, namespace);
@@ -34,6 +38,8 @@ export const getContext = async (
   let docs = matches
     ? qualifyingDocs.map((match) => (match.metadata as Metadata).chunk)
     : [];
-  // Join all the chunks of text together, truncate to the maximum number of tokens, and return the result
+
   return docs.join('\n').substring(0, maxTokens);
+
+  // Join all the chunks of text together, truncate to the maximum number of tokens, and return the result
 };
