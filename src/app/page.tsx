@@ -1,35 +1,35 @@
-'use client';
+'use client'
 
-import React, { useEffect, useRef, useState, FormEvent } from 'react';
-import { Context } from '@/components/Context';
-import Header from '@/components/Header';
-import Chat from '@/components/Chat';
-import { useChat } from 'ai/react';
-import { useSession } from 'next-auth/react';
-import InstructionModal from './components/InstructionModal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useRef, useState, FormEvent } from 'react'
+import { Context } from '@/components/Context'
+import Header from '@/components/Header'
+import Chat from '@/components/Chat'
+import { useChat } from 'ai/react'
+import { useSession } from 'next-auth/react'
+import InstructionModal from './components/InstructionModal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faVolumeMute,
   faVolumeUp,
   faGear,
   faCloudArrowUp,
-} from '@fortawesome/free-solid-svg-icons';
-import User from '@/components/Login/User';
-import { v4 as uuidv4 } from 'uuid';
+} from '@fortawesome/free-solid-svg-icons'
+import User from '@/components/Login/User'
+import { v4 as uuidv4 } from 'uuid'
 const Page: React.FC = () => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {},
-  });
-  const namespace = useRef<string>('');
-  const [gotMessages, setGotMessages] = useState(false);
-  const [context, setContext] = useState<string[] | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
-  const [isGearSpinning, setGearSpinning] = useState(false);
-  const [isFading, setIsFading] = useState(false);
-  const [isSpeechStopped, setIsSpeechStopped] = useState(false);
-  const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
+  })
+  const namespace = useRef<string>('')
+  const [gotMessages, setGotMessages] = useState(false)
+  const [context, setContext] = useState<string[] | null>(null)
+  const [isModalOpen, setModalOpen] = useState(false)
+  const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false)
+  const [isGearSpinning, setGearSpinning] = useState(false)
+  const [isFading, setIsFading] = useState(false)
+  const [isSpeechStopped, setIsSpeechStopped] = useState(false)
+  const topK = parseInt(process.env.PINECONE_TOPK ?? '10')
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       body: {
@@ -37,45 +37,45 @@ const Page: React.FC = () => {
         topK,
       },
       onFinish: async () => {
-        setGotMessages(true);
+        setGotMessages(true)
       },
-    });
-  const prevMessagesLengthRef = useRef(messages.length);
+    })
+  const prevMessagesLengthRef = useRef(messages.length)
   const handleGearClick = () => {
-    setGearSpinning(true);
-    setTimeout(() => setGearSpinning(false), 1000); // Turn off spin after 1 second
-  };
+    setGearSpinning(true)
+    setTimeout(() => setGearSpinning(false), 1000) // Turn off spin after 1 second
+  }
 
   const handleVoiceClick = () => {
-    setIsFading(true);
-    setWebSpeechEnabled(!isWebSpeechEnabled);
-    setTimeout(() => setIsFading(false), 820); // Turn off animation after 820 ms
-  };
+    setIsFading(true)
+    setWebSpeechEnabled(!isWebSpeechEnabled)
+    setTimeout(() => setIsFading(false), 820) // Turn off animation after 820 ms
+  }
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleSubmit(e);
-    setContext(null);
-    setGotMessages(false);
-    setIsSpeechStopped(false);
-  };
+    e.preventDefault()
+    handleSubmit(e)
+    setContext(null)
+    setGotMessages(false)
+    setIsSpeechStopped(false)
+  }
 
   useEffect(() => {
-    const iconWrapper = document.getElementById('icon-wrapper');
+    const iconWrapper = document.getElementById('icon-wrapper')
     if (iconWrapper) {
-      iconWrapper.style.display = 'flex';
+      iconWrapper.style.display = 'flex'
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (session?.user?.email) {
-      namespace.current = `${session.user.email}_${session.user.name}`;
+      namespace.current = `${session.user.email}_${session.user.name}`
     } else {
       namespace.current = `${session?.user?.email ?? 'guest'}_${
         session?.user?.name ?? uuidv4()
-      }`;
+      }`
     }
-  }, [session]);
+  }, [session])
 
   useEffect(() => {
     const getContext = async () => {
@@ -86,16 +86,16 @@ const Page: React.FC = () => {
           namespace: namespace.current,
           topK,
         }),
-      });
-      const { context } = await response.json();
-      setContext(context.map((c: any) => c.id));
-    };
+      })
+      const { context } = await response.json()
+      setContext(context.map((c: any) => c.id))
+    }
     if (gotMessages && messages.length >= prevMessagesLengthRef.current) {
-      getContext();
+      getContext()
     }
 
-    prevMessagesLengthRef.current = messages.length;
-  }, [messages, gotMessages, topK]);
+    prevMessagesLengthRef.current = messages.length
+  }, [messages, gotMessages, topK])
 
   return (
     <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
@@ -107,7 +107,7 @@ const Page: React.FC = () => {
               'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fathrael-soju%2Firidium-ai&env=OPENAI_API_MODEL,OPENAI_API_KEY,OPENAI_API_EMBEDDING_MODEL,PINECONE_API_KEY,PINECONE_ENVIRONMENT,PINECONE_INDEX,PINECONE_TOPK',
               '_blank',
               'noopener noreferrer'
-            );
+            )
           }}
           title="Deploy with Vercel"
         >
@@ -119,8 +119,8 @@ const Page: React.FC = () => {
         </button>
         <button
           onClick={() => {
-            setWebSpeechEnabled(!isWebSpeechEnabled);
-            handleVoiceClick();
+            setWebSpeechEnabled(!isWebSpeechEnabled)
+            handleVoiceClick()
           }}
           title={
             isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
@@ -135,15 +135,15 @@ const Page: React.FC = () => {
         </button>
         <button
           onClick={() => {
-            const contextWrapper = document.getElementById('contextWrapper');
+            const contextWrapper = document.getElementById('contextWrapper')
             if (contextWrapper instanceof HTMLElement) {
               const isHidden =
-                contextWrapper.style.transform === 'translateX(110%)';
+                contextWrapper.style.transform === 'translateX(110%)'
               contextWrapper.style.transform = isHidden
                 ? 'translateX(0%)'
-                : 'translateX(110%)';
+                : 'translateX(110%)'
             }
-            handleGearClick();
+            handleGearClick()
           }}
           title="Settings"
         >
@@ -191,7 +191,7 @@ const Page: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
