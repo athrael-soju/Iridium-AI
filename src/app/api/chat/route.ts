@@ -12,6 +12,14 @@ const openai = new OpenAIApi(config);
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
+  if (!process.env.PINECONE_ENVIRONMENT) {
+    return new Response(
+      'Missing PINECONE_ENVIRONMENT – make sure to add it to your .env file.',
+      {
+        status: 400,
+      }
+    );
+  }
   try {
     const { messages, namespace, topK } = await req.json();
 

@@ -1,22 +1,24 @@
 'use client'
 
-import React, { useEffect, useRef, useState, FormEvent } from 'react'
-import { Context } from '@/components/Context'
-import Header from '@/components/Header'
-import Chat from '@/components/Chat'
-import { useChat } from 'ai/react'
-import { useSession } from 'next-auth/react'
-import InstructionModal from './components/InstructionModal'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect, useRef, useState, FormEvent } from 'react';
+import { notification } from 'antd';
+import { Context } from '@/components/Context';
+import Header from '@/components/Header';
+import Chat from '@/components/Chat';
+import { useChat } from 'ai/react';
+import { useSession } from 'next-auth/react';
+import InstructionModal from './components/InstructionModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faVolumeMute,
   faVolumeUp,
   faGear,
   faCloudArrowUp,
-} from '@fortawesome/free-solid-svg-icons'
-import User from '@/components/Login/User'
-import { v4 as uuidv4 } from 'uuid'
+} from '@fortawesome/free-solid-svg-icons';
+import User from '@/components/Login/User';
+import { v4 as uuidv4 } from 'uuid';
 const Page: React.FC = () => {
+  const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {},
@@ -39,8 +41,15 @@ const Page: React.FC = () => {
       onFinish: async () => {
         setGotMessages(true)
       },
-    })
-  const prevMessagesLengthRef = useRef(messages.length)
+      onError: async (res) => {
+        api.error({
+          message: 'Error',
+          description: res?.message,
+          placement: 'bottomRight',
+        });
+      },
+    });
+  const prevMessagesLengthRef = useRef(messages.length);
   const handleGearClick = () => {
     setGearSpinning(true)
     setTimeout(() => setGearSpinning(false), 1000) // Turn off spin after 1 second
@@ -99,6 +108,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
+      {contextHolder}
       <Header />
       <div className="fixed items-end right-4 top-8 md:right-4 md:top-8 flex space-x-2">
         <button
@@ -161,7 +171,6 @@ const Page: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
-
       <div className="flex w-full flex-grow overflow-hidden relative">
         <Chat
           input={input}
