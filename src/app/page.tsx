@@ -1,25 +1,22 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState, FormEvent } from "react";
-
-import { notification } from "antd";
-import type { NotificationPlacement } from "antd/es/notification/interface";
-
-import { Context } from "@/components/Context";
-import Header from "@/components/Header";
-import Chat from "@/components/Chat";
-import { useChat } from "ai/react";
-import { useSession } from "next-auth/react";
-import InstructionModal from "./components/InstructionModal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useRef, useState, FormEvent } from 'react';
+import { notification } from 'antd';
+import { Context } from '@/components/Context';
+import Header from '@/components/Header';
+import Chat from '@/components/Chat';
+import { useChat } from 'ai/react';
+import { useSession } from 'next-auth/react';
+import InstructionModal from './components/InstructionModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faVolumeMute,
   faVolumeUp,
   faGear,
   faCloudArrowUp,
-} from "@fortawesome/free-solid-svg-icons";
-import User from "@/components/Login/User";
-import { v4 as uuidv4 } from "uuid";
+} from '@fortawesome/free-solid-svg-icons';
+import User from '@/components/Login/User';
+import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
   const [api, contextHolder] = notification.useNotification();
@@ -27,7 +24,7 @@ const Page: React.FC = () => {
     required: true,
     onUnauthenticated: () => {},
   });
-  const namespace = useRef<string>("");
+  const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -35,7 +32,7 @@ const Page: React.FC = () => {
   const [isGearSpinning, setGearSpinning] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const [isSpeechStopped, setIsSpeechStopped] = useState(false);
-  const topK = parseInt(process.env.PINECONE_TOPK ?? "10");
+  const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       body: {
@@ -48,9 +45,9 @@ const Page: React.FC = () => {
       onError: async (res) => {
         console.log(res?.message);
         api.error({
-          message: "Error",
+          message: 'Error',
           description: res?.message,
-          placement: "bottomRight",
+          placement: 'bottomRight',
         });
       },
     });
@@ -75,9 +72,9 @@ const Page: React.FC = () => {
   };
 
   useEffect(() => {
-    const iconWrapper = document.getElementById("icon-wrapper");
+    const iconWrapper = document.getElementById('icon-wrapper');
     if (iconWrapper) {
-      iconWrapper.style.display = "flex";
+      iconWrapper.style.display = 'flex';
     }
   }, []);
 
@@ -85,7 +82,7 @@ const Page: React.FC = () => {
     if (session?.user?.email) {
       namespace.current = `${session.user.email}_${session.user.name}`;
     } else {
-      namespace.current = `${session?.user?.email ?? "guest"}_${
+      namespace.current = `${session?.user?.email ?? 'guest'}_${
         session?.user?.name ?? uuidv4()
       }`;
     }
@@ -93,8 +90,8 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     const getContext = async () => {
-      const response = await fetch("/api/context", {
-        method: "POST",
+      const response = await fetch('/api/context', {
+        method: 'POST',
         body: JSON.stringify({
           messages,
           namespace: namespace.current,
@@ -119,9 +116,9 @@ const Page: React.FC = () => {
         <button
           onClick={() => {
             window.open(
-              "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fathrael-soju%2Firidium-ai&env=OPENAI_API_MODEL,OPENAI_API_KEY,OPENAI_API_EMBEDDING_MODEL,PINECONE_API_KEY,PINECONE_ENVIRONMENT,PINECONE_INDEX,PINECONE_TOPK",
-              "_blank",
-              "noopener noreferrer"
+              'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fathrael-soju%2Firidium-ai&env=OPENAI_API_MODEL,OPENAI_API_KEY,OPENAI_API_EMBEDDING_MODEL,PINECONE_API_KEY,PINECONE_ENVIRONMENT,PINECONE_INDEX,PINECONE_TOPK',
+              '_blank',
+              'noopener noreferrer'
             );
           }}
           title="Deploy with Vercel"
@@ -129,7 +126,7 @@ const Page: React.FC = () => {
           <FontAwesomeIcon
             icon={faCloudArrowUp}
             size="2x"
-            style={{ color: "white" }} // #97978D
+            style={{ color: 'white' }} // #97978D
           />
         </button>
         <button
@@ -138,25 +135,25 @@ const Page: React.FC = () => {
             handleVoiceClick();
           }}
           title={
-            isWebSpeechEnabled ? "Disable Web Speech" : "Enable Web Speech"
+            isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
           }
         >
           <FontAwesomeIcon
             icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
             size="2x"
             fade={isFading}
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
           />
         </button>
         <button
           onClick={() => {
-            const contextWrapper = document.getElementById("contextWrapper");
+            const contextWrapper = document.getElementById('contextWrapper');
             if (contextWrapper instanceof HTMLElement) {
               const isHidden =
-                contextWrapper.style.transform === "translateX(110%)";
+                contextWrapper.style.transform === 'translateX(110%)';
               contextWrapper.style.transform = isHidden
-                ? "translateX(0%)"
-                : "translateX(110%)";
+                ? 'translateX(0%)'
+                : 'translateX(110%)';
             }
             handleGearClick();
           }}
@@ -166,7 +163,7 @@ const Page: React.FC = () => {
             icon={faGear}
             size="2x"
             spin={isGearSpinning}
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
           />
         </button>
         <User session={session} />
@@ -190,7 +187,7 @@ const Page: React.FC = () => {
         <div
           className="absolute right-0 w-1/3 transition-transform duration-500 ease-in-out transform lg:w-1/4 lg:mx-2 rounded-lg border border-gray-500"
           id="contextWrapper"
-          style={{ transform: "translateX(110%)", bottom: 0, top: 0 }}
+          style={{ transform: 'translateX(110%)', bottom: 0, top: 0 }}
         >
           <div
             className="bg-gray-700 overflow-y-auto h-full rounded-lg border-gray-500 border-2"
