@@ -19,7 +19,7 @@ const getMatchesFromEmbeddings = async (
   // Obtain a client for Pinecone
   const pinecone = new Pinecone();
 
-  const indexName: string = process.env.PINECONE_INDEX || '';
+  const indexName: string = process.env.PINECONE_INDEX ?? '';
   if (indexName === '') {
     throw new Error('PINECONE_INDEX environment variable not set');
   }
@@ -43,7 +43,7 @@ const getMatchesFromEmbeddings = async (
       topK,
       includeMetadata: true,
     });
-    return queryResult.matches || [];
+    return queryResult.matches as ScoredPineconeRecord<Metadata>[];
   } catch (e) {
     // Log the error and throw it
     console.log('Error querying embeddings: ', e);
