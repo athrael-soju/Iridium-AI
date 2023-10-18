@@ -88,7 +88,7 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   return (
-    <div id="chat" className="flex flex-col w-full lg:w-3/5 px-2 flex-grow">
+    <div>
       <Messages
         messages={messages}
         isLoading={isLoading}

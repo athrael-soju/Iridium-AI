@@ -91,10 +91,8 @@ export const Context: React.FC<ContextProps> = ({
   ));
 
   return (
-    <div
-      className={`flex flex-col overflow-y-auto rounded-lg  w-full ${className}`}
-    >
-      <div className="flex flex-col items-start sticky top-0 w-full">
+    <div>
+      <div className="flex flex-col w-full">
         <div className="flex-grow w-full px-4">
           <div className="my-2">
             <FileUpload
@@ -161,7 +159,6 @@ export const Context: React.FC<ContextProps> = ({
               </select>
             </div>
           </div>
-
           {splittingMethod === 'recursive' && (
             <div className="my-4 flex flex-col">
               <div className="flex flex-col w-full">

@@ -33,6 +33,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
     overlap,
     namespace,
   };
+
   return (
     <div>
       <FilePond
