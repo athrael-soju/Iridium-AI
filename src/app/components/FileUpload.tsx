@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
-import axios from 'axios';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import 'filepond/dist/filepond.min.css';
@@ -57,9 +57,12 @@ const FileUpload: React.FC<FileUploaderProps> = ({
             formData.set('file', file);
             console.log('File Upload Initiated...');
 
-            const config = {
-              onUploadProgress: function (e) {
-                progress(e.lengthComputable, e.loaded, e.total);
+            const config: AxiosRequestConfig = {
+              onUploadProgress: function (e: AxiosProgressEvent) {
+                const total = e?.total ?? 0;
+                const percentCompleted = Math.round((e.loaded * 100) / total);
+
+                progress(true, e.loaded, percentCompleted);
                 setIngesting(true);
               },
               headers: {
