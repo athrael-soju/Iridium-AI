@@ -1,10 +1,5 @@
-import {
-  useForm,
-  Controller,
-  SubmitHandler,
-  useFormContext,
-} from 'react-hook-form';
-import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import { useFormContext } from 'react-hook-form';
+import { faStop } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const WebSpeechBtn = ({ stopSpeaking }: any) => {

@@ -22,7 +22,7 @@ const speak = (text: string) => {
 };
 
 export default function Messages({ messages, isLoading }: MessagesProps) {
-  const { setValue, watch } = useFormContext();
+  const { watch } = useFormContext();
   const isWebSpeechEnabled = watch('isWebSpeechEnabled');
   const isSpeechStopped = watch('isSpeechStopped');
 
