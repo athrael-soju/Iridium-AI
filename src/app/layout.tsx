@@ -1,6 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
 import Provider from './Provider';
-import AntdRegistry from './lib/AntdRegistry';
 import Layout from '../app/components/Layout';
 import StyledComponentsRegistry from './lib/registry';
 
@@ -23,9 +22,7 @@ export default function RootLayout({
         <Provider>
           <Analytics />
           <StyledComponentsRegistry>
-            <AntdRegistry>
-              <Layout>{children}</Layout>
-            </AntdRegistry>
+            <Layout>{children}</Layout>
           </StyledComponentsRegistry>
         </Provider>
       </body>

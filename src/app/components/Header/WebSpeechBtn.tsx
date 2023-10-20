@@ -1,4 +1,16 @@
-const WebSpeechBtn = () => {
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  useFormContext,
+} from 'react-hook-form';
+import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+const WebSpeechBtn = ({ stopSpeaking }: any) => {
+  const { setValue, watch } = useFormContext();
+  const isWebSpeechEnabled = watch('isWebSpeechEnabled');
+
   return (
     <button
       type="button"
@@ -15,7 +27,7 @@ const WebSpeechBtn = () => {
           : 'Enable Web Speech to Stop ongoing Messages'
       }
     >
-      <FontAwesomeIcon icon={faStop} fade={isStopFading} />
+      <FontAwesomeIcon icon={faStop} />
     </button>
   );
 };

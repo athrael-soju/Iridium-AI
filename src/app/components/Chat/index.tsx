@@ -45,7 +45,6 @@ const Chat: React.FC<ChatProps> = ({
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const { transcript } = useSpeechRecognition();
-  const [isStopFading, setIsStopFading] = useState(false);
   const handleInputChangeRef = useRef(handleInputChange);
 
   const { setValue, watch } = useFormContext();
@@ -67,8 +66,6 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   const stopSpeaking = () => {
-    setIsStopFading(true);
-    setTimeout(() => setIsStopFading(false), 1000);
     speechSynthesis.cancel();
     setIsRecording(false);
   };
@@ -128,7 +125,7 @@ const Chat: React.FC<ChatProps> = ({
             >
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
-            <WebSpeechBtn />
+            <WebSpeechBtn stopSpeaking={stopSpeaking} />
           </div>
         </span>
       </form>
