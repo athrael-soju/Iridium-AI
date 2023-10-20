@@ -8,7 +8,7 @@ import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const WebSpeechBtn = ({ stopSpeaking }: any) => {
-  const { setValue, watch } = useFormContext();
+  const { watch } = useFormContext();
   const isWebSpeechEnabled = watch('isWebSpeechEnabled');
 
   return (

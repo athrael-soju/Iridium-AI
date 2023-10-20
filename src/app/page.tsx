@@ -182,7 +182,6 @@ const Page: React.FC = () => {
           handleMessageSubmit={handleMessageSubmit}
           messages={messages}
           isLoading={isLoading}
-          isWebSpeechEnabled={isWebSpeechEnabled}
         />
         <div
           className="absolute right-0 w-1/3 transition-transform duration-500 ease-in-out transform lg:w-1/4 lg:mx-2 rounded-lg border border-gray-500"
