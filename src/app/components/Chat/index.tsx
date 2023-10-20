@@ -28,7 +28,6 @@ interface ChatProps {
   handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   messages: Message[];
   isLoading: boolean;
-  isWebSpeechEnabled: boolean;
 }
 
 const Chat: React.FC<ChatProps> = ({

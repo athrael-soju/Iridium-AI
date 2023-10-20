@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, FormEvent } from 'react';
 import { notification } from 'antd';
+import { useFormContext } from 'react-hook-form';
 import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
@@ -27,10 +28,15 @@ const Page: React.FC = () => {
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
   const [isGearSpinning, setGearSpinning] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
+  const { setValue, watch } = useFormContext();
+  const isWebSpeechEnabled = watch('isWebSpeechEnabled');
+  const setWebSpeechEnabled = (value: boolean) => {
+    setValue('isWebSpeechEnabled', value);
+  };
+
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       body: {
