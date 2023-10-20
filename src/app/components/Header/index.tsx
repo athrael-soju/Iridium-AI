@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import iridiumAILogo from '../../../public/iridium-ai.svg';
+import iridiumAILogo from '../../../../public/iridium-ai.svg';
 
 export default function Header() {
   return (

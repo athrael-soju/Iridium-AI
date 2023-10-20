@@ -1,5 +1,6 @@
 import { Message } from 'ai';
 import { useEffect, useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
 const nlp = winkNLP(model);
@@ -7,11 +8,10 @@ const nlp = winkNLP(model);
 interface MessagesProps {
   readonly messages: Message[];
   readonly isLoading: boolean;
-  readonly isWebSpeechEnabled: boolean;
-  readonly isSpeechStopped: boolean;
 }
 
 let speechSynthesis: SpeechSynthesis;
+
 if (typeof window !== 'undefined') {
   speechSynthesis = window.speechSynthesis;
 }
@@ -21,12 +21,11 @@ const speak = (text: string) => {
   speechSynthesis.speak(utterance);
 };
 
-export default function Messages({
-  messages,
-  isLoading,
-  isWebSpeechEnabled,
-  isSpeechStopped,
-}: MessagesProps) {
+export default function Messages({ messages, isLoading }: MessagesProps) {
+  const { watch } = useFormContext();
+  const isWebSpeechEnabled = watch('isWebSpeechEnabled');
+  const isSpeechStopped = watch('isSpeechStopped');
+
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
   const speechIndex = useRef<number>(0);

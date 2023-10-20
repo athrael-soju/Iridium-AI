@@ -1,5 +1,6 @@
 import { Analytics } from '@vercel/analytics/react';
 import Provider from './Provider';
+import StyledComponentsRegistry from './lib/registry';
 
 export const metadata = {
   title: 'Iridium.AI',
@@ -18,8 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Provider>
-          {children}
           <Analytics />
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </Provider>
       </body>
     </html>

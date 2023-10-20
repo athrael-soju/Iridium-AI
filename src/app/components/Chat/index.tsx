@@ -7,14 +7,16 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Messages from './Messages';
 import { Message } from 'ai/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import WebSpeechBtn from '../Header/WebSpeechBtn';
 
 const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
@@ -26,8 +28,6 @@ interface ChatProps {
   handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   messages: Message[];
   isLoading: boolean;
-  isWebSpeechEnabled: boolean;
-  isSpeechStopped: boolean;
 }
 
 const Chat: React.FC<ChatProps> = ({
@@ -36,13 +36,13 @@ const Chat: React.FC<ChatProps> = ({
   handleMessageSubmit,
   messages,
   isLoading,
-  isWebSpeechEnabled,
-  isSpeechStopped,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const { transcript } = useSpeechRecognition();
-  const [isStopFading, setIsStopFading] = useState(false);
   const handleInputChangeRef = useRef(handleInputChange);
+
+  const { setValue, watch } = useFormContext();
+  const isWebSpeechEnabled = watch('isWebSpeechEnabled');
 
   useEffect(() => {
     if (transcript) {
@@ -60,8 +60,6 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   const stopSpeaking = () => {
-    setIsStopFading(true);
-    setTimeout(() => setIsStopFading(false), 1000);
     speechSynthesis.cancel();
     setIsRecording(false);
   };
@@ -73,6 +71,7 @@ const Chat: React.FC<ChatProps> = ({
         await handleMessageSubmit(
           new Event('submit') as unknown as FormEvent<HTMLFormElement>
         );
+        setValue('isSpeechStopped', false);
       }
     } else {
       startListening();
@@ -89,12 +88,7 @@ const Chat: React.FC<ChatProps> = ({
 
   return (
     <div id="chat" className="flex flex-col w-full lg:w-3/5 px-2 flex-grow">
-      <Messages
-        messages={messages}
-        isLoading={isLoading}
-        isWebSpeechEnabled={isWebSpeechEnabled}
-        isSpeechStopped={isSpeechStopped}
-      />
+      <Messages messages={messages} isLoading={isLoading} />
       <form
         onSubmit={handleMessageSubmit}
         className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
@@ -121,23 +115,7 @@ const Chat: React.FC<ChatProps> = ({
             >
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
-            <button
-              type="button"
-              className={`ml-2 ${
-                isWebSpeechEnabled
-                  ? 'text-gray-400 animate-pulse-once'
-                  : 'text-gray-500 cursor-not-allowed'
-              }`}
-              onClick={stopSpeaking}
-              disabled={!isWebSpeechEnabled}
-              title={
-                isWebSpeechEnabled
-                  ? 'Stop Message'
-                  : 'Enable Web Speech to Stop ongoing Messages'
-              }
-            >
-              <FontAwesomeIcon icon={faStop} fade={isStopFading} />
-            </button>
+            <WebSpeechBtn stopSpeaking={stopSpeaking} />
           </div>
         </span>
       </form>
