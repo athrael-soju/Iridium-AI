@@ -21,6 +21,7 @@ import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-po
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import WebSpeechBtn from '../Header/WebSpeechBtn';
 
 const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
@@ -127,23 +128,7 @@ const Chat: React.FC<ChatProps> = ({
             >
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
-            <button
-              type="button"
-              className={`ml-2 ${
-                isWebSpeechEnabled
-                  ? 'text-gray-400 animate-pulse-once'
-                  : 'text-gray-500 cursor-not-allowed'
-              }`}
-              onClick={stopSpeaking}
-              disabled={!isWebSpeechEnabled}
-              title={
-                isWebSpeechEnabled
-                  ? 'Stop Message'
-                  : 'Enable Web Speech to Stop ongoing Messages'
-              }
-            >
-              <FontAwesomeIcon icon={faStop} fade={isStopFading} />
-            </button>
+            <WebSpeechBtn />
           </div>
         </span>
       </form>
