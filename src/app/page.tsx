@@ -30,7 +30,6 @@ const Page: React.FC = () => {
   const [isWebSpeechEnabled, setWebSpeechEnabled] = useState(false);
   const [isGearSpinning, setGearSpinning] = useState(false);
   const [isFading, setIsFading] = useState(false);
-  const [isSpeechStopped, setIsSpeechStopped] = useState(false);
   const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
@@ -66,7 +65,6 @@ const Page: React.FC = () => {
     handleSubmit(e);
     setContext(null);
     setGotMessages(false);
-    setIsSpeechStopped(false);
   };
 
   useEffect(() => {

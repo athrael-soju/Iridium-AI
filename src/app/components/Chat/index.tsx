@@ -7,16 +7,11 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import {
-  useForm,
-  Controller,
-  SubmitHandler,
-  useFormContext,
-} from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import Messages from './Messages';
 import { Message } from 'ai/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -77,6 +72,7 @@ const Chat: React.FC<ChatProps> = ({
         await handleMessageSubmit(
           new Event('submit') as unknown as FormEvent<HTMLFormElement>
         );
+        setValue('isSpeechStopped', false);
       }
     } else {
       startListening();
@@ -93,11 +89,7 @@ const Chat: React.FC<ChatProps> = ({
 
   return (
     <div id="chat" className="flex flex-col w-full lg:w-3/5 px-2 flex-grow">
-      <Messages
-        messages={messages}
-        isLoading={isLoading}
-        isWebSpeechEnabled={isWebSpeechEnabled}
-      />
+      <Messages messages={messages} isLoading={isLoading} />
       <form
         onSubmit={handleMessageSubmit}
         className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
