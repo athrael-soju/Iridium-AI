@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import 'filepond/dist/filepond.min.css';
@@ -33,6 +34,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
     overlap,
     namespace,
   };
+
   return (
     <div>
       <FilePond
@@ -51,57 +53,56 @@ const FileUpload: React.FC<FileUploaderProps> = ({
             progress,
             abort
           ) => {
-            // TODO: Use fetch instead of XMLHttpRequest
             let formData = new FormData();
             formData.set('file', file);
             console.log('File Upload Initiated...');
-            const request = new XMLHttpRequest();
-            request.open('POST', '/api/upload');
 
-            // Use `request.upload.onprogress` to handle progress updates
-            request.upload.onprogress = (e) => {
-              progress(e.lengthComputable, e.loaded, e.total);
-              setIngesting(true);
+            const config: AxiosRequestConfig = {
+              onUploadProgress: function (e: AxiosProgressEvent) {
+                const total = e?.total ?? 0;
+                const percentCompleted = Math.round((e.loaded * 100) / total);
+
+                progress(true, e.loaded, percentCompleted);
+                setIngesting(true);
+              },
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
             };
 
-            // Use `request.onload` to handle the response from the server
-            request.onload = async function () {
-              if (request.status >= 200 && request.status < 300) {
-                load(request.responseText);
+            axios
+              .post('/api/upload', formData, config)
+              .then(async function (response) {
+                load(response.data);
                 console.log('File Upload Successful...');
-                // After successful upload, call another API.
                 let filename = file.name;
                 console.log('File Ingest Initiated...');
-                const response = await fetch('/api/ingest', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    filename,
-                    options: options,
-                  }),
+                const ingestResponse = await axios.post('/api/ingest', {
+                  filename,
+                  options: options,
                 });
 
-                if (response.status >= 200 && response.status < 300) {
+                if (
+                  ingestResponse.status >= 200 &&
+                  ingestResponse.status < 300
+                ) {
                   console.log('File Ingest Successful');
-                  const { documents } = await response.json();
+                  const { documents } = await ingestResponse.data;
                   setCards(documents);
                   setIngesting(false);
                 } else {
                   console.log('File Ingest Failed');
                   throw new Error('File Ingest Failed');
                 }
-              } else {
+              })
+              .catch(function () {
                 error('File Upload Failed');
                 throw new Error('File Upload Failed');
-              }
-            };
+              });
 
-            request.send(formData);
-            // Return an abort method to stop the request
             return {
               abort: () => {
-                request.abort();
-                abort();
+                // axios does not provide an abort method, so we leave this empty
               },
             };
           },

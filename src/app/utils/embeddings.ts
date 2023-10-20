@@ -1,10 +1,5 @@
 import { OpenAIApi, Configuration } from 'openai-edge';
 
-const config = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(config);
-
 export async function getEmbeddings(input: string) {
   if (!process.env.OPENAI_API_KEY) {
     return new Response(
@@ -14,9 +9,18 @@ export async function getEmbeddings(input: string) {
       }
     );
   }
+
+  const config = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  const openai = new OpenAIApi(config);
+
   try {
+    const model =
+      process.env.OPENAI_API_EMBEDDING_MODEL ?? 'text-embedding-ada-002';
+
     const response = await openai.createEmbedding({
-      model: process.env.OPENAI_API_EMBEDDING_MODEL ?? 'text-embedding-ada-002',
+      model,
       input: input.replace(/\n/g, ' '),
     });
 
