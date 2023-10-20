@@ -1,8 +1,8 @@
 import { Analytics } from '@vercel/analytics/react';
-import { gray } from '@ant-design/colors';
 import Provider from './Provider';
-import StyledComponentsRegistry from './lib/AntdRegistry';
-import Header from './components/Header';
+import AntdRegistry from './lib/AntdRegistry';
+import Layout from '../app/components/Layout';
+import StyledComponentsRegistry from './lib/registry';
 
 export const metadata = {
   title: 'Iridium.AI',
@@ -11,23 +11,6 @@ export const metadata = {
 };
 
 import '../global.css';
-
-const headerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
-  height: 64,
-  paddingInline: 50,
-  lineHeight: '64px',
-  backgroundColor: gray[8],
-};
-
-const contentStyle: React.CSSProperties = {
-  textAlign: 'center',
-  minHeight: 120,
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#108ee9',
-};
 
 export default function RootLayout({
   children,
@@ -40,10 +23,9 @@ export default function RootLayout({
         <Provider>
           <Analytics />
           <StyledComponentsRegistry>
-            <div style={headerStyle}>
-              <Header />
-            </div>
-            <div style={contentStyle}>{children}</div>
+            <AntdRegistry>
+              <Layout>{children}</Layout>
+            </AntdRegistry>
           </StyledComponentsRegistry>
         </Provider>
       </body>

@@ -1,31 +1,30 @@
 import React, { FormEvent, useState } from 'react';
+import { Drawer } from 'antd';
+import { useFormContext } from 'react-hook-form';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import { Button } from './Button';
 import FileUpload from '../FileUpload';
+
 interface ContextProps {
-  className: string;
   selected: string[] | null;
   namespace: string;
 }
 
-export const Context: React.FC<ContextProps> = ({
-  className,
-  selected,
-  namespace,
-}) => {
+export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
+  const { setValue, watch } = useFormContext();
   const [entries, setEntries] = useState(getURLs);
   const [cards, setCards] = useState<ICard[]>([]);
-
   const [splittingMethod, setSplittingMethod] = useState('markdown');
   const [newURL, setNewURL] = useState('');
   const [chunkSize, setChunkSize] = useState(256);
   const [overlap, setOverlap] = useState(1);
+  const isModalOpen = watch('isModalOpen');
 
   const handleNewURLSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (newURL.length > 0) {
       const url = validateAndReturnURL();
       addURL({
@@ -91,7 +90,12 @@ export const Context: React.FC<ContextProps> = ({
   ));
 
   return (
-    <div>
+    <Drawer
+      title="Basic Drawer"
+      placement="right"
+      open={isModalOpen}
+      onClose={() => setValue('isModalOpen', false)}
+    >
       <div className="flex flex-col w-full">
         <div className="flex-grow w-full px-4">
           <div className="my-2">
@@ -199,6 +203,6 @@ export const Context: React.FC<ContextProps> = ({
           <Card key={card.metadata.hash} card={card} selected={selected} />
         ))}
       </div>
-    </div>
+    </Drawer>
   );
 };

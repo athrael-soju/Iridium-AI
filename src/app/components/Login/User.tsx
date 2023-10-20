@@ -33,7 +33,7 @@ const User: React.FC<UserProps> = ({ session }) => {
         <div className="flex items-end gap-2">
           <button
             onClick={(e) => {
-              e.preventDefault();
+              e?.preventDefault();
               signIn();
             }}
             title="Sign in"
@@ -61,7 +61,7 @@ const User: React.FC<UserProps> = ({ session }) => {
         <div className="flex items-end gap-2">
           <button
             onClick={(e) => {
-              e.preventDefault();
+              e?.preventDefault();
               signOut();
             }}
             title="Sign Out"

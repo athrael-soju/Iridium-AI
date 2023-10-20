@@ -1,20 +1,25 @@
-import 'regenerator-runtime/runtime';
-
 import React, {
   useState,
-  FormEvent,
-  ChangeEvent,
   useEffect,
   useRef,
+  FormEvent,
+  ChangeEvent,
 } from 'react';
-import Messages from './Messages';
-import { Message } from 'ai/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  useFormContext,
+} from 'react-hook-form';
+import { Form, Input, Button, Tooltip, Space } from 'antd';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faStop } from '@fortawesome/free-solid-svg-icons';
+import Messages from './Messages';
+import { Message } from 'ai/react';
 
 const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
@@ -26,7 +31,6 @@ interface ChatProps {
   handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   messages: Message[];
   isLoading: boolean;
-  isWebSpeechEnabled: boolean;
   isSpeechStopped: boolean;
 }
 
@@ -36,13 +40,25 @@ const Chat: React.FC<ChatProps> = ({
   handleMessageSubmit,
   messages,
   isLoading,
-  isWebSpeechEnabled,
   isSpeechStopped,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const { transcript } = useSpeechRecognition();
-  const [isStopFading, setIsStopFading] = useState(false);
   const handleInputChangeRef = useRef(handleInputChange);
+  const { setValue, watch } = useFormContext();
+  const isWebSpeechEnabled = watch('isWebSpeechEnabled');
+  const { handleSubmit, control } = useForm();
+
+  const startListening = () => SpeechRecognition.startListening();
+  const stopListening = () => SpeechRecognition.stopListening();
+  const toggleListening = async () => {
+    if (isRecording) {
+      stopListening();
+    } else {
+      startListening();
+    }
+    setIsRecording(!isRecording);
+  };
 
   useEffect(() => {
     if (transcript) {
@@ -52,94 +68,64 @@ const Chat: React.FC<ChatProps> = ({
     }
   }, [transcript]);
 
-  const startListening = () => {
-    SpeechRecognition.startListening();
-  };
-  const stopListening = () => {
-    SpeechRecognition.stopListening();
-  };
-
-  const stopSpeaking = () => {
-    setIsStopFading(true);
-    setTimeout(() => setIsStopFading(false), 1000);
-    speechSynthesis.cancel();
-    setIsRecording(false);
-  };
-
-  const toggleListening = async () => {
-    if (isRecording) {
-      stopListening();
-      if (input) {
-        await handleMessageSubmit(
-          new Event('submit') as unknown as FormEvent<HTMLFormElement>
-        );
-      }
-    } else {
-      startListening();
-    }
-    setIsRecording(!isRecording);
-  };
-
-  // Extracted the nested ternary operation into a separate variable
-  const recordButtonTitle = () => {
-    if (isWebSpeechEnabled && !isRecording) return 'Record a Message';
-    if (isWebSpeechEnabled && isRecording) return 'Send Message';
-    return 'Enable Web Speech to Record a Message';
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    await handleMessageSubmit(data);
   };
 
   return (
-    <div>
+    <div
+      style={{
+        position: 'relative',
+      }}
+    >
       <Messages
         messages={messages}
         isLoading={isLoading}
-        isWebSpeechEnabled={isWebSpeechEnabled}
         isSpeechStopped={isSpeechStopped}
+        isWebSpeechEnabled={isWebSpeechEnabled}
       />
       <form
-        onSubmit={handleMessageSubmit}
-        className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
+        onSubmit={handleSubmit(onSubmit)}
+        style={{
+          position: 'fixed',
+          bottom: '0',
+          width: '100%',
+          padding: '20px',
+        }}
       >
-        <input
-          type="text"
-          className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-16 bg-gray-600 border-gray-600 transition-shadow duration-200"
-          value={input}
-          onChange={handleInputChange}
-        />
-        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-          Send Message ⮐
-          <div>
-            <button
-              type="button"
-              className={`ml-2 ${
-                isWebSpeechEnabled
-                  ? 'text-gray-400 animate-pulse-once'
-                  : 'text-gray-500 cursor-not-allowed'
-              }`}
-              onClick={toggleListening}
-              disabled={!isWebSpeechEnabled}
-              title={recordButtonTitle()} // Used the extracted logic here
-            >
-              <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
-            </button>
-            <button
-              type="button"
-              className={`ml-2 ${
-                isWebSpeechEnabled
-                  ? 'text-gray-400 animate-pulse-once'
-                  : 'text-gray-500 cursor-not-allowed'
-              }`}
-              onClick={stopSpeaking}
-              disabled={!isWebSpeechEnabled}
-              title={
-                isWebSpeechEnabled
-                  ? 'Stop Message'
-                  : 'Enable Web Speech to Stop ongoing Messages'
-              }
-            >
-              <FontAwesomeIcon icon={faStop} fade={isStopFading} />
-            </button>
-          </div>
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Form.Item name="message" style={{ flex: 1, marginBottom: 0 }}>
+            <Input value={input} onChange={handleInputChange} />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                Send
+              </Button>
+              <Tooltip title="Record a Message">
+                <Button
+                  type="default"
+                  disabled={!isWebSpeechEnabled}
+                  onClick={toggleListening}
+                >
+                  <FontAwesomeIcon icon={faMicrophone} />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Stop Message">
+                <Button
+                  type="default"
+                  disabled={!isWebSpeechEnabled}
+                  onClick={() => {
+                    speechSynthesis.cancel();
+                    setIsRecording(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faStop} />
+                </Button>
+              </Tooltip>
+            </Space>
+          </Form.Item>
+        </div>
       </form>
     </div>
   );
