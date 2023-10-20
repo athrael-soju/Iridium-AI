@@ -33,7 +33,7 @@ const User: React.FC<UserProps> = ({ session }) => {
         <div className="flex items-end gap-2">
           <button
             onClick={(e) => {
-              e?.preventDefault();
+              e.preventDefault();
               signIn();
             }}
             title="Sign in"
@@ -61,7 +61,7 @@ const User: React.FC<UserProps> = ({ session }) => {
         <div className="flex items-end gap-2">
           <button
             onClick={(e) => {
-              e?.preventDefault();
+              e.preventDefault();
               signOut();
             }}
             title="Sign Out"
@@ -79,7 +79,7 @@ const User: React.FC<UserProps> = ({ session }) => {
               <img
                 src={session.user.image ?? ''}
                 alt="User"
-                className="absolute top-0 left-0 w-full rounded-full object-cover"
+                className="absolute top-0 left-0 w-full h-full rounded-full object-cover"
                 title={session.user.email ?? ''}
                 style={{ width: '4em', height: '4em' }}
               />
