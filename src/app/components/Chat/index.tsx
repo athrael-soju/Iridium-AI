@@ -97,7 +97,6 @@ const Chat: React.FC<ChatProps> = ({
         messages={messages}
         isLoading={isLoading}
         isWebSpeechEnabled={isWebSpeechEnabled}
-        isSpeechStopped={isSpeechStopped}
       />
       <form
         onSubmit={handleMessageSubmit}
