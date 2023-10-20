@@ -2,61 +2,7 @@ import { Message } from 'ai';
 import { useEffect, useRef } from 'react';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
-import styled from 'styled-components';
-
 const nlp = winkNLP(model);
-
-const Container = styled.div`
-  padding: 6px;
-  overflow-y: scroll;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #4a5568;
-  height: calc(100vh - 85px);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: -1;
-`;
-
-const MessageContainer = styled.div`
-  margin: 8px 0;
-  padding: 12px;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease-in-out;
-  display: flex;
-  align-items: center;
-  background-color: #2d3748;
-  border: 1px solid gray;
-
-  &:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  &.assistant {
-    color: #48bb78;
-  }
-
-  &.user {
-    color: #4299e1;
-  }
-`;
-
-const RoleIcon = styled.div`
-  padding: 8px;
-  border-right: 1px solid gray;
-  display: flex;
-  align-items: center;
-  background-color: #2d3748;
-  border-radius: 0.5rem 0 0 0.5rem;
-`;
-
-const Content = styled.div`
-  margin-left: 8px;
-  color: #e2e8f0;
-`;
 
 interface MessagesProps {
   readonly messages: Message[];
@@ -136,16 +82,25 @@ export default function Messages({
   // End Web Speech API Hooks
 
   return (
-    <Container>
+    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
       {messages.map((msg) => {
         return (
-          <MessageContainer key={msg.id} className={msg.role}>
-            <RoleIcon>{msg.role === 'assistant' ? '🤖' : '🧑‍💻'}</RoleIcon>
-            <Content>{msg.content}</Content>
-          </MessageContainer>
+          <div
+            key={msg.id}
+            className={`${
+              msg.role === 'assistant' ? 'text-green-300' : 'text-blue-300'
+            } my-2 p-3 rounded shadow-md hover:shadow-lg transition-shadow duration-200 flex slide-in-bottom bg-gray-800 border border-gray-600 message-glow`}
+          >
+            <div className="rounded-tl-lg bg-gray-800 p-2 border-r border-gray-600 flex items-center">
+              {msg.role === 'assistant' ? '🤖' : '🧑‍💻'}
+            </div>
+            <div className="ml-2 flex items-center text-gray-200">
+              {msg.content}
+            </div>
+          </div>
         );
       })}
       <div ref={messagesEndRef} />
-    </Container>
+    </div>
   );
 }
