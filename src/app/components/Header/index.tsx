@@ -45,7 +45,7 @@ const LogoContainer = styled.div`
 `;
 
 export default function Header() {
-  const [isGearSpinning, setGearSpinning] = useState(false);
+  const [isGearSpinning, setIsGearSpinning] = useState(false);
   const { setValue, watch } = useFormContext();
   const isWebSpeechEnabled = watch('isWebSpeechEnabled');
   const showContext = watch('showContext');
@@ -56,9 +56,9 @@ export default function Header() {
   const setShowContext = (value: boolean) => setValue('showContext', value);
 
   const handleGearClick = () => {
-    setGearSpinning(true);
+    setIsGearSpinning(true);
     setShowContext(!showContext);
-    setTimeout(() => setGearSpinning(false), 1000); // Turn off spin after 1 second
+    setTimeout(() => setIsGearSpinning(false), 1000); // Turn off spin after 1 second
   };
 
   return (
