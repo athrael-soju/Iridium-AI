@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { load } from 'cheerio';
 import { NodeHtmlMarkdown } from 'node-html-markdown';
 

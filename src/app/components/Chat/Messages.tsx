@@ -1,9 +1,14 @@
 import { Message } from 'ai';
+import styled from 'styled-components';
 import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
 const nlp = winkNLP(model);
+
+const Container = styled.div`
+  margin-top: 70px;
+`;
 
 interface MessagesProps {
   readonly messages: Message[];
@@ -81,7 +86,7 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
   // End Web Speech API Hooks
 
   return (
-    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
+    <Container className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
       {messages.map((msg) => {
         return (
           <div
@@ -100,6 +105,6 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
         );
       })}
       <div ref={messagesEndRef} />
-    </div>
+    </Container>
   );
 }

@@ -44,15 +44,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
         maxFiles={3}
         maxParallelUploads={1}
         server={{
-          process: (
-            fieldName,
-            file,
-            metadata,
-            load,
-            error,
-            progress,
-            abort
-          ) => {
+          process: (fieldName, file, metadata, load, error, progress) => {
             let formData = new FormData();
             formData.set('file', file);
             console.log('File Upload Initiated...');

@@ -24,8 +24,8 @@ SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 
 interface ChatProps {
   input: string;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleInputChange: () => void;
+  handleMessageSubmit: () => Promise<void>;
   messages: Message[];
   isLoading: boolean;
 }

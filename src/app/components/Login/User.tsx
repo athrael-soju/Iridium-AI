@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import styled from 'styled-components';
 import { signIn, signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,20 +9,26 @@ import {
   faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
-type Session = {
-  user?: {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-  };
-};
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  text-align: center;
+`;
 
-interface UserProps {
-  session: Session | null | undefined;
-}
+const Image = styled.img`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  max-width: 50px;
+  border-radius: 50%;
+`;
 
-const User: React.FC<UserProps> = ({ session }) => {
+const User = () => {
   const [isClient, setIsClient] = useState(false);
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated: () => {},
+  });
 
   useEffect(() => {
     // Component will mount only on client side
@@ -30,8 +38,8 @@ const User: React.FC<UserProps> = ({ session }) => {
   const renderUser = () => {
     if (!session) {
       return (
-        <div className="flex items-end gap-2">
-          <button
+        <>
+          <Button
             onClick={(e) => {
               e.preventDefault();
               signIn();
@@ -45,7 +53,7 @@ const User: React.FC<UserProps> = ({ session }) => {
                 style={{ color: 'white' }}
               />
             )}
-          </button>
+          </Button>
           {isClient && (
             <FontAwesomeIcon
               icon={faUserCircle}
@@ -54,12 +62,12 @@ const User: React.FC<UserProps> = ({ session }) => {
               title="Signed Out"
             />
           )}
-        </div>
+        </>
       );
     } else if (session?.user) {
       return (
-        <div className="flex items-end gap-2">
-          <button
+        <>
+          <Button
             onClick={(e) => {
               e.preventDefault();
               signOut();
@@ -73,19 +81,13 @@ const User: React.FC<UserProps> = ({ session }) => {
                 style={{ color: 'white' }}
               />
             )}
-          </button>
-          <div className="relative" style={{ width: '4em', height: '4em' }}>
-            <picture>
-              <img
-                src={session.user.image ?? ''}
-                alt="User"
-                className="absolute top-0 left-0 w-full h-full rounded-full object-cover"
-                title={session.user.email ?? ''}
-                style={{ width: '4em', height: '4em' }}
-              />
-            </picture>
-          </div>
-        </div>
+          </Button>
+          <Image
+            src={session.user.image ?? ''}
+            alt="User"
+            title={session.user.email ?? ''}
+          />
+        </>
       );
     }
   };
