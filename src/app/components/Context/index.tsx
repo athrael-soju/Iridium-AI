@@ -1,23 +1,23 @@
 import React, { FormEvent, useState } from 'react';
+import { Drawer } from 'antd';
+import { useFormContext } from 'react-hook-form';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import { Button } from './Button';
 import FileUpload from '../FileUpload';
+
 interface ContextProps {
-  className: string;
   selected: string[] | null;
   namespace: string;
 }
 
-export const Context: React.FC<ContextProps> = ({
-  className,
-  selected,
-  namespace,
-}) => {
+export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
+  const { setValue, watch } = useFormContext();
   const [entries, setEntries] = useState(getURLs);
   const [cards, setCards] = useState<ICard[]>([]);
+  const showContext = watch('showContext');
 
   const [splittingMethod, setSplittingMethod] = useState('markdown');
   const [newURL, setNewURL] = useState('');
@@ -91,117 +91,121 @@ export const Context: React.FC<ContextProps> = ({
   ));
 
   return (
-    <div
-      className={`flex flex-col overflow-y-auto rounded-lg  w-full ${className}`}
+    <Drawer
+      open={showContext}
+      onClose={() => setValue('showContext', false)}
+      style={{ backgroundColor: '#4f6574' }}
     >
-      <div className="flex flex-col items-start sticky top-0 w-full">
-        <div className="flex-grow w-full px-4">
-          <div className="my-2">
-            <FileUpload
-              splittingMethod={splittingMethod}
-              chunkSize={chunkSize}
-              overlap={overlap}
-              setCards={setCards}
-              namespace={namespace}
-            />
-          </div>
-          <form
-            onSubmit={handleNewURLSubmit}
-            className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
-          >
-            <input
-              type="text"
-              className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-gray-600 border-gray-600 transition-shadow duration-200"
-              value={newURL}
-              onChange={(e) => setNewURL(e.target.value)}
-            />
-            <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-              Add URL ⮐
-            </span>
-          </form>
-          <div className="flex justify-between">
-            <Button
-              className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
-              style={{
-                backgroundColor: '#4f6574',
-                color: 'white',
-                width: '48%',
-              }}
-              onClick={handleClearURLsSubmit}
+      <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
+        <div className="flex flex-col items-start sticky top-0 w-full">
+          <div className="flex-grow w-full px-4">
+            <div className="my-2">
+              <FileUpload
+                splittingMethod={splittingMethod}
+                chunkSize={chunkSize}
+                overlap={overlap}
+                setCards={setCards}
+                namespace={namespace}
+              />
+            </div>
+            <form
+              onSubmit={handleNewURLSubmit}
+              className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
             >
-              Clear URL List
-            </Button>
-            <Button
-              className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
-              style={{
-                backgroundColor: '#4f6574',
-                color: 'white',
-                width: '48%',
-              }}
-              onClick={() => clearIndex(setEntries, setCards, namespace)}
-            >
-              Clear Index
-            </Button>
-          </div>
-        </div>
-        <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
-          <div className="flex">
-            <DropdownLabel htmlFor="splittingMethod">
-              Splitting Method:
-            </DropdownLabel>
-            <div className="relative w-full flex-1 rounded-lg border-2 border-gray-500">
-              <select
-                id="splittingMethod"
-                value={splittingMethod}
-                className="p-2 bg-gray-700 rounded text-white w-full appearance-none hover:cursor-pointer"
-                onChange={(e) => setSplittingMethod(e.target.value)}
+              <input
+                type="text"
+                className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-gray-600 border-gray-600 transition-shadow duration-200"
+                value={newURL}
+                onChange={(e) => setNewURL(e.target.value)}
+              />
+              <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                Add URL ⮐
+              </span>
+            </form>
+            <div className="flex justify-between">
+              <Button
+                className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
+                style={{
+                  backgroundColor: '#4f6574',
+                  color: 'white',
+                  width: '48%',
+                }}
+                onClick={handleClearURLsSubmit}
               >
-                <option value="recursive">Recursive Text Splitting</option>
-                <option value="markdown">Markdown Splitting</option>
-              </select>
+                Clear URL List
+              </Button>
+              <Button
+                className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
+                style={{
+                  backgroundColor: '#4f6574',
+                  color: 'white',
+                  width: '48%',
+                }}
+                onClick={() => clearIndex(setEntries, setCards, namespace)}
+              >
+                Clear Index
+              </Button>
             </div>
           </div>
-
-          {splittingMethod === 'recursive' && (
-            <div className="my-4 flex flex-col">
-              <div className="flex flex-col w-full">
-                <DropdownLabel htmlFor="chunkSize">
-                  Chunk Size: {chunkSize}
-                </DropdownLabel>
-                <input
-                  className="p-2 bg-gray-700"
-                  type="range"
-                  id="chunkSize"
-                  min={1}
-                  max={2048}
-                  onChange={(e) => setChunkSize(parseInt(e.target.value))}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <DropdownLabel htmlFor="overlap">
-                  Overlap: {overlap}
-                </DropdownLabel>
-                <input
-                  className="p-2 bg-gray-700"
-                  type="range"
-                  id="overlap"
-                  min={1}
-                  max={200}
-                  onChange={(e) => setOverlap(parseInt(e.target.value))}
-                />
+          <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
+            <div className="flex">
+              <DropdownLabel htmlFor="splittingMethod">
+                Splitting Method:
+              </DropdownLabel>
+              <div className="relative w-full flex-1 rounded-lg border-2 border-gray-500">
+                <select
+                  id="splittingMethod"
+                  value={splittingMethod}
+                  className="p-2 bg-gray-700 rounded text-white w-full appearance-none hover:cursor-pointer"
+                  onChange={(e) => setSplittingMethod(e.target.value)}
+                >
+                  <option value="recursive">Recursive Text Splitting</option>
+                  <option value="markdown">Markdown Splitting</option>
+                </select>
               </div>
             </div>
-          )}
+
+            {splittingMethod === 'recursive' && (
+              <div className="my-4 flex flex-col">
+                <div className="flex flex-col w-full">
+                  <DropdownLabel htmlFor="chunkSize">
+                    Chunk Size: {chunkSize}
+                  </DropdownLabel>
+                  <input
+                    className="p-2 bg-gray-700"
+                    type="range"
+                    id="chunkSize"
+                    min={1}
+                    max={2048}
+                    onChange={(e) => setChunkSize(parseInt(e.target.value))}
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <DropdownLabel htmlFor="overlap">
+                    Overlap: {overlap}
+                  </DropdownLabel>
+                  <input
+                    className="p-2 bg-gray-700"
+                    type="range"
+                    id="overlap"
+                    min={1}
+                    max={200}
+                    onChange={(e) => setOverlap(parseInt(e.target.value))}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
+            {buttons}
+          </div>
         </div>
-        <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
-          {buttons}
+        <div className="flex flex-wrap w-full">
+          {cards?.map((card) => (
+            <Card key={card.metadata.hash} card={card} selected={selected} />
+          ))}
         </div>
       </div>
-      <div className="flex flex-wrap w-full">
-        {cards?.map((card) => (
-          <Card key={card.metadata.hash} card={card} selected={selected} />
-        ))}
-      </div>
-    </div>
+    </Drawer>
   );
 };
