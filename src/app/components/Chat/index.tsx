@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import { Input } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import Messages from './Messages';
 import { Message } from 'ai/react';
@@ -93,9 +94,9 @@ const Chat: React.FC<ChatProps> = ({
         onSubmit={handleMessageSubmit}
         className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
       >
-        <input
+        <Input
+          size="large"
           type="text"
-          className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-16 bg-gray-600 border-gray-600 transition-shadow duration-200"
           value={input}
           onChange={handleInputChange}
         />

@@ -1,11 +1,10 @@
 import React, { FormEvent, useState } from 'react';
-import { Drawer } from 'antd';
+import { Button, Drawer, Input, Grid } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
-import { Button } from './Button';
 import FileUpload from '../FileUpload';
 
 interface ContextProps {
@@ -13,16 +12,19 @@ interface ContextProps {
   namespace: string;
 }
 
+const { useBreakpoint } = Grid;
+
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext();
   const [entries, setEntries] = useState(getURLs);
   const [cards, setCards] = useState<ICard[]>([]);
   const showContext = watch('showContext');
-
   const [splittingMethod, setSplittingMethod] = useState('markdown');
   const [newURL, setNewURL] = useState('');
   const [chunkSize, setChunkSize] = useState(256);
   const [overlap, setOverlap] = useState(1);
+  const screens = useBreakpoint();
+  const isMobile = screens.xs;
 
   const handleNewURLSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,6 +97,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
       open={showContext}
       onClose={() => setValue('showContext', false)}
       style={{ backgroundColor: '#4f6574' }}
+      width={isMobile ? '100%' : '500px'}
     >
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
         <div className="flex flex-col items-start sticky top-0 w-full">
@@ -112,9 +115,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               onSubmit={handleNewURLSubmit}
               className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
             >
-              <input
+              <Input
+                size="large"
                 type="text"
-                className="input-glow appearance-none border rounded w-full py-2 px-3 text-gray-200 leading-tight focus:outline-none focus:shadow-outline pl-3 pr-10 bg-gray-600 border-gray-600 transition-shadow duration-200"
                 value={newURL}
                 onChange={(e) => setNewURL(e.target.value)}
               />
