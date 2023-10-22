@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FilePond, registerPlugin } from 'react-filepond';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -12,7 +13,6 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 interface FileUploaderProps {
-  splittingMethod: string;
   chunkSize: number;
   overlap: number;
   setCards: React.Dispatch<React.SetStateAction<any[]>>;
@@ -20,12 +20,13 @@ interface FileUploaderProps {
 }
 
 const FileUpload: React.FC<FileUploaderProps> = ({
-  splittingMethod,
   chunkSize,
   overlap,
   setCards,
   namespace,
 }) => {
+  const { watch } = useFormContext();
+  const splittingMethod = watch('splittingMethod');
   const [files, setFiles] = useState<any[]>([]);
   const [ingesting, setIngesting] = useState(false);
   const options = {

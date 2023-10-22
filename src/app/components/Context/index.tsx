@@ -6,6 +6,7 @@ import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import FileUpload from '../FileUpload';
+import SplittingMethod from './SplittingMethod';
 
 interface ContextProps {
   selected: string[] | null;
@@ -19,7 +20,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const [entries, setEntries] = useState(getURLs);
   const [cards, setCards] = useState<ICard[]>([]);
   const showContext = watch('showContext');
-  const [splittingMethod, setSplittingMethod] = useState('markdown');
+  const splittingMethod = watch('splittingMethod');
   const [newURL, setNewURL] = useState('');
   const [chunkSize, setChunkSize] = useState(256);
   const [overlap, setOverlap] = useState(1);
@@ -104,7 +105,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
           <div className="flex-grow w-full px-4">
             <div className="my-2">
               <FileUpload
-                splittingMethod={splittingMethod}
                 chunkSize={chunkSize}
                 overlap={overlap}
                 setCards={setCards}
@@ -149,25 +149,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 Clear Index
               </Button>
             </div>
+            <SplittingMethod />
           </div>
           <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
-            <div className="flex">
-              <DropdownLabel htmlFor="splittingMethod">
-                Splitting Method:
-              </DropdownLabel>
-              <div className="relative w-full flex-1 rounded-lg border-2 border-gray-500">
-                <select
-                  id="splittingMethod"
-                  value={splittingMethod}
-                  className="p-2 bg-gray-700 rounded text-white w-full appearance-none hover:cursor-pointer"
-                  onChange={(e) => setSplittingMethod(e.target.value)}
-                >
-                  <option value="recursive">Recursive Text Splitting</option>
-                  <option value="markdown">Markdown Splitting</option>
-                </select>
-              </div>
-            </div>
-
             {splittingMethod === 'recursive' && (
               <div className="my-4 flex flex-col">
                 <div className="flex flex-col w-full">
