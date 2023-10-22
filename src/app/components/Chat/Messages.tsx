@@ -1,19 +1,61 @@
 import { Message } from 'ai';
+import { Typography } from 'antd';
 import styled from 'styled-components';
 import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
+
 const nlp = winkNLP(model);
+
+const TEXT_COLOR = 'rgb(209, 213, 219)';
+
+const ASSISTANT_BG_COLOR = 'rgb(68, 70, 84)';
+const USER_BG_COLOR = 'rgb(52, 53, 65)';
 
 const Container = styled.div`
   margin-top: 70px;
+  border: 2px solid #4a5568;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-y: scroll;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #2d3748;
 `;
 
-interface MessagesProps {
-  readonly messages: Message[];
-  readonly isLoading: boolean;
-}
+const MessageDiv = styled.div<{ role: Message['role'] }>`
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: box-shadow 200ms ease-in;
+  display: flex;
+  align-items: center;
+  background-color: #2e3a46;
+  border: 1px solid #4a5568;
+
+  &:hover {
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-typography-copy {
+    color: rgb(172, 172, 190) !important;
+  }
+
+  ${(props) =>
+    props.role === 'assistant' &&
+    `
+      background-color: ${ASSISTANT_BG_COLOR};
+  `}
+  ${(props) =>
+    props.role === 'user' &&
+    `
+      background-color: ${USER_BG_COLOR};
+  `}
+`;
 
 let speechSynthesis: SpeechSynthesis;
 
@@ -25,6 +67,11 @@ const speak = (text: string) => {
   const utterance = new SpeechSynthesisUtterance(text);
   speechSynthesis.speak(utterance);
 };
+
+interface MessagesProps {
+  readonly messages: Message[];
+  readonly isLoading: boolean;
+}
 
 export default function Messages({ messages, isLoading }: MessagesProps) {
   const { watch } = useFormContext();
@@ -86,22 +133,23 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
   // End Web Speech API Hooks
 
   return (
-    <Container className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
+    <Container>
       {messages.map((msg) => {
         return (
-          <div
-            key={msg.id}
-            className={`${
-              msg.role === 'assistant' ? 'text-green-300' : 'text-blue-300'
-            } my-2 p-3 rounded shadow-md hover:shadow-lg transition-shadow duration-200 flex slide-in-bottom bg-gray-800 border border-gray-600 message-glow`}
-          >
-            <div className="rounded-tl-lg bg-gray-800 p-2 border-r border-gray-600 flex items-center">
-              {msg.role === 'assistant' ? '🤖' : '🧑‍💻'}
-            </div>
-            <div className="ml-2 flex items-center text-gray-200">
+          <MessageDiv key={msg.id} role={msg?.role}>
+            <div>{msg?.role === 'assistant' ? '🤖' : '🧑‍💻'}</div>
+            <Typography.Paragraph
+              copyable={msg?.role === 'assistant'}
+              style={{
+                color: TEXT_COLOR,
+                marginLeft: '0.5rem',
+                marginBottom: 0,
+                textAlign: 'left',
+              }}
+            >
               {msg.content}
-            </div>
-          </div>
+            </Typography.Paragraph>
+          </MessageDiv>
         );
       })}
       <div ref={messagesEndRef} />

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import styled from 'styled-components';
-import { signIn, signOut } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faRightToBracket,
