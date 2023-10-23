@@ -7,9 +7,10 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import styled from 'styled-components';
 import { Input } from 'antd';
 import { useFormContext } from 'react-hook-form';
-import styled from 'styled-components';
+import Messages from './Messages';
 import { Message } from 'ai/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
@@ -18,16 +19,12 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 import { DARK_BG_COLOR_HEX } from '@/constants';
+
 import WebSpeechBtn from '../Header/WebSpeechBtn';
-import Messages from './Messages';
 
 const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
-
-const Container = styled.form`
-  background-color: ${DARK_BG_COLOR_HEX};
-`;
 
 const Form = styled.form`
   display: flex;
@@ -114,7 +111,11 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   return (
-    <Container>
+    <div
+      style={{
+        backgroundColor: DARK_BG_COLOR_HEX,
+      }}
+    >
       <Messages messages={messages} isLoading={isLoading} />
       <Form onSubmit={handleMessageSubmit}>
         <Input
@@ -125,7 +126,7 @@ const Chat: React.FC<ChatProps> = ({
         />
         <StyledSpan>
           Send Message ⮐
-          <>
+          <div>
             <button
               type="button"
               className={`ml-2 ${
@@ -140,10 +141,10 @@ const Chat: React.FC<ChatProps> = ({
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
             <WebSpeechBtn stopSpeaking={stopSpeaking} />
-          </>
+          </div>
         </StyledSpan>
       </Form>
-    </Container>
+    </div>
   );
 };
 
