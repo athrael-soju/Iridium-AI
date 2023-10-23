@@ -25,12 +25,6 @@ const BtnsContainer = styled.div`
   margin: 1rem;
 `;
 
-const CardsContainer = styled.div`
-  height: calc(100vh - 550px);
-  overflow-y: scroll;
-  overflow-x: hidden;
-`;
-
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
@@ -148,9 +142,20 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 Add URL ⮐
               </span>
             </form>
-            <div className="flex justify-between">
+            <div
+              style={{
+                display: 'flex',
+                gap: '1rem',
+              }}
+            >
               <Button block onClick={handleClearURLsSubmit}>
                 Clear URL List
+              </Button>
+              <Button
+                block
+                onClick={() => clearIndex(setEntries, setCards, namespace)}
+              >
+                Clear Index
               </Button>
             </div>
             <Divider />
@@ -190,26 +195,11 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
           </div>
         </div>
         {buttons}
-        <CardsContainer>
+        <div>
           {cards?.map((card) => (
             <Card key={card.metadata.hash} card={card} selected={selected} />
           ))}
-        </CardsContainer>
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '1rem',
-          left: '2rem',
-          right: '2rem',
-        }}
-      >
-        <Button
-          block
-          onClick={() => clearIndex(setEntries, setCards, namespace)}
-        >
-          Clear Index
-        </Button>
+        </div>
       </div>
     </Drawer>
   );
