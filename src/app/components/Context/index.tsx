@@ -1,4 +1,5 @@
 import React, { FormEvent, useState } from 'react';
+import styled from 'styled-components';
 import { Button, Drawer, Input, Grid } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import { getURLs, addURL, clearURLs } from './urls';
@@ -7,6 +8,7 @@ import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import FileUpload from '../FileUpload';
 import SplittingMethod from './SplittingMethod';
+import type { ContextFormValues, SplittingMethodOption } from './types';
 
 interface ContextProps {
   selected: string[] | null;
@@ -15,12 +17,18 @@ interface ContextProps {
 
 const { useBreakpoint } = Grid;
 
+const BtnsContainer = styled.div`
+  margin: 1rem;
+`;
+
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
   const [cards, setCards] = useState<ICard[]>([]);
   const showContext = watch('showContext');
-  const splittingMethod = watch('splittingMethod');
+  const splittingMethod: SplittingMethodOption =
+    watch('splittingMethod') ?? 'markdown';
+
   const [newURL, setNewURL] = useState('');
   const [chunkSize, setChunkSize] = useState(256);
   const [overlap, setOverlap] = useState(1);
@@ -74,24 +82,28 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     </label>
   );
 
-  const buttons = entries.map((entry: IUrlEntry, key: number) => (
-    <div className="" key={`${key}-${entry.loading}`}>
-      <UrlButton
-        entry={entry}
-        onClick={() =>
-          crawlDocument(
-            entry.url,
-            setEntries,
-            setCards,
-            splittingMethod,
-            chunkSize,
-            overlap,
-            namespace
-          )
-        }
-      />
-    </div>
-  ));
+  const buttons = (
+    <BtnsContainer>
+      {entries.map((entry: IUrlEntry, key: number) => (
+        <div key={`${key}-${entry.loading}`}>
+          <UrlButton
+            entry={entry}
+            onClick={() =>
+              crawlDocument(
+                entry.url,
+                setEntries,
+                setCards,
+                splittingMethod,
+                chunkSize,
+                overlap,
+                namespace
+              )
+            }
+          />
+        </div>
+      ))}
+    </BtnsContainer>
+  );
 
   return (
     <Drawer
@@ -183,10 +195,8 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               </div>
             )}
           </div>
-          <div className="flex flex-col lg:flex-row w-full lg:flex-wrap p-2">
-            {buttons}
-          </div>
         </div>
+        {buttons}
         <div className="flex flex-wrap w-full">
           {cards?.map((card) => (
             <Card key={card.metadata.hash} card={card} selected={selected} />

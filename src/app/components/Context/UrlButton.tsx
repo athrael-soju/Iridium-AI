@@ -17,24 +17,41 @@ interface IURLButtonProps {
 }
 
 const Container = styled.div`
+  display: flex;
+  gap: 1rem;
+
   .ant-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
   }
+
+  .ant-btn-icon {
+    margin: 0 !important;
+  }
+
+  .ant-btn-block {
+    width: 100% !important;
+  }
+
+  .ant-btn-loading {
+    margin-right: 10px !important;
+  }
 `;
 
 const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
   <Container>
     <Button
-      icon={<HiArrowTopRightOnSquare />}
+      block
       loading={entry.loading}
       onClick={onClick}
+      style={{ width: '100% !important' }}
     >
-      <Link href={entry.url} target="_blank">
-        {entry.title}
-      </Link>
+      Crawl
+    </Button>
+    <Button icon={<HiArrowTopRightOnSquare />} onClick={onClick}>
+      <Link href={entry.url} target="_blank" />
     </Button>
   </Container>
 );

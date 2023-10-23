@@ -1,6 +1,7 @@
 import { Form, Select } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
+import type { SplittingMethodOption } from './types';
 
 const Container = styled.div`
   margin: 1rem auto;
@@ -9,6 +10,14 @@ const Container = styled.div`
     color: #fff !important;
   }
 `;
+
+const options: {
+  value: SplittingMethodOption;
+  label: string;
+}[] = [
+  { value: 'markdown', label: 'Markdown Splitting' },
+  { value: 'recursive', label: 'Recursive Text Splitting' },
+];
 
 const SplittingMethod = () => {
   const { setValue } = useFormContext();
@@ -22,10 +31,7 @@ const SplittingMethod = () => {
             console.log(v);
             setValue('splittingMethod', v);
           }}
-          options={[
-            { value: 'markdown', label: 'Markdown Splitting' },
-            { value: 'recursive', label: 'Recursive Text Splitting' },
-          ]}
+          options={options}
         />
       </Form.Item>
     </Container>
