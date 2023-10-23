@@ -10,11 +10,11 @@ import { useChat } from 'ai/react';
 import { useSession } from 'next-auth/react';
 import InstructionModal from './components/InstructionModal';
 import { v4 as uuidv4 } from 'uuid';
-import { SECONDARY_COLOR_RGB } from '@/constants';
+import { DARK_BG_COLOR_HEX } from '@/constants';
 
 const Container = styled.div`
   display: flex;
-  background-color: ${SECONDARY_COLOR_RGB};
+  background-color: ${DARK_BG_COLOR_HEX};
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;

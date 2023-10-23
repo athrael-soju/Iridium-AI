@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
+import { DARK_BG_COLOR_HEX } from '@/constants';
 
 const nlp = winkNLP(model);
 
@@ -19,7 +20,7 @@ const Container = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  background-color: #2d3748;
+  background-color: ${DARK_BG_COLOR_HEX};
   height: calc(100vh - 128px);
 `;
 

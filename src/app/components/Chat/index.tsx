@@ -28,6 +28,8 @@ const Form = styled.form`
   display: flex;
   padding: 10px;
   position: relative;
+  max-width: 700px;
+  margin: 0 auto;
 `;
 
 const StyledSpan = styled.span`
