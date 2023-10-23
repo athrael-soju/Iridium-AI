@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, FormEvent } from 'react';
 import { notification } from 'antd';
+import styled from 'styled-components';
 import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
@@ -9,6 +10,18 @@ import { useChat } from 'ai/react';
 import { useSession } from 'next-auth/react';
 import InstructionModal from './components/InstructionModal';
 import { v4 as uuidv4 } from 'uuid';
+import { SECONDARY_COLOR_RGB } from '@/constants';
+
+const Container = styled.div`
+  display: flex;
+  background-color: ${SECONDARY_COLOR_RGB};
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  margin: 0 auto;
+  max-width: 100%;
+`;
+
 const Page: React.FC = () => {
   const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
@@ -85,27 +98,22 @@ const Page: React.FC = () => {
   }, [messages, gotMessages, topK]);
 
   return (
-    <div className="flex flex-col justify-between h-screen bg-gray-800 p-2 mx-auto max-w-full ">
+    <Container>
       {contextHolder}
       <Header />
-      <div className="fixed items-end right-4 top-8 md:right-4 md:top-8 flex space-x-2">
-        <div />
-      </div>
       <InstructionModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
-      <div className="flex w-full flex-grow overflow-hidden relative">
-        <Chat
-          input={input}
-          handleInputChange={handleInputChange}
-          handleMessageSubmit={handleMessageSubmit}
-          messages={messages}
-          isLoading={isLoading}
-        />
-        <Context selected={context} namespace={namespace.current} />
-      </div>
-    </div>
+      <Chat
+        input={input}
+        handleInputChange={handleInputChange}
+        handleMessageSubmit={handleMessageSubmit}
+        messages={messages}
+        isLoading={isLoading}
+      />
+      <Context selected={context} namespace={namespace.current} />
+    </Container>
   );
 };
 

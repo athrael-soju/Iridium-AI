@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { Input } from 'antd';
 import { useFormContext } from 'react-hook-form';
-import Messages from './Messages';
+import styled from 'styled-components';
 import { Message } from 'ai/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
@@ -18,10 +18,28 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 import WebSpeechBtn from '../Header/WebSpeechBtn';
+import Messages from './Messages';
 
 const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
+
+const Form = styled.form`
+  display: flex;
+  padding: 10px;
+  position: relative;
+`;
+
+const StyledSpan = styled.span`
+  position: absolute;
+  inset-y: 0;
+  right: 20px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  padding-right: 3px;
+  color: gray;
+`;
 
 interface ChatProps {
   input: string;
@@ -88,19 +106,16 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   return (
-    <div id="chat" className="flex flex-col w-full lg:w-3/5 px-2 flex-grow">
+    <div>
       <Messages messages={messages} isLoading={isLoading} />
-      <form
-        onSubmit={handleMessageSubmit}
-        className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
-      >
+      <Form onSubmit={handleMessageSubmit}>
         <Input
           size="large"
           type="text"
           value={input}
           onChange={handleInputChange}
         />
-        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+        <StyledSpan>
           Send Message ⮐
           <div>
             <button
@@ -118,8 +133,8 @@ const Chat: React.FC<ChatProps> = ({
             </button>
             <WebSpeechBtn stopSpeaking={stopSpeaking} />
           </div>
-        </span>
-      </form>
+        </StyledSpan>
+      </Form>
     </div>
   );
 };
