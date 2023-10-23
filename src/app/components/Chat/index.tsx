@@ -44,7 +44,7 @@ const StyledSpan = styled.span`
   position: absolute;
   inset-y: 0;
   right: 20px;
-  bottom: 18px;
+  bottom: 20px;
   display: flex;
   align-items: center;
   padding-right: 3px;
