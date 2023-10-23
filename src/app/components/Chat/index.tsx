@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import styled from 'styled-components';
 import { Input } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import Messages from './Messages';
@@ -17,11 +18,33 @@ import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-po
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import { DARK_BG_COLOR_HEX } from '@/constants';
+
 import WebSpeechBtn from '../Header/WebSpeechBtn';
 
 const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
+
+const Form = styled.form`
+  display: flex;
+  height: 64px;
+  padding: 10px;
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+`;
+
+const StyledSpan = styled.span`
+  position: absolute;
+  inset-y: 0;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  padding-right: 3px;
+  color: gray;
+`;
 
 interface ChatProps {
   input: string;
@@ -88,19 +111,20 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   return (
-    <div id="chat" className="flex flex-col w-full lg:w-3/5 px-2 flex-grow">
+    <div
+      style={{
+        backgroundColor: DARK_BG_COLOR_HEX,
+      }}
+    >
       <Messages messages={messages} isLoading={isLoading} />
-      <form
-        onSubmit={handleMessageSubmit}
-        className="mt-5 mb-2 relative bg-gray-700 rounded-lg"
-      >
+      <Form onSubmit={handleMessageSubmit}>
         <Input
           size="large"
           type="text"
           value={input}
           onChange={handleInputChange}
         />
-        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+        <StyledSpan>
           Send Message ⮐
           <div>
             <button
@@ -118,8 +142,8 @@ const Chat: React.FC<ChatProps> = ({
             </button>
             <WebSpeechBtn stopSpeaking={stopSpeaking} />
           </div>
-        </span>
-      </form>
+        </StyledSpan>
+      </Form>
     </div>
   );
 };

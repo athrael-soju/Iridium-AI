@@ -19,12 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Provider>
-          <Analytics />
-          <StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <Provider>
+            <Analytics />
             <Layout>{children}</Layout>
-          </StyledComponentsRegistry>
-        </Provider>
+          </Provider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

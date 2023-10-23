@@ -14,28 +14,19 @@ const ASSISTANT_BG_COLOR = 'rgb(68, 70, 84)';
 const USER_BG_COLOR = 'rgb(52, 53, 65)';
 
 const Container = styled.div`
-  margin-top: 70px;
-  border: 2px solid #4a5568;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  overflow-y: scroll;
+  margin-top: 64px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  background-color: #2d3748;
+  height: calc(100vh - 128px);
 `;
 
 const MessageDiv = styled.div<{ role: Message['role'] }>`
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
   padding: 0.75rem;
-  border-radius: 0.375rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: box-shadow 200ms ease-in;
   display: flex;
   align-items: center;
   background-color: #2e3a46;
-  border: 1px solid #4a5568;
 
   &:hover {
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
@@ -137,18 +128,27 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
       {messages.map((msg) => {
         return (
           <MessageDiv key={msg.id} role={msg?.role}>
-            <div>{msg?.role === 'assistant' ? '🤖' : '🧑‍💻'}</div>
-            <Typography.Paragraph
-              copyable={msg?.role === 'assistant'}
+            <div
               style={{
-                color: TEXT_COLOR,
-                marginLeft: '0.5rem',
-                marginBottom: 0,
+                width: '700px',
+                margin: '0 auto',
+                display: 'flex',
                 textAlign: 'left',
               }}
             >
-              {msg.content}
-            </Typography.Paragraph>
+              <div>{msg?.role === 'assistant' ? '🤖' : '🧑‍💻'}</div>
+              <Typography.Paragraph
+                copyable={msg?.role === 'assistant'}
+                style={{
+                  color: TEXT_COLOR,
+                  marginLeft: '0.5rem',
+                  marginBottom: 0,
+                  textAlign: 'left',
+                }}
+              >
+                {msg.content}
+              </Typography.Paragraph>
+            </div>
           </MessageDiv>
         );
       })}

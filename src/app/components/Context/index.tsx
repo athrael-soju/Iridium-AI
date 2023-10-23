@@ -1,7 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Drawer, Input, Grid } from 'antd';
+import { Button, Drawer, Input, Grid, Divider } from 'antd';
 import { useFormContext } from 'react-hook-form';
+import { BG_COLOR_HEX } from '@/constants';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card, ICard } from './Card';
@@ -112,7 +113,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     <Drawer
       open={showContext}
       onClose={() => setValue('showContext', false)}
-      style={{ backgroundColor: '#4f6574' }}
+      style={{ backgroundColor: BG_COLOR_HEX, position: 'relative' }}
       width={isMobile ? '100%' : '500px'}
     >
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
@@ -126,6 +127,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 namespace={namespace}
               />
             </div>
+            <Divider />
             <form
               onSubmit={handleNewURLSubmit}
               className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
@@ -140,30 +142,23 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 Add URL ⮐
               </span>
             </form>
-            <div className="flex justify-between">
-              <Button
-                className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
-                style={{
-                  backgroundColor: '#4f6574',
-                  color: 'white',
-                  width: '48%',
-                }}
-                onClick={handleClearURLsSubmit}
-              >
+            <div
+              style={{
+                display: 'flex',
+                gap: '1rem',
+              }}
+            >
+              <Button block onClick={handleClearURLsSubmit}>
                 Clear URL List
               </Button>
               <Button
-                className="my-2 uppercase active:scale-[98%] transition-transform duration-100"
-                style={{
-                  backgroundColor: '#4f6574',
-                  color: 'white',
-                  width: '48%',
-                }}
+                block
                 onClick={() => clearIndex(setEntries, setCards, namespace)}
               >
                 Clear Index
               </Button>
             </div>
+            <Divider />
             <SplittingMethod />
           </div>
           <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
@@ -200,7 +195,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
           </div>
         </div>
         {buttons}
-        <div className="flex flex-wrap w-full">
+        <div>
           {cards?.map((card) => (
             <Card key={card.metadata.hash} card={card} selected={selected} />
           ))}

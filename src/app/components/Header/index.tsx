@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { gray } from '@ant-design/colors';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,7 +9,9 @@ import {
   faGear,
 } from '@fortawesome/free-solid-svg-icons';
 import User from '@/components/Login/User';
+import { BG_COLOR_HEX } from '@/constants';
 import iridiumAILogo from '../../../../public/iridium-ai.svg';
+import DeployBtn from './DeployBtn';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -21,7 +22,7 @@ const StyledHeader = styled.header`
   height: 64px;
   padding-inline: 20px;
   line-height: 64px;
-  background-color: ${() => gray[6] || '#333'};
+  background-color: ${BG_COLOR_HEX};
   position: fixed;
   top: 0;
   left: 0;
@@ -36,11 +37,20 @@ const Button = styled.button`
 `;
 
 const LogoContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
   img {
     height: 100%;
     width: auto;
     max-width: 200px;
     cursor: pointer;
+  }
+
+  svg {
+    font-size: 1rem;
+    transform: translateY(6px);
   }
 `;
 
@@ -75,12 +85,13 @@ export default function Header() {
             );
           }}
         />
+        <DeployBtn />
       </LogoContainer>
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '20px',
+          gap: '5px',
         }}
       >
         <Button

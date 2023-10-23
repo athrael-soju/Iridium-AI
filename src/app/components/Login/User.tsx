@@ -57,7 +57,7 @@ const User = () => {
             <FontAwesomeIcon
               icon={faUserCircle}
               size="4x"
-              style={{ color: 'lightgray' }}
+              style={{ color: 'lightgray', maxWidth: '45px' }}
               title="Signed Out"
             />
           )}
