@@ -1,6 +1,8 @@
-import { Button } from './Button';
 import React, { FC } from 'react';
-import { AiOutlineLink } from 'react-icons/ai';
+import Link from 'next/link';
+import styled from 'styled-components';
+import { Button } from 'antd';
+import { HiArrowTopRightOnSquare } from 'react-icons/hi2';
 
 export interface IUrlEntry {
   url: string;
@@ -14,44 +16,65 @@ interface IURLButtonProps {
   onClick: () => Promise<void>;
 }
 
+const Container = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  .ant-btn {
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+
+  .ant-btn-icon {
+    margin: 0 !important;
+  }
+
+  .ant-btn-block {
+    width: 100% !important;
+  }
+
+  .ant-btn-loading {
+    margin-right: 10px !important;
+  }
+`;
+
+const LinkContainer = styled.div`
+  a {
+    display: flex;
+    align-items: center;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    padding: 0 0.35rem;
+    height: 100%;
+  }
+
+  svg {
+    color: #fff;
+    font-size: 1rem;
+  }
+`;
+
+const truncateTitle = (title: string) => {
+  return title.length > 30 ? `${title.slice(0, 30)}...` : title;
+};
+
 const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
-  <div key={`${entry.url}-${entry.seeded}`} className="pr-2 lg:flex-grow">
+  <Container>
     <Button
-      className={`relative overflow-hidden w-full my-1 lg:my-2 mx-2 ${
-        entry.loading ? 'shimmer' : ''
-      }`}
-      style={{
-        backgroundColor: entry.seeded ? 'green' : 'bg-gray-800',
-        color: entry.seeded ? 'white' : 'text-gray-200',
-      }}
+      block
+      loading={entry.loading}
       onClick={onClick}
+      style={{ width: '100% !important' }}
     >
-      <a
-        href={entry.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-blue-500 hover:bg-blue-600 active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:bg-brand-200 flex items-center justify-center rounded-full p-2 text-3xl text-white transition duration-200 hover:cursor-pointer dark:text-white"
-      >
-        <AiOutlineLink
-          color="white"
-          fontSize={14}
-          className="hover:text-green"
-        />
-      </a>
-      {entry.loading && (
-        <div
-          className="absolute inset-0"
-          style={{
-            zIndex: -1,
-            background:
-              'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
-            animation: 'shimmer 2s infinite',
-          }}
-        ></div>
-      )}
-      <div className="relative">{entry.title}</div>
+      Crawl {truncateTitle(entry.title)}
     </Button>
-  </div>
+    <LinkContainer>
+      <Link href={entry.url} target="_blank">
+        <HiArrowTopRightOnSquare />
+      </Link>
+    </LinkContainer>
+  </Container>
 );
 
 export default UrlButton;
