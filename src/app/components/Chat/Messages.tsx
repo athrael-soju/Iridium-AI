@@ -15,7 +15,6 @@ const USER_BG_COLOR = 'rgb(52, 53, 65)';
 
 const Container = styled.div`
   margin-top: 64px;
-  overflow-y: scroll;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
