@@ -23,7 +23,6 @@ const Container = styled.div`
   .ant-btn {
     display: flex;
     align-items: center;
-    justify-content: center;
     color: #fff;
   }
 
