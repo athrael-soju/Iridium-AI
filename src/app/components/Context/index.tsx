@@ -113,7 +113,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     <Drawer
       open={showContext}
       onClose={() => setValue('showContext', false)}
-      style={{ backgroundColor: BG_COLOR_HEX }}
+      style={{ backgroundColor: BG_COLOR_HEX, position: 'relative' }}
       width={isMobile ? '100%' : '500px'}
     >
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
@@ -149,13 +149,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
             </div>
             <Divider />
             <SplittingMethod />
-            <Divider />
-            <Button
-              block
-              onClick={() => clearIndex(setEntries, setCards, namespace)}
-            >
-              Clear Index
-            </Button>
           </div>
           <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
             {splittingMethod === 'recursive' && (
@@ -196,6 +189,21 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
             <Card key={card.metadata.hash} card={card} selected={selected} />
           ))}
         </div>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '2rem',
+          right: '2rem',
+        }}
+      >
+        <Button
+          block
+          onClick={() => clearIndex(setEntries, setCards, namespace)}
+        >
+          Clear Index
+        </Button>
       </div>
     </Drawer>
   );
