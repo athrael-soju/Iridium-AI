@@ -84,8 +84,8 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
 
   const buttons = (
     <BtnsContainer>
-      {entries.map((entry: IUrlEntry, key: number) => (
-        <div key={`${key}-${entry.loading}`}>
+      {entries.map((entry: IUrlEntry) => (
+        <div key={entry.url}>
           <UrlButton
             entry={entry}
             onClick={() =>
