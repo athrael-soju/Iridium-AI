@@ -193,7 +193,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
       <div
         style={{
           position: 'absolute',
-          bottom: '2rem',
+          bottom: '1rem',
           left: '2rem',
           right: '2rem',
         }}

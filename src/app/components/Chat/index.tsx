@@ -17,6 +17,7 @@ import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-po
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import { DARK_BG_COLOR_HEX } from '@/constants';
 import WebSpeechBtn from '../Header/WebSpeechBtn';
 import Messages from './Messages';
 
@@ -24,8 +25,13 @@ const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 
+const Container = styled.form`
+  background-color: ${DARK_BG_COLOR_HEX};
+`;
+
 const Form = styled.form`
   display: flex;
+  height: 64px;
   padding: 10px;
   position: relative;
   max-width: 700px;
@@ -108,7 +114,7 @@ const Chat: React.FC<ChatProps> = ({
   };
 
   return (
-    <div>
+    <Container>
       <Messages messages={messages} isLoading={isLoading} />
       <Form onSubmit={handleMessageSubmit}>
         <Input
@@ -137,7 +143,7 @@ const Chat: React.FC<ChatProps> = ({
           </div>
         </StyledSpan>
       </Form>
-    </div>
+    </Container>
   );
 };
 

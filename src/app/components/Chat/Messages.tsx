@@ -20,7 +20,6 @@ const Container = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  background-color: ${DARK_BG_COLOR_HEX};
   height: calc(100vh - 128px);
 `;
 
