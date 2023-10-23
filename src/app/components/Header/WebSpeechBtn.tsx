@@ -1,5 +1,3 @@
-'use client';
-
 import { useFormContext } from 'react-hook-form';
 import { faStop } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
