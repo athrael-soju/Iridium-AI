@@ -127,7 +127,7 @@ const Chat: React.FC<ChatProps> = ({
         />
         <StyledSpan>
           Send Message ⮐
-          <div>
+          <>
             <button
               type="button"
               className={`ml-2 ${
@@ -142,7 +142,7 @@ const Chat: React.FC<ChatProps> = ({
               <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
             </button>
             <WebSpeechBtn stopSpeaking={stopSpeaking} />
-          </div>
+          </>
         </StyledSpan>
       </Form>
     </Container>
