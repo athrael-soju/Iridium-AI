@@ -92,7 +92,7 @@ export default function Header() {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '20px',
+          gap: '5px',
         }}
       >
         <Suspense fallback={<p>Loading feed...</p>}>

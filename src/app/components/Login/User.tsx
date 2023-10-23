@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import styled from 'styled-components';
@@ -57,7 +59,7 @@ const User = () => {
             <FontAwesomeIcon
               icon={faUserCircle}
               size="4x"
-              style={{ color: 'lightgray' }}
+              style={{ color: 'lightgray', maxWidth: '45px' }}
               title="Signed Out"
             />
           )}

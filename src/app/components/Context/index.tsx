@@ -25,6 +25,12 @@ const BtnsContainer = styled.div`
   margin: 1rem;
 `;
 
+const CardsContainer = styled.div`
+  height: calc(100vh - 550px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+`;
+
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
@@ -184,11 +190,11 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
           </div>
         </div>
         {buttons}
-        <div className="flex flex-wrap w-full">
+        <CardsContainer>
           {cards?.map((card) => (
             <Card key={card.metadata.hash} card={card} selected={selected} />
           ))}
-        </div>
+        </CardsContainer>
       </div>
       <div
         style={{

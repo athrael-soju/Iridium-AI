@@ -5,7 +5,6 @@ import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
-import { DARK_BG_COLOR_HEX } from '@/constants';
 
 const nlp = winkNLP(model);
 
