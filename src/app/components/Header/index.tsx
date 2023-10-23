@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -95,44 +95,42 @@ export default function Header() {
           gap: '5px',
         }}
       >
-        <Suspense fallback={<p>Loading feed...</p>}>
-          <Button
-            onClick={() => {
-              setWebSpeechEnabled(!isWebSpeechEnabled);
-            }}
-            title={
-              isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+        <Button
+          onClick={() => {
+            setWebSpeechEnabled(!isWebSpeechEnabled);
+          }}
+          title={
+            isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+          }
+        >
+          <FontAwesomeIcon
+            icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
+            size="2x"
+            style={{ color: 'white' }}
+          />
+        </Button>
+        <Button
+          onClick={() => {
+            const contextWrapper = document.getElementById('contextWrapper');
+            if (contextWrapper instanceof HTMLElement) {
+              const isHidden =
+                contextWrapper.style.transform === 'translateX(110%)';
+              contextWrapper.style.transform = isHidden
+                ? 'translateX(0%)'
+                : 'translateX(110%)';
             }
-          >
-            <FontAwesomeIcon
-              icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
-              size="2x"
-              style={{ color: 'white' }}
-            />
-          </Button>
-          <Button
-            onClick={() => {
-              const contextWrapper = document.getElementById('contextWrapper');
-              if (contextWrapper instanceof HTMLElement) {
-                const isHidden =
-                  contextWrapper.style.transform === 'translateX(110%)';
-                contextWrapper.style.transform = isHidden
-                  ? 'translateX(0%)'
-                  : 'translateX(110%)';
-              }
-              handleGearClick();
-            }}
-            title="Settings"
-          >
-            <FontAwesomeIcon
-              icon={faGear}
-              size="2x"
-              spin={isGearSpinning}
-              style={{ color: 'white' }}
-            />
-          </Button>
-          <User />
-        </Suspense>
+            handleGearClick();
+          }}
+          title="Settings"
+        >
+          <FontAwesomeIcon
+            icon={faGear}
+            size="2x"
+            spin={isGearSpinning}
+            style={{ color: 'white' }}
+          />
+        </Button>
+        <User />
       </div>
     </StyledHeader>
   );
