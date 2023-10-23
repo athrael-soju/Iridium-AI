@@ -18,6 +18,9 @@ interface ContextProps {
 const { useBreakpoint } = Grid;
 
 const BtnsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
   margin: 1rem;
 `;
 

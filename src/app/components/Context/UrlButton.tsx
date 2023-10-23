@@ -40,6 +40,26 @@ const Container = styled.div`
   }
 `;
 
+const LinkContainer = styled.div`
+  a {
+    display: flex;
+    align-items: center;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    padding: 0 0.35rem;
+    height: 100%;
+  }
+
+  svg {
+    color: #fff;
+    font-size: 1rem;
+  }
+`;
+
+const truncateTitle = (title: string) => {
+  return title.length > 30 ? `${title.slice(0, 30)}...` : title;
+};
+
 const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
   <Container>
     <Button
@@ -48,11 +68,13 @@ const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
       onClick={onClick}
       style={{ width: '100% !important' }}
     >
-      Crawl
+      Crawl {truncateTitle(entry.title)}
     </Button>
-    <Button icon={<HiArrowTopRightOnSquare />} onClick={onClick}>
-      <Link href={entry.url} target="_blank" />
-    </Button>
+    <LinkContainer>
+      <Link href={entry.url} target="_blank">
+        <HiArrowTopRightOnSquare />
+      </Link>
+    </LinkContainer>
   </Container>
 );
 
