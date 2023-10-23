@@ -126,12 +126,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 setCards={setCards}
                 namespace={namespace}
               />
-              <Button
-                block
-                onClick={() => clearIndex(setEntries, setCards, namespace)}
-              >
-                Clear Index
-              </Button>
             </div>
             <Divider />
             <form
@@ -155,6 +149,13 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
             </div>
             <Divider />
             <SplittingMethod />
+            <Divider />
+            <Button
+              block
+              onClick={() => clearIndex(setEntries, setCards, namespace)}
+            >
+              Clear Index
+            </Button>
           </div>
           <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
             {splittingMethod === 'recursive' && (
