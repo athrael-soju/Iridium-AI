@@ -16,7 +16,7 @@ interface ICardProps {
 export const Card: FC<ICardProps> = ({ card, selected }) => (
   <div
     id={card.metadata.hash}
-    className={`card w-full p-5 m-2 text-white ${
+    className={`card w-full p-5 text-white ${
       selected?.includes(card.metadata.hash) ? 'bg-gray-600' : 'bg-gray-800'
     } ${
       selected?.includes(card.metadata.hash)
