@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Drawer, Input, Grid, Divider } from 'antd';
 import { useFormContext } from 'react-hook-form';
@@ -71,12 +71,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     }
     return url;
   };
-
-  // Think what to do with this
-  // useEffect(() => {
-  //   const element = selected && document.getElementById(selected[0]);
-  //   element?.scrollIntoView({ behavior: 'smooth' });
-  // }, [selected]);
 
   const DropdownLabel: React.FC<
     React.PropsWithChildren<{ htmlFor: string }>
