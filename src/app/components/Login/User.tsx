@@ -20,24 +20,20 @@ const User = () => {
   const renderUser = () => {
     if (!session) {
       return (
-        <>
-          <ActionUserIcon
-            icon={UserCircleIcon}
-            onClick={() => signIn()}
-            title="Guest - Sign in"
-          />
-        </>
+        <ActionUserIcon
+          icon={UserCircleIcon}
+          onClick={() => signIn()}
+          title="Guest - Sign in"
+        />
       );
     } else if (session?.user) {
       return (
-        <>
-          <Image
-            src={session.user.image ?? ''}
-            alt="User"
-            title={session.user.email + ' - Sign Out' || ''}
-            onClick={() => signOut()}
-          />
-        </>
+        <Image
+          src={session.user.image ?? ''}
+          alt="User"
+          title={session.user.email + ' - Sign Out' || ''}
+          onClick={() => signOut()}
+        />
       );
     }
   };
