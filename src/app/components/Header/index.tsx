@@ -1,19 +1,17 @@
 import Image from 'next/image';
-import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faVolumeMute,
-  faVolumeUp,
-  faGear,
-} from '@fortawesome/free-solid-svg-icons';
+  Cog8ToothIcon,
+  SpeakerWaveIcon,
+  SpeakerXMarkIcon,
+} from '@heroicons/react/24/outline';
+import { ActionIcon } from '@/components';
 import User from '@/components/Login/User';
 import iridiumAILogo from '../../../../public/iridium-ai.svg';
 import DeployBtn from './DeployBtn';
 import styles from './styles.module.css';
 
 export default function Header() {
-  const [isGearSpinning, setIsGearSpinning] = useState(false);
   const { setValue, watch } = useFormContext();
   const isWebSpeechEnabled = watch('isWebSpeechEnabled');
   const showContext = watch('showContext');
@@ -22,12 +20,6 @@ export default function Header() {
   };
 
   const setShowContext = (value: boolean) => setValue('showContext', value);
-
-  const handleGearClick = () => {
-    setIsGearSpinning(true);
-    setShowContext(!showContext);
-    setTimeout(() => setIsGearSpinning(false), 1000); // Turn off spin after 1 second
-  };
 
   return (
     <div>
@@ -54,41 +46,22 @@ export default function Header() {
             gap: '5px',
           }}
         >
-          <button
+          <ActionIcon
+            icon={isWebSpeechEnabled ? SpeakerWaveIcon : SpeakerXMarkIcon}
             onClick={() => {
               setWebSpeechEnabled(!isWebSpeechEnabled);
             }}
             title={
               isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
             }
-          >
-            <FontAwesomeIcon
-              icon={isWebSpeechEnabled ? faVolumeUp : faVolumeMute}
-              size="2x"
-              style={{ color: 'white' }}
-            />
-          </button>
-          <button
+          />
+          <ActionIcon
+            icon={Cog8ToothIcon}
             onClick={() => {
-              const contextWrapper = document.getElementById('contextWrapper');
-              if (contextWrapper instanceof HTMLElement) {
-                const isHidden =
-                  contextWrapper.style.transform === 'translateX(110%)';
-                contextWrapper.style.transform = isHidden
-                  ? 'translateX(0%)'
-                  : 'translateX(110%)';
-              }
-              handleGearClick();
+              setShowContext(!showContext);
             }}
             title="Settings"
-          >
-            <FontAwesomeIcon
-              icon={faGear}
-              size="2x"
-              spin={isGearSpinning}
-              style={{ color: 'white' }}
-            />
-          </button>
+          />
           <User />
         </div>
       </header>

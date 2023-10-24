@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faRightToBracket,
-  faUpRightFromSquare,
-  faUserCircle,
-} from '@fortawesome/free-solid-svg-icons';
+  ArrowRightOnRectangleIcon,
+  ArrowLeftOnRectangleIcon,
+  UserCircleIcon,
+} from '@heroicons/react/24/outline';
+import { ActionIcon } from '@/components';
+import styled from 'styled-components';
 
 const Image = styled.img`
   display: flex;
@@ -32,59 +32,26 @@ const User = () => {
     if (!session) {
       return (
         <>
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              textAlign: 'center',
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              signIn();
-            }}
+          <ActionIcon
+            icon={ArrowRightOnRectangleIcon}
+            onClick={() => signIn()}
             title="Sign in"
-          >
-            {isClient && (
-              <FontAwesomeIcon
-                icon={faRightToBracket}
-                size="2x"
-                style={{ color: 'white' }}
-              />
-            )}
-          </button>
-          {isClient && (
-            <FontAwesomeIcon
-              icon={faUserCircle}
-              size="4x"
-              style={{ color: 'lightgray', maxWidth: '45px' }}
-              title="Signed Out"
-            />
-          )}
+          />
+          <ActionIcon
+            icon={UserCircleIcon}
+            onClick={() => signIn()}
+            title="Sign in"
+          />
         </>
       );
     } else if (session?.user) {
       return (
         <>
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              textAlign: 'center',
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              signOut();
-            }}
+          <ActionIcon
+            icon={ArrowLeftOnRectangleIcon}
+            onClick={() => signOut()}
             title="Sign Out"
-          >
-            {isClient && (
-              <FontAwesomeIcon
-                icon={faUpRightFromSquare}
-                size="2x"
-                style={{ color: 'white' }}
-              />
-            )}
-          </button>
+          />
           <Image
             src={session.user.image ?? ''}
             alt="User"
