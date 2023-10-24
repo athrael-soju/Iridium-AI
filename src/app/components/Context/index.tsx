@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Drawer, Input, Grid, Divider } from 'antd';
 import { useFormContext } from 'react-hook-form';
@@ -24,6 +24,15 @@ const BtnsContainer = styled.div`
   flex-direction: column;
   margin: 1rem;
 `;
+
+const DropdownLabel: React.FC<React.PropsWithChildren<{ htmlFor: string }>> = ({
+  htmlFor,
+  children,
+}) => (
+  <label htmlFor={htmlFor} className="text-white p-2 font-bold">
+    {children}
+  </label>
+);
 
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
@@ -71,14 +80,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     }
     return url;
   };
-
-  const DropdownLabel: React.FC<
-    React.PropsWithChildren<{ htmlFor: string }>
-  > = ({ htmlFor, children }) => (
-    <label htmlFor={htmlFor} className="text-white p-2 font-bold">
-      {children}
-    </label>
-  );
 
   const buttons = (
     <BtnsContainer>
