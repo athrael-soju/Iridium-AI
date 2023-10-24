@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
+import styles from './styles.module.css';
 
 const DeployBtn = () => (
   <button
@@ -13,6 +14,7 @@ const DeployBtn = () => (
     title="Deploy with Vercel"
   >
     <FontAwesomeIcon
+      className={styles.uploadSvg}
       icon={faCloudArrowUp}
       size="2x"
       style={{ color: 'white' }} // #97978D

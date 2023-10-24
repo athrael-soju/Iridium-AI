@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  height: 64px;
+  padding-inline: 20px;
+  line-height: 64px;
+  background-color: #636365;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.logo {
+  height: 100%;
+  width: auto;
+  max-width: 200px !important;
+  cursor: pointer;
+}
+
+.uploadSvg {
+  font-size: 1rem;
+  transform: translateY(6px);
+}

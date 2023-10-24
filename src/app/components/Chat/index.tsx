@@ -26,25 +26,7 @@ const appId: string = 'df9e9323-8c5d-43c6-a215-f1c6084091f8';
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 
-const Form = styled.form`
-  display: flex;
-  height: 64px;
-  padding: 10px;
-  position: relative;
-  max-width: 700px;
-  margin: 0 auto;
-`;
-
-const StyledSpan = styled.span`
-  position: absolute;
-  inset-y: 0;
-  right: 20px;
-  bottom: 20px;
-  display: flex;
-  align-items: center;
-  padding-right: 3px;
-  color: gray;
-`;
+const Form = styled.form``;
 
 interface ChatProps {
   input: string;
@@ -117,14 +99,14 @@ const Chat: React.FC<ChatProps> = ({
       }}
     >
       <Messages messages={messages} isLoading={isLoading} />
-      <Form onSubmit={handleMessageSubmit}>
+      <form onSubmit={handleMessageSubmit}>
         <Input
           size="large"
           type="text"
           value={input}
           onChange={handleInputChange}
         />
-        <StyledSpan>
+        <span>
           Send Message ⮐
           <div>
             <button
@@ -142,8 +124,33 @@ const Chat: React.FC<ChatProps> = ({
             </button>
             <WebSpeechBtn stopSpeaking={stopSpeaking} />
           </div>
-        </StyledSpan>
-      </Form>
+        </span>
+      </form>
+      <style jsx>{`
+        form {
+          display: flex;
+          height: 64px;
+          padding: 10px;
+          position: relative;
+          min-width: 700px;
+          max-width: 700px;
+          margin: 0 auto;
+          input {
+            min-width: 700px;
+          }
+        }
+
+        span {
+          position: absolute;
+          inset-y: 0;
+          right: 20px;
+          bottom: 20px;
+          display: flex;
+          align-items: center;
+          padding-right: 3px;
+          color: gray;
+        }
+      `}</style>
     </div>
   );
 };
