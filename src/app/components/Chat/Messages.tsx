@@ -18,7 +18,7 @@ const Container = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 128px);
+  height: calc(100vh - 142px);
 `;
 
 const MessageDiv = styled.div<{ role: Message['role'] }>`
