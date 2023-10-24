@@ -19,9 +19,25 @@ export const ActionIcon = ({
       <Icon />
       <style jsx>{`
         button {
-          width: 34px;
-          height: 64px;
-          padding: 0 5px;
+          width: 30px;
+        }
+      `}</style>
+    </button>
+  );
+};
+
+export const ActionUserIcon = ({
+  icon: Icon,
+  onClick,
+  title,
+  className,
+}: Props) => {
+  return (
+    <button onClick={onClick} title={title}>
+      <Icon />
+      <style jsx>{`
+        button {
+          width: 48px;
         }
       `}</style>
     </button>
