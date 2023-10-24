@@ -54,17 +54,6 @@ const PromptTextarea: React.FC<PromptTextareaProps> = ({
     setIsRecording(!isRecording);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-
-      // Perform the desired action when "Shift + Enter" is pressed
-      console.log('Shift + Enter pressed');
-      // You may call any function or perform any action here
-      handleInputChange(e as any);
-    }
-  };
-
   // Extracted the nested ternary operation into a separate variable
   const recordButtonTitle = () => {
     if (isWebSpeechEnabled && !isRecording) return 'Record a Message';
@@ -87,7 +76,7 @@ const PromptTextarea: React.FC<PromptTextareaProps> = ({
       >
         <input
           value={input}
-          onChange={(e) => handleInputChange(e as any)}
+          onChange={(e) => handleInputChange(e)}
           style={{
             width: isMobile ? 'calc(100% - 40px)' : '700px',
           }}
