@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import {
   ArrowRightOnRectangleIcon,
@@ -17,16 +16,10 @@ const Image = styled.img`
 `;
 
 const User = () => {
-  const [isClient, setIsClient] = useState(false);
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {},
   });
-
-  useEffect(() => {
-    // Component will mount only on client side
-    setIsClient(true);
-  }, []);
 
   const renderUser = () => {
     if (!session) {

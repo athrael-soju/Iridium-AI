@@ -25,6 +25,15 @@ const BtnsContainer = styled.div`
   margin: 1rem;
 `;
 
+const DropdownLabel: React.FC<React.PropsWithChildren<{ htmlFor: string }>> = ({
+  htmlFor,
+  children,
+}) => (
+  <label htmlFor={htmlFor} className="text-white p-2 font-bold">
+    {children}
+  </label>
+);
+
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
@@ -71,20 +80,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     }
     return url;
   };
-
-  // Think what to do with this
-  // useEffect(() => {
-  //   const element = selected && document.getElementById(selected[0]);
-  //   element?.scrollIntoView({ behavior: 'smooth' });
-  // }, [selected]);
-
-  const DropdownLabel: React.FC<
-    React.PropsWithChildren<{ htmlFor: string }>
-  > = ({ htmlFor, children }) => (
-    <label htmlFor={htmlFor} className="text-white p-2 font-bold">
-      {children}
-    </label>
-  );
 
   const buttons = (
     <BtnsContainer>

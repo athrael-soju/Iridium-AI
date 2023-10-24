@@ -56,7 +56,7 @@ const LinkContainer = styled.div`
 `;
 
 const truncateTitle = (title: string) => {
-  return title.length > 30 ? `${title.slice(0, 30)}...` : title;
+  return title.length > 30 ? `'${title.slice(0, 30)}...'` : `'${title}'`;
 };
 
 const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
