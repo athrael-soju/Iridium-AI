@@ -8,12 +8,6 @@ import {
   faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  text-align: center;
-`;
-
 const Image = styled.img`
   display: flex;
   align-items: center;
@@ -38,7 +32,12 @@ const User = () => {
     if (!session) {
       return (
         <>
-          <Button
+          <button
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
             onClick={(e) => {
               e.preventDefault();
               signIn();
@@ -52,7 +51,7 @@ const User = () => {
                 style={{ color: 'white' }}
               />
             )}
-          </Button>
+          </button>
           {isClient && (
             <FontAwesomeIcon
               icon={faUserCircle}
@@ -66,7 +65,12 @@ const User = () => {
     } else if (session?.user) {
       return (
         <>
-          <Button
+          <button
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
             onClick={(e) => {
               e.preventDefault();
               signOut();
@@ -80,7 +84,7 @@ const User = () => {
                 style={{ color: 'white' }}
               />
             )}
-          </Button>
+          </button>
           <Image
             src={session.user.image ?? ''}
             alt="User"

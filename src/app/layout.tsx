@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/react';
 import Provider from './Provider';
 import StyledComponentsRegistry from './lib/registry';
+import StyledComponentsRegistry2 from './lib/registry2';
 import Layout from '../app/components/Layout';
 
 export const metadata = {
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <Provider>
-            <Analytics />
-            <Layout>{children}</Layout>
-          </Provider>
-        </StyledComponentsRegistry>
+        <StyledComponentsRegistry2>
+          <StyledComponentsRegistry>
+            <Provider>
+              <Analytics />
+              <Layout>{children}</Layout>
+            </Provider>
+          </StyledComponentsRegistry>
+        </StyledComponentsRegistry2>
       </body>
     </html>
   );
