@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
+import PromptTextarea from '@/components/PromptTextarea';
 import { useChat } from 'ai/react';
 import { useSession } from 'next-auth/react';
 import InstructionModal from './components/InstructionModal';
@@ -104,11 +105,14 @@ const Page: React.FC = () => {
         onClose={() => setModalOpen(false)}
       />
       <Chat
-        input={input}
         handleInputChange={handleInputChange}
-        handleMessageSubmit={handleMessageSubmit}
         messages={messages}
         isLoading={isLoading}
+      />
+      <PromptTextarea
+        input={input}
+        handleMessageSubmit={handleMessageSubmit}
+        handleInputChange={handleInputChange}
       />
       <Context selected={context} namespace={namespace.current} />
     </Container>
