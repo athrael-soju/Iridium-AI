@@ -67,13 +67,18 @@ const UrlButton: FC<IURLButtonProps> = ({ entry, onClick }) => (
       onClick={onClick}
       style={{ width: '100% !important' }}
     >
-      Crawl {truncateTitle(entry.title)}
+      <span>Crawl {truncateTitle(entry.title)}</span>
     </Button>
     <LinkContainer>
       <Link href={entry.url} target="_blank">
         <HiArrowTopRightOnSquare />
       </Link>
     </LinkContainer>
+    <style jsx>{`
+      span {
+        margin: 0 10px !important;
+      }
+    `}</style>
   </Container>
 );
 

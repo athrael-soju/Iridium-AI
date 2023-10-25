@@ -10,13 +10,13 @@ import WebSpeechBtn from './Header/WebSpeechBtn';
 
 const { useBreakpoint } = Grid;
 
-interface PromptTextareaProps {
+interface Props {
   input: string;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
-const PromptTextarea: React.FC<PromptTextareaProps> = ({
+const PromptInput: React.FC<Props> = ({
   input,
   handleInputChange,
   handleMessageSubmit,
@@ -83,7 +83,13 @@ const PromptTextarea: React.FC<PromptTextareaProps> = ({
         />
         <span>
           Send Message ⮐
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              gap: '10px',
+              paddingLeft: '10px',
+            }}
+          >
             <button
               type="button"
               className={`ml-2 ${
@@ -228,7 +234,7 @@ const PromptTextarea: React.FC<PromptTextareaProps> = ({
             align-items: center;
             padding-right: 3px;
             color: gray;
-            width: 175px;
+            width: 185px;
           }
         `}</style>
       </form>
@@ -236,4 +242,4 @@ const PromptTextarea: React.FC<PromptTextareaProps> = ({
   );
 };
 
-export default PromptTextarea;
+export default PromptInput;
