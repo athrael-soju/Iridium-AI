@@ -10,13 +10,13 @@ import WebSpeechBtn from './Header/WebSpeechBtn';
 
 const { useBreakpoint } = Grid;
 
-interface PromptTextareaProps {
+interface Props {
   input: string;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
-const PromptTextarea: React.FC<PromptTextareaProps> = ({
+const PromptInput: React.FC<Props> = ({
   input,
   handleInputChange,
   handleMessageSubmit,
@@ -236,4 +236,4 @@ const PromptTextarea: React.FC<PromptTextareaProps> = ({
   );
 };
 
-export default PromptTextarea;
+export default PromptInput;

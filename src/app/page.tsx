@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
-import PromptTextarea from '@/components/PromptTextarea';
+import PromptInput from '@/components/PromptInput';
 import { useChat } from 'ai/react';
 import { useSession } from 'next-auth/react';
 import InstructionModal from './components/InstructionModal';
@@ -109,7 +109,7 @@ const Page: React.FC = () => {
         messages={messages}
         isLoading={isLoading}
       />
-      <PromptTextarea
+      <PromptInput
         input={input}
         handleMessageSubmit={handleMessageSubmit}
         handleInputChange={handleInputChange}

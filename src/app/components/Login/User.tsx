@@ -1,15 +1,23 @@
+import { Dropdown, MenuProps } from 'antd';
+import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
-import { ActionUserIcon } from '@/components';
-import styled from 'styled-components';
+import { ActionIcon } from '@/components';
 
-const Image = styled.img`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  max-width: 40px;
-  border-radius: 50%;
-`;
+const items: MenuProps['items'] = [
+  {
+    key: '2',
+    label: 'settings',
+    icon: <SettingOutlined />,
+  },
+  {
+    key: '4',
+    danger: true,
+    icon: <LogoutOutlined />,
+    label: 'log out',
+    onClick: () => signOut(),
+  },
+];
 
 const User = () => {
   const { data: session } = useSession({
@@ -20,7 +28,8 @@ const User = () => {
   const renderUser = () => {
     if (!session) {
       return (
-        <ActionUserIcon
+        <ActionIcon
+          width="40px"
           icon={UserCircleIcon}
           onClick={() => signIn()}
           title="Guest - Sign in"
@@ -28,12 +37,26 @@ const User = () => {
       );
     } else if (session?.user) {
       return (
-        <Image
-          src={session.user.image ?? ''}
-          alt="User"
-          title={session.user.email + ' - Sign Out' || ''}
-          onClick={() => signOut()}
-        />
+        <>
+          <Dropdown menu={{ items }}>
+            <img
+              src={session.user.image ?? ''}
+              alt="User"
+              title={session.user.email + ' - Sign Out' || ''}
+              onClick={() => signOut()}
+            />
+          </Dropdown>
+          <style jsx>{`
+            img {
+              display: flex;
+              cursor: pointer;
+              align-items: center;
+              text-align: center;
+              max-width: 40px;
+              border-radius: 50%;
+            }
+          `}</style>
+        </>
       );
     }
   };
