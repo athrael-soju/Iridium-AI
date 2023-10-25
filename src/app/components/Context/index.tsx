@@ -133,9 +133,20 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 value={newURL}
                 onChange={(e) => setNewURL(e.target.value)}
               />
-              <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-                Add URL ⮐
-              </span>
+              <span>Add URL ⮐</span>
+              <style jsx>{`
+                form {
+                  position: relative;
+                  margin-bottom: 1rem;
+                }
+
+                span {
+                  position: absolute;
+                  top: 8px;
+                  right: 10px;
+                  color: #fff;
+                }
+              `}</style>
             </form>
             <div
               style={{
