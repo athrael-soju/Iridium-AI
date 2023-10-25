@@ -83,7 +83,7 @@ export default function Header() {
         <Drawer
           open={showMobileMenu}
           onClose={() => setShowMobileMenu(false)}
-          width={150}
+          width={200}
           style={{ backgroundColor: BG_COLOR_HEX, position: 'relative' }}
         >
           <div
