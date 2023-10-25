@@ -14,17 +14,27 @@ interface ICardProps {
 }
 
 export const Card: FC<ICardProps> = ({ card, selected }) => (
-  <div
-    id={card.metadata.hash}
-    className={`card w-full p-5 text-white ${
-      selected?.includes(card.metadata.hash) ? 'bg-gray-600' : 'bg-gray-800'
-    } ${
-      selected?.includes(card.metadata.hash)
-        ? 'border-double border-4 border-sky-500'
-        : 'opacity-60 hover:opacity-80 transition-opacity duration-300 ease-in-out'
-    }`}
-  >
+  <div id={card.metadata.hash} className={`card`}>
     <ReactMarkdown>{card.pageContent}</ReactMarkdown>
-    <b className="text-xs">{card.metadata.hash}</b>
+    <b>{card.metadata.hash}</b>
+    <style jsx>{`
+      .card {
+        width: 100%;
+        padding: 1.25rem;
+        color: white;
+        background-color: ${selected ? '#4A5568' : '#2D3748'};
+        border: ${selected ? 'double 4px #63B3ED' : 'none'};
+        opacity: ${selected ? '1' : '0.6'};
+        transition: opacity 300ms ease-in-out;
+      }
+
+      .card:hover {
+        opacity: 0.8;
+      }
+
+      .hash-text {
+        font-size: 0.75rem;
+      }
+    `}</style>
   </div>
 );
