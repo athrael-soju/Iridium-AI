@@ -100,6 +100,7 @@ export default function Header() {
         <Drawer
           open={showMobileMenu}
           onClose={() => setShowMobileMenu(false)}
+          width={130}
           style={{ backgroundColor: BG_COLOR_HEX, position: 'relative' }}
         >
           <div
@@ -110,7 +111,6 @@ export default function Header() {
               color: '#fff',
               gap: '50px',
               height: '100%',
-              justifyContent: 'center',
             }}
           >
             {menuItems}
