@@ -30,39 +30,6 @@ export default function Header() {
   const screens = useBreakpoint();
   const isMobile = screens.xs;
 
-  const menuItems = (
-    <>
-      <ActionIcon
-        icon={isWebSpeechEnabled ? SpeakerWaveIcon : SpeakerXMarkIcon}
-        onClick={() => {
-          setWebSpeechEnabled(!isWebSpeechEnabled);
-        }}
-        title={isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'}
-      />
-      <ActionIcon
-        icon={Cog8ToothIcon}
-        onClick={() => {
-          setShowContext(!showContext);
-        }}
-        title="Settings"
-      />
-      <User />
-      <style jsx>{`
-        .logo-container {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-        }
-
-        button {
-          display: flex;
-          align-items: center;
-          text-align: center;
-        }
-      `}</style>
-    </>
-  );
-
   return (
     <div>
       <header className={styles.header}>
@@ -94,13 +61,29 @@ export default function Header() {
               gap: '5px',
             }}
           >
-            {menuItems}
+            <ActionIcon
+              icon={isWebSpeechEnabled ? SpeakerWaveIcon : SpeakerXMarkIcon}
+              onClick={() => {
+                setWebSpeechEnabled(!isWebSpeechEnabled);
+              }}
+              title={
+                isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+              }
+            />
+            <ActionIcon
+              icon={Cog8ToothIcon}
+              onClick={() => {
+                setShowContext(!showContext);
+              }}
+              title="Settings"
+            />
+            <User />
           </div>
         )}
         <Drawer
           open={showMobileMenu}
           onClose={() => setShowMobileMenu(false)}
-          width={130}
+          width={150}
           style={{ backgroundColor: BG_COLOR_HEX, position: 'relative' }}
         >
           <div
@@ -113,7 +96,23 @@ export default function Header() {
               height: '100%',
             }}
           >
-            {menuItems}
+            <User />
+            <ActionIcon
+              icon={Cog8ToothIcon}
+              onClick={() => {
+                setShowContext(!showContext);
+              }}
+              title="Settings"
+            />
+            <ActionIcon
+              icon={isWebSpeechEnabled ? SpeakerWaveIcon : SpeakerXMarkIcon}
+              onClick={() => {
+                setWebSpeechEnabled(!isWebSpeechEnabled);
+              }}
+              title={
+                isWebSpeechEnabled ? 'Disable Web Speech' : 'Enable Web Speech'
+              }
+            />
           </div>
         </Drawer>
       </header>
