@@ -1,17 +1,56 @@
 import { Message } from 'ai';
+import { Typography } from 'antd';
+import styled from 'styled-components';
 import { useEffect, useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
+
 const nlp = winkNLP(model);
 
-interface MessagesProps {
-  readonly messages: Message[];
-  readonly isLoading: boolean;
-  readonly isWebSpeechEnabled: boolean;
-  readonly isSpeechStopped: boolean;
-}
+const TEXT_COLOR = 'rgb(209, 213, 219)';
+
+const ASSISTANT_BG_COLOR = 'rgb(68, 70, 84)';
+const USER_BG_COLOR = 'rgb(52, 53, 65)';
+
+const Container = styled.div`
+  padding-top: 64px;
+  padding-bottom: 110px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh);
+`;
+
+const MessageDiv = styled.div<{ role: Message['role'] }>`
+  padding: 0.75rem;
+  transition: box-shadow 200ms ease-in;
+  display: flex;
+  align-items: center;
+  background-color: #2e3a46;
+
+  &:hover {
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-typography-copy {
+    color: rgb(172, 172, 190) !important;
+  }
+
+  ${(props) =>
+    props.role === 'assistant' &&
+    `
+      background-color: ${ASSISTANT_BG_COLOR};
+  `}
+  ${(props) =>
+    props.role === 'user' &&
+    `
+      background-color: ${USER_BG_COLOR};
+  `}
+`;
 
 let speechSynthesis: SpeechSynthesis;
+
 if (typeof window !== 'undefined') {
   speechSynthesis = window.speechSynthesis;
 }
@@ -21,12 +60,16 @@ const speak = (text: string) => {
   speechSynthesis.speak(utterance);
 };
 
-export default function Messages({
-  messages,
-  isLoading,
-  isWebSpeechEnabled,
-  isSpeechStopped,
-}: MessagesProps) {
+interface MessagesProps {
+  readonly messages: Message[];
+  readonly isLoading: boolean;
+}
+
+export default function Messages({ messages, isLoading }: MessagesProps) {
+  const { watch } = useFormContext();
+  const isWebSpeechEnabled = watch('isWebSpeechEnabled');
+  const isSpeechStopped = watch('isSpeechStopped');
+
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
   const speechIndex = useRef<number>(0);
@@ -82,25 +125,35 @@ export default function Messages({
   // End Web Speech API Hooks
 
   return (
-    <div className="border-2 border-gray-600 p-6 rounded-lg overflow-y-scroll flex-grow flex flex-col bg-gray-700">
+    <Container>
       {messages.map((msg) => {
         return (
-          <div
-            key={msg.id}
-            className={`${
-              msg.role === 'assistant' ? 'text-green-300' : 'text-blue-300'
-            } my-2 p-3 rounded shadow-md hover:shadow-lg transition-shadow duration-200 flex slide-in-bottom bg-gray-800 border border-gray-600 message-glow`}
-          >
-            <div className="rounded-tl-lg bg-gray-800 p-2 border-r border-gray-600 flex items-center">
-              {msg.role === 'assistant' ? '🤖' : '🧑‍💻'}
+          <MessageDiv key={msg.id} role={msg?.role}>
+            <div
+              style={{
+                width: '700px',
+                margin: '0 auto',
+                display: 'flex',
+                textAlign: 'left',
+              }}
+            >
+              <div>{msg?.role === 'assistant' ? '🤖' : '🧑‍💻'}</div>
+              <Typography.Paragraph
+                copyable={msg?.role === 'assistant'}
+                style={{
+                  color: TEXT_COLOR,
+                  marginLeft: '0.5rem',
+                  marginBottom: 0,
+                  textAlign: 'left',
+                }}
+              >
+                {msg.content}
+              </Typography.Paragraph>
             </div>
-            <div className="ml-2 flex items-center text-gray-200">
-              {msg.content}
-            </div>
-          </div>
+          </MessageDiv>
         );
       })}
       <div ref={messagesEndRef} />
-    </div>
+    </Container>
   );
 }

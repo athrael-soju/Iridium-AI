@@ -24,7 +24,7 @@ export async function crawlDocument(
         splittingMethod,
         chunkSize,
         overlap,
-        namespace
+        namespace,
       },
     }),
   });

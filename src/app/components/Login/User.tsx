@@ -1,91 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import { signIn, signOut } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faRightToBracket,
-  faUpRightFromSquare,
-  faUserCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, MenuProps } from 'antd';
+import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { ActionIcon } from '@/components';
 
-type Session = {
-  user?: {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-  };
-};
+const items: MenuProps['items'] = [
+  {
+    key: '2',
+    label: 'settings',
+    icon: <SettingOutlined />,
+  },
+  {
+    key: '4',
+    danger: true,
+    icon: <LogoutOutlined />,
+    label: 'log out',
+    onClick: () => signOut(),
+  },
+];
 
-interface UserProps {
-  session: Session | null | undefined;
-}
-
-const User: React.FC<UserProps> = ({ session }) => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    // Component will mount only on client side
-    setIsClient(true);
-  }, []);
+const User = () => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated: () => {},
+  });
 
   const renderUser = () => {
     if (!session) {
       return (
-        <div className="flex items-end gap-2">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              signIn();
-            }}
-            title="Sign in"
-          >
-            {isClient && (
-              <FontAwesomeIcon
-                icon={faRightToBracket}
-                size="2x"
-                style={{ color: 'white' }}
-              />
-            )}
-          </button>
-          {isClient && (
-            <FontAwesomeIcon
-              icon={faUserCircle}
-              size="4x"
-              style={{ color: 'lightgray' }}
-              title="Signed Out"
-            />
-          )}
-        </div>
+        <ActionIcon
+          width="40px"
+          icon={UserCircleIcon}
+          onClick={() => signIn()}
+          title="Guest - Sign in"
+        />
       );
     } else if (session?.user) {
       return (
-        <div className="flex items-end gap-2">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              signOut();
-            }}
-            title="Sign Out"
-          >
-            {isClient && (
-              <FontAwesomeIcon
-                icon={faUpRightFromSquare}
-                size="2x"
-                style={{ color: 'white' }}
-              />
-            )}
-          </button>
-          <div className="relative" style={{ width: '4em', height: '4em' }}>
-            <picture>
-              <img
-                src={session.user.image ?? ''}
-                alt="User"
-                className="absolute top-0 left-0 w-full h-full rounded-full object-cover"
-                title={session.user.email ?? ''}
-                style={{ width: '4em', height: '4em' }}
-              />
-            </picture>
-          </div>
-        </div>
+        <>
+          <Dropdown menu={{ items }}>
+            <img
+              src={session.user.image ?? ''}
+              alt="User"
+              title={session.user.email + ' - Sign Out' || ''}
+              onClick={() => signOut()}
+              onKeyDown={() => signOut()}
+            />
+          </Dropdown>
+          <style jsx>{`
+            img {
+              display: flex;
+              cursor: pointer;
+              align-items: center;
+              text-align: center;
+              max-width: 40px;
+              border-radius: 50%;
+            }
+          `}</style>
+        </>
       );
     }
   };
