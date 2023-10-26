@@ -2,24 +2,16 @@
 
 import React, { useEffect, useRef, useState, FormEvent } from 'react';
 import { notification } from 'antd';
-import styled from 'styled-components';
+import { useChat } from 'ai/react';
+import { useSession } from 'next-auth/react';
 import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
 import PromptInput from '@/components/PromptInput';
-import { useChat } from 'ai/react';
-import { useSession } from 'next-auth/react';
+import { DARK_BG_COLOR_RGB } from '@/constants';
+
 import InstructionModal from './components/InstructionModal';
 import { v4 as uuidv4 } from 'uuid';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  margin: 0 auto;
-  max-width: 100%;
-`;
 
 const Page: React.FC = () => {
   const [api, contextHolder] = notification.useNotification();
@@ -97,7 +89,7 @@ const Page: React.FC = () => {
   }, [messages, gotMessages, topK]);
 
   return (
-    <Container>
+    <div className="container">
       {contextHolder}
       <Header />
       <InstructionModal
@@ -115,7 +107,15 @@ const Page: React.FC = () => {
         handleInputChange={handleInputChange}
       />
       <Context selected={context} namespace={namespace.current} />
-    </Container>
+      <style jsx>{`
+        .container {
+          min-height: 100vh;
+          margin: 0 auto;
+          max-width: 100%;
+          background-color: ${DARK_BG_COLOR_RGB};
+        }
+      `}</style>
+    </div>
   );
 };
 
