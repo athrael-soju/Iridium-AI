@@ -76,7 +76,6 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
 
   // Scroll to the most recent message whenever a new message is added
   useEffect(() => {
-    console.log('messages', messages);
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
