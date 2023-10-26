@@ -28,7 +28,9 @@ export function useAtBottom(offset = 0) {
 interface ChatScrollAnchorProps {
   trackVisibility: boolean;
 }
-
+/**
+ * inspired from https://github.com/vercel-labs/ai-chatbot/blob/main/components/chat-scroll-anchor.tsx
+ */
 export function ChatScrollAnchor({ trackVisibility }: ChatScrollAnchorProps) {
   const isAtBottom = useAtBottom();
   const { ref, entry, inView } = useInView({
