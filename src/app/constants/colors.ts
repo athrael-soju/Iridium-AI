@@ -11,3 +11,4 @@ export const BG_COLOR_HEX = '#636365';
 export const BG_COLOR_RGB = 'rgb(99,99,101)';
 
 export const DARK_BG_COLOR_HEX = '#343541';
+export const DARK_BG_COLOR_RGB = 'rgba(52,53,65, 0.5)';

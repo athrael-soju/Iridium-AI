@@ -14,11 +14,12 @@ const ASSISTANT_BG_COLOR = 'rgb(68, 70, 84)';
 const USER_BG_COLOR = 'rgb(52, 53, 65)';
 
 const Container = styled.div`
-  margin-top: 64px;
+  padding-top: 64px;
+  padding-bottom: 110px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 142px);
+  min-height: calc(100vh);
 `;
 
 const MessageDiv = styled.div<{ role: Message['role'] }>`
@@ -72,13 +73,6 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const sentences = useRef<string[]>([]);
   const speechIndex = useRef<number>(0);
-
-  // Scroll to the most recent message whenever a new message is added
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
 
   // Web Speech API Hooks
   useEffect(() => {
