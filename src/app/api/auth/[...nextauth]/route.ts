@@ -7,6 +7,8 @@ import GitHubProvider from 'next-auth/providers/github';
 const GOOGLE_ID = process.env.GOOGLE_ID ?? '';
 const GOOGLE_SECRET = process.env.GOOGLE_SECRET ?? '';
 
+console.log(process.env.GITHUB_ID, process.env.GITHUB_SECRET);
+
 const providers: Provider[] = [
   GoogleProvider({
     clientId: GOOGLE_ID,
