@@ -18,7 +18,7 @@ interface SeedOptions {
 }
 
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
-
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 async function seed(
   url: string,
   limit: number,
@@ -97,7 +97,7 @@ async function embedDocument(doc: Document): Promise<PineconeRecord> {
       },
     } as PineconeRecord;
   } catch (error) {
-    console.log('Error embedding document: ', error);
+    console.error('Error embedding document: ', error);
     throw error;
   }
 }

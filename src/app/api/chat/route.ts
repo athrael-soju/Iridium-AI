@@ -2,15 +2,13 @@ import { Configuration, OpenAIApi } from 'openai-edge';
 import { Message, OpenAIStream, StreamingTextResponse } from 'ai';
 import { getContext } from '@/utils/context';
 
-// Create an OpenAI API client (that's edge friendly!)
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(config);
 
-// IMPORTANT! Set the runtime to edge
 export const runtime = 'edge';
-
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 export async function POST(req: Request) {
   if (!process.env.PINECONE_ENVIRONMENT) {
     return new Response(

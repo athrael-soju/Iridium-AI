@@ -6,6 +6,7 @@ const sliceIntoChunks = <T>(arr: T[], chunkSize: number) => {
   );
 };
 
+/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 export const chunkedUpsert = async (
   index: Index,
   vectors: Array<PineconeRecord>,

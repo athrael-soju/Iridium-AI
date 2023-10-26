@@ -18,7 +18,7 @@ interface FileUploaderProps {
   setCards: React.Dispatch<React.SetStateAction<any[]>>;
   namespace: string;
 }
-
+/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 const FileUpload: React.FC<FileUploaderProps> = ({
   chunkSize,
   overlap,

@@ -23,6 +23,7 @@ interface SeedOptions {
 }
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
 
+/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 async function seed(
   filename: string,
   path: string,

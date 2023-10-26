@@ -1,6 +1,7 @@
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 
+/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
