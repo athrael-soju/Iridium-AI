@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
+import { ChatScrollAnchor } from '@/components/ChatScrollAnchor';
 import PromptInput from '@/components/PromptInput';
 import { DARK_BG_COLOR_RGB } from '@/constants';
 
@@ -96,6 +97,7 @@ const Page: React.FC = () => {
         messages={messages}
         isLoading={isLoading}
       />
+      <ChatScrollAnchor trackVisibility={isLoading} />
       <PromptInput
         input={input}
         handleMessageSubmit={handleMessageSubmit}

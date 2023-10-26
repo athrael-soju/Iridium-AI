@@ -74,6 +74,14 @@ export default function Messages({ messages, isLoading }: MessagesProps) {
   const sentences = useRef<string[]>([]);
   const speechIndex = useRef<number>(0);
 
+  // Scroll to the most recent message whenever a new message is added
+  useEffect(() => {
+    console.log('messages', messages);
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   // Web Speech API Hooks
   useEffect(() => {
     if (isWebSpeechEnabled) {
