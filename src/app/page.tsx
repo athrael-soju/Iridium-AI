@@ -10,7 +10,6 @@ import Chat from '@/components/Chat';
 import PromptInput from '@/components/PromptInput';
 import { DARK_BG_COLOR_RGB } from '@/constants';
 
-import InstructionModal from './components/InstructionModal';
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
@@ -92,10 +91,6 @@ const Page: React.FC = () => {
     <div className="container">
       {contextHolder}
       <Header />
-      <InstructionModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-      />
       <Chat
         handleInputChange={handleInputChange}
         messages={messages}
