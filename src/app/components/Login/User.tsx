@@ -44,6 +44,7 @@ const User = () => {
               alt="User"
               title={session.user.email + ' - Sign Out' || ''}
               onClick={() => signOut()}
+              onKeyDown={() => signOut()}
             />
           </Dropdown>
           <style jsx>{`
