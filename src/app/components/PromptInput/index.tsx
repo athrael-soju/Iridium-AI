@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import SpeechRecognition from 'react-speech-recognition';
-import { DARK_BG_COLOR_RGB } from '@/constants';
 
 import WebSpeechBtn from '../Header/WebSpeechBtn';
 

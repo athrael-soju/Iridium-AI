@@ -4,12 +4,6 @@ import axios, { AxiosRequestConfig, AxiosProgressEvent } from 'axios';
 import { message } from 'antd';
 import type { ContextFormValues } from '../Context/types';
 
-type ProgressCallback = (
-  isIndeterminate: boolean,
-  completed: number,
-  percent: number
-) => void;
-
 const useFileProcessor = ({ namespace }: { namespace: string }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const splittingMethod = watch('splittingMethod');
@@ -29,8 +23,8 @@ const useFileProcessor = ({ namespace }: { namespace: string }) => {
 
       const config: AxiosRequestConfig = {
         onUploadProgress: function (e: AxiosProgressEvent) {
-          const total = e?.total ?? 0;
-          const percentCompleted = Math.round((e.loaded * 100) / total);
+          // const total = e?.total ?? 0;
+          // const percentCompleted = Math.round((e.loaded * 100) / total);
         },
         headers: {
           'Content-Type': 'multipart/form-data',

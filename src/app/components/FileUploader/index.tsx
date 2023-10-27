@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FilePond, registerPlugin } from 'react-filepond';
-import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import type { ContextFormValues } from '../Context/types';
-import { Button, message, Upload } from 'antd';
+import { message, Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import styles from './styles.module.css';
 
@@ -22,6 +20,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
     name: 'file',
     showUploadList: false,
     beforeUpload: (file) => {
+      console.log('beforeUpload', file);
       return false;
     },
     onChange(info) {
