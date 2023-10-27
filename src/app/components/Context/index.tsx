@@ -44,6 +44,8 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     watch('splittingMethod') ?? 'markdown';
   const cards = watch('cards');
 
+  console.log('cards', cards);
+
   const setCards = (v: any) => setValue('cards', v);
 
   const [newURL, setNewURL] = useState('');
