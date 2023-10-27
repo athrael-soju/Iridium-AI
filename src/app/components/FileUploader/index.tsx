@@ -20,10 +20,10 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
 
   const props: UploadProps = {
     name: 'file',
-    headers: {
-      authorization: 'authorization-text',
-    },
     showUploadList: false,
+    beforeUpload: (file) => {
+      return false;
+    },
     onChange(info) {
       processFile(info.file);
       if (info.file.status !== 'uploading') {
