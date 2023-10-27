@@ -1,7 +1,7 @@
 import { Form, Select } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import type { SplittingMethodOption } from './types';
+import type { topKOption } from './types';
 
 const Container = styled.div`
   margin: 1rem auto;
@@ -12,23 +12,25 @@ const Container = styled.div`
 `;
 
 const options: {
-  value: SplittingMethodOption;
+  value: topKOption;
   label: string;
 }[] = [
-  { value: 'markdown', label: 'Markdown Splitting' },
-  { value: 'recursive', label: 'Recursive Text Splitting' },
+  { value: 5, label: '5' },
+  { value: 10, label: '10' },
+  { value: 15, label: '15' },
+  { value: 20, label: '20' },
 ];
 
-const SplittingMethod = () => {
+const TopKSelection = () => {
   const { setValue } = useFormContext();
 
   return (
     <Container>
-      <Form.Item name="splittingMethod" label="Splitting Method">
+      <Form.Item name="topKSelection" label="Top K Elements">
         <Select
-          defaultValue="markdown"
+          defaultValue={5}
           onChange={(selection) => {
-            setValue('splittingMethod', selection);
+            setValue('topKSelection', selection);
           }}
           options={options}
         />
@@ -37,4 +39,4 @@ const SplittingMethod = () => {
   );
 };
 
-export default SplittingMethod;
+export default TopKSelection;

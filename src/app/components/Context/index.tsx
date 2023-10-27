@@ -9,7 +9,8 @@ import { Card, ICard } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import FileUpload from '../FileUpload';
 import SplittingMethod from './SplittingMethod';
-import type { ContextFormValues, SplittingMethodOption } from './types';
+import TopKSelection from './TopKSelection';
+import type { ContextFormValues, SplittingMethodOption, topKOption } from './types';
 
 interface ContextProps {
   selected: string[] | null;
@@ -41,7 +42,8 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const showContext = watch('showContext');
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
-
+    const topKSelection: topKOption =
+    watch('topKSelection') ?? 5;
   const [newURL, setNewURL] = useState('');
   const [chunkSize, setChunkSize] = useState(256);
   const [overlap, setOverlap] = useState(1);
@@ -117,6 +119,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
             <div className="my-2">
               <FileUpload
                 chunkSize={chunkSize}
+                topK={topKSelection}
                 overlap={overlap}
                 setCards={setCards}
                 namespace={namespace}
@@ -166,6 +169,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
             </div>
             <Divider />
             <SplittingMethod />
+            <TopKSelection />
           </div>
           <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
             {splittingMethod === 'recursive' && (

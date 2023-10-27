@@ -59,9 +59,6 @@ OPENAI_API_EMBEDDING_MODEL=
 PINECONE_API_KEY=
 PINECONE_ENVIRONMENT=
 PINECONE_INDEX=
-
-# Optional, defaults to 10
-PINECONE_TOPK=10
 ```
 
 See [deployment](#deployment) for notes on how to deploy the project on a live system.

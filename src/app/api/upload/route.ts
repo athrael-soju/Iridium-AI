@@ -13,17 +13,15 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const path = process.env.FILE_UPLOAD_PATH as string;
-    
+
     if (!existsSync(path)) {
       mkdirSync(path, { recursive: true });
     }
 
     writeFileSync(path + file.name, buffer);
-    console.log(`Successfullly uploaded ${file.name}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error uploading:', error);
     throw error;
   }
 }

@@ -72,7 +72,6 @@ export async function POST(req: Request) {
     // Respond with the stream
     return new StreamingTextResponse(stream);
   } catch (e) {
-    console.error(e);
     throw e;
   }
 }
