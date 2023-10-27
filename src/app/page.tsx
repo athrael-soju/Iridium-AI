@@ -22,7 +22,6 @@ const Page: React.FC = () => {
   const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
   const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =

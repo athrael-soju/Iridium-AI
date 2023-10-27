@@ -64,6 +64,16 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     }
   };
 
+  const cardContainer = () => {
+    return (
+      <div>
+        {cards?.map((card) => (
+          <Card key={card.metadata.hash} card={card} selected={selected} />
+        ))}
+      </div>
+    );
+  };
+
   const handleClearURLsSubmit = async () => {
     const newURLList: IUrlEntry[] = [];
     clearURLs();
@@ -113,6 +123,25 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
     >
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
         <div className="flex flex-col items-start sticky top-0 w-full">
+        <Divider />
+          <div
+            style={{
+              display: 'flex',
+              gap: '1rem',
+            }}
+          >
+            <Button block onClick={handleClearURLsSubmit}>
+              Clear URL List
+            </Button>
+            <Button
+              block
+              onClick={() => clearIndex(setEntries, setCards, namespace)}
+            >
+              Clear Index
+            </Button>
+          </div>
+          <SplittingMethod />
+          <Divider />
           <div className="flex-grow w-full px-4">
             <div className="my-2">
               <FileUpload
@@ -133,7 +162,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 value={newURL}
                 onChange={(e) => setNewURL(e.target.value)}
               />
-              <span>Add URL ⮐</span>
+              <span>Add URL to Crawl ⮐</span>
               <style jsx>{`
                 form {
                   position: relative;
@@ -148,24 +177,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 }
               `}</style>
             </form>
-            <div
-              style={{
-                display: 'flex',
-                gap: '1rem',
-              }}
-            >
-              <Button block onClick={handleClearURLsSubmit}>
-                Clear URL List
-              </Button>
-              <Button
-                block
-                onClick={() => clearIndex(setEntries, setCards, namespace)}
-              >
-                Clear Index
-              </Button>
-            </div>
-            <Divider />
-            <SplittingMethod />
           </div>
           <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
             {splittingMethod === 'recursive' && (
@@ -201,11 +212,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
           </div>
         </div>
         {buttons}
-        <div>
-          {cards?.map((card) => (
-            <Card key={card.metadata.hash} card={card} selected={selected} />
-          ))}
-        </div>
+        {/* TODO: Disable until further notice. {cardContainer()} */}
       </div>
     </Drawer>
   );

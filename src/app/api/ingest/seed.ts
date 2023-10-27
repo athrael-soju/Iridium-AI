@@ -67,8 +67,7 @@ async function seed(
       });
     }
 
-    // Get the vector embeddings for the documents
-    // Warning: For larger files, the chunk size should be increased accordingly.
+    // Get the vector embeddings for the documents. Warning: For larger files, the chunk size should be increased accordingly.
     const vectors = await Promise.all(documents.map(embedDocument));
 
     // Upsert vectors into the Pinecone index
@@ -79,8 +78,7 @@ async function seed(
       console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
     });
-    // TODO: Implement Pagination, or infinite scrolling to avoid performance issues, then remove the limit. Alternatively, only show chunks that have been used in the context.
-    return documents.slice(0, 25); // Return the first 25 documents
+    return documents;
   } catch (error) {
     console.error('Error seeding:', error);
     throw error;
