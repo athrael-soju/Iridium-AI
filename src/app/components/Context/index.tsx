@@ -8,7 +8,6 @@ import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card } from './Card';
 import { clearIndex, crawlDocument } from './utils';
-import FileUpload from '../FileUpload';
 import SplittingMethod from './SplittingMethod';
 import type { ContextFormValues, SplittingMethodOption } from './types';
 
@@ -38,12 +37,14 @@ const DropdownLabel: React.FC<React.PropsWithChildren<{ htmlFor: string }>> = ({
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
-  const [cards, setCards] = useState<CardProps[]>([]);
   const showContext = watch('showContext');
   const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
   const overlap = watch('overlap') ?? 1;
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
+  const cards = watch('cards');
+
+  const setCards = (v: any) => setValue('cards', v);
 
   const [newURL, setNewURL] = useState('');
   const screens = useBreakpoint();
