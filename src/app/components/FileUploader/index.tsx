@@ -17,16 +17,6 @@ interface FileUploaderProps {
 export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const processFile = useProcessFile({ namespace });
-  const splittingMethod = watch('splittingMethod');
-  const chunkSize = watch('chunkSize');
-  const overlap = watch('overlap');
-
-  const options = {
-    splittingMethod,
-    chunkSize,
-    overlap,
-    namespace,
-  };
 
   const props: UploadProps = {
     name: 'file',
