@@ -8,7 +8,8 @@ import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
 import { ChatScrollAnchor } from '@/components/ChatScrollAnchor';
-import PromptInput from '@/components/PromptInput';
+import { PromptInput, PromptInputContainer } from '@/components/PromptInput';
+import { FileUploader } from '@/components';
 import { DARK_BG_COLOR_RGB } from '@/constants';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -22,7 +23,6 @@ const Page: React.FC = () => {
   const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
   const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
@@ -98,11 +98,14 @@ const Page: React.FC = () => {
         isLoading={isLoading}
       />
       <ChatScrollAnchor trackVisibility={isLoading} />
-      <PromptInput
-        input={input}
-        handleMessageSubmit={handleMessageSubmit}
-        handleInputChange={handleInputChange}
-      />
+      <PromptInputContainer>
+        <FileUploader namespace={namespace ?? ''} />
+        <PromptInput
+          input={input}
+          handleMessageSubmit={handleMessageSubmit}
+          handleInputChange={handleInputChange}
+        />
+      </PromptInputContainer>
       <Context selected={context} namespace={namespace.current} />
       <style jsx>{`
         .container {
@@ -110,6 +113,11 @@ const Page: React.FC = () => {
           margin: 0 auto;
           max-width: 100%;
           background-color: ${DARK_BG_COLOR_RGB};
+        }
+
+        .prompt-container {
+          position: relative;
+          display: block;
         }
       `}</style>
     </div>

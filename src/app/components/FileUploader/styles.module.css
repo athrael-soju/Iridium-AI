@@ -1,0 +1,9 @@
+.uploadSvg {
+  position: absolute;
+  left: -50px;
+  bottom: 15px;
+  cursor: pointer;
+  color: gray;
+  width: 30px;
+  height: auto;
+}

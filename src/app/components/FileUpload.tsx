@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FilePond, registerPlugin } from 'react-filepond';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import type { ContextFormValues } from './Context/types';
 
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'filepond/dist/filepond.min.css';
 
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
@@ -13,20 +15,15 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 interface FileUploaderProps {
-  chunkSize: number;
-  overlap: number;
-  setCards: React.Dispatch<React.SetStateAction<any[]>>;
-  namespace: string;
+  namespace: any;
 }
 
-const FileUpload: React.FC<FileUploaderProps> = ({
-  chunkSize,
-  overlap,
-  setCards,
-  namespace,
-}) => {
-  const { watch } = useFormContext();
+const FileUpload: React.FC<FileUploaderProps> = ({ namespace }) => {
+  const { setValue, watch } = useFormContext<ContextFormValues>();
   const splittingMethod = watch('splittingMethod');
+  const chunkSize = watch('chunkSize');
+  const overlap = watch('overlap');
+
   const [files, setFiles] = useState<any[]>([]);
   const [ingesting, setIngesting] = useState(false);
   const options = {
@@ -37,7 +34,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
   };
 
   return (
-    <div>
+    <div className="file-upload-container">
       <FilePond
         files={files}
         onupdatefiles={setFiles}
@@ -81,7 +78,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
                 ) {
                   console.log('File Ingest Successful');
                   const { documents } = await ingestResponse.data;
-                  setCards(documents);
+                  setValue('cards', documents);
                   setIngesting(false);
                 } else {
                   console.log('File Ingest Failed');
@@ -101,12 +98,23 @@ const FileUpload: React.FC<FileUploaderProps> = ({
           },
         }}
         name="file"
-        labelIdle={`<div class="filepond--label-idle"><i class="fas fa-cloud-upload-alt" style="font-size: 60px; color: white; margin-right: 20px;"></i><div >${
-          ingesting
-            ? '<span>Ingesting<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span></span>'
-            : 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-        }</div></div>`}
+        // `<div class="filepond--label-idle"><i class="fas fa-cloud-upload-alt" style="font-size: 60px; color: white; margin-right: 20px;"></i><div >${
+        //   ingesting
+        //     ? '<span>Ingesting<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span></span>'
+        //     : 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+        // }</div></div>`
+        labelIdle={`<div class="filepond--label-idle"
+        styles="display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: 500; height: 100%; width: 100%; background-color: #353740; border-radius: 10px; border: 2px dashed #4F4F4F; cursor: pointer; padding: 20px; box-sizing: border-box;"
+        >
+        <CloudArrowUpIcon/>
+        </div>`}
       />
+      <style jsx>{`
+        .file-upload-container {
+          position: absolute;
+          left: 0;
+        }
+      `}</style>
     </div>
   );
 };

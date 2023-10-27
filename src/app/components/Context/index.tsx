@@ -2,10 +2,11 @@ import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Drawer, Input, Grid, Divider } from 'antd';
 import { useFormContext } from 'react-hook-form';
-import { BG_COLOR_HEX } from '@/constants';
+import { BG_COLOR_HEX, DEFAULT_CHUNK_SIZE } from '@/constants';
+import type { CardProps } from '@/types';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
-import { Card, ICard } from './Card';
+import { Card } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import FileUpload from '../FileUpload';
 import SplittingMethod from './SplittingMethod';
@@ -37,14 +38,14 @@ const DropdownLabel: React.FC<React.PropsWithChildren<{ htmlFor: string }>> = ({
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
-  const [cards, setCards] = useState<ICard[]>([]);
+  const [cards, setCards] = useState<CardProps[]>([]);
   const showContext = watch('showContext');
+  const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
+  const overlap = watch('overlap') ?? 1;
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
 
   const [newURL, setNewURL] = useState('');
-  const [chunkSize, setChunkSize] = useState(256);
-  const [overlap, setOverlap] = useState(1);
   const screens = useBreakpoint();
   const isMobile = screens.xs;
 
@@ -114,14 +115,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
         <div className="flex flex-col items-start sticky top-0 w-full">
           <div className="flex-grow w-full px-4">
-            <div className="my-2">
-              <FileUpload
-                chunkSize={chunkSize}
-                overlap={overlap}
-                setCards={setCards}
-                namespace={namespace}
-              />
-            </div>
             <Divider />
             <form
               onSubmit={handleNewURLSubmit}
@@ -180,7 +173,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                     id="chunkSize"
                     min={1}
                     max={2048}
-                    onChange={(e) => setChunkSize(parseInt(e.target.value))}
+                    onChange={(e) =>
+                      setValue('chunkSize', parseInt(e.target.value))
+                    }
                   />
                 </div>
                 <div className="flex flex-col w-full">
@@ -193,7 +188,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                     id="overlap"
                     min={1}
                     max={200}
-                    onChange={(e) => setOverlap(parseInt(e.target.value))}
+                    onChange={(e) =>
+                      setValue('overlap', parseInt(e.target.value))
+                    }
                   />
                 </div>
               </div>
