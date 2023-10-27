@@ -1,7 +1,5 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-import type { ContextFormValues } from '../Context/types';
 import { message, Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import styles from './styles.module.css';
@@ -13,7 +11,6 @@ interface FileUploaderProps {
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
-  const { setValue, watch } = useFormContext<ContextFormValues>();
   const processFile = useProcessFile({ namespace });
 
   const props: UploadProps = {
