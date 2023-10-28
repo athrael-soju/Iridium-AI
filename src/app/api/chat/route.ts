@@ -27,19 +27,18 @@ export async function POST(req: Request) {
     );
   }
 
-  try {
-    const { messages, namespace, topK } = await req.json();
+  const { messages, namespace, topK } = await req.json();
 
-    // Get the last message
-    const lastMessage = messages[messages.length - 1];
+  // Get the last message
+  const lastMessage = messages[messages.length - 1];
 
-    // Get the context from the last message
-    const context = await getContext(lastMessage.content, namespace, topK);
+  // Get the context from the last message
+  const context = await getContext(lastMessage.content, namespace, topK);
 
-    const prompt = [
-      {
-        role: 'system',
-        content: `AI assistant is a brand new, powerful, human-like artificial intelligence.
+  const prompt = [
+    {
+      role: 'system',
+      content: `AI assistant is a brand new, powerful, human-like artificial intelligence.
       The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.
       AI is a well-behaved and well-mannered individual.
       AI is always friendly, kind, and inspiring, and he is eager to provide vivid and thoughtful responses to the user.
@@ -52,23 +51,20 @@ export async function POST(req: Request) {
       AI assistant will not apologize for previous responses, but instead will indicated new information was gained.
       AI assistant will not invent anything that is not drawn directly from the context.
       `,
-      },
-    ];
+    },
+  ];
 
-    // Ask OpenAI for a streaming chat completion given the prompt
-    const response = await openai.createChatCompletion({
-      model: process.env.OPENAI_API_MODEL ?? 'gpt-3.5-turbo',
-      stream: true,
-      messages: [
-        ...prompt,
-        ...messages.filter((message: Message) => message.role === 'user'),
-      ],
-    });
-    // Convert the response into a friendly text-stream
-    const stream = OpenAIStream(response);
-    // Respond with the stream
-    return new StreamingTextResponse(stream);
-  } catch (e) {
-    throw e;
-  }
+  // Ask OpenAI for a streaming chat completion given the prompt
+  const response = await openai.createChatCompletion({
+    model: process.env.OPENAI_API_MODEL ?? 'gpt-3.5-turbo',
+    stream: true,
+    messages: [
+      ...prompt,
+      ...messages.filter((message: Message) => message.role === 'user'),
+    ],
+  });
+  // Convert the response into a friendly text-stream
+  const stream = OpenAIStream(response);
+  // Respond with the stream
+  return new StreamingTextResponse(stream);
 }
