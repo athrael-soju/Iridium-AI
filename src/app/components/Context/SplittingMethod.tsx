@@ -20,13 +20,19 @@ const options: {
 ];
 
 const SplittingMethod = () => {
-  const { setValue } = useFormContext();
+  const { setValue, register, watch } = useFormContext();
+
+  // Initialize the value if needed
+  const currentMethod = watch('splittingMethod');
+
+  // Register the field so react-hook-form knows about it
+  register('splittingMethod');
 
   return (
     <Container>
       <Form.Item name="splittingMethod" label="Splitting Method">
         <Select
-          defaultValue="markdown"
+          value={currentMethod}
           onChange={(selection) => {
             setValue('splittingMethod', selection);
           }}

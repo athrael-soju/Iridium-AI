@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Drawer, Input, Grid, Divider } from 'antd';
+import { Form, Button, Drawer, Input, Grid, Divider } from 'antd';
+
 import { useFormContext } from 'react-hook-form';
 import { BG_COLOR_HEX } from '@/constants';
 import { getURLs, addURL, clearURLs } from './urls';
@@ -10,7 +11,11 @@ import { clearIndex, crawlDocument } from './utils';
 import FileUpload from '../FileUpload';
 import SplittingMethod from './SplittingMethod';
 import TopKSelection from './TopKSelection';
-import type { ContextFormValues, SplittingMethodOption, topKOption } from './types';
+import type {
+  ContextFormValues,
+  SplittingMethodOption,
+  topKOption,
+} from './types';
 
 interface ContextProps {
   selected: string[] | null;
@@ -42,8 +47,7 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const showContext = watch('showContext');
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
-    const topKSelection: topKOption =
-    watch('topKSelection') ?? 5;
+  const topKSelection: topKOption = watch('topKSelection') ?? 5;
   const [newURL, setNewURL] = useState('');
   const [chunkSize, setChunkSize] = useState(256);
   const [overlap, setOverlap] = useState(1);
@@ -126,6 +130,34 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               />
             </div>
             <Divider />
+            <Form
+              initialValues={{
+                splittingMethod: 'markdown',
+                topKSelection: 5,
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '1rem',
+                }}
+              >
+                <Button block onClick={handleClearURLsSubmit}>
+                  Clear URL List
+                </Button>
+                <Button
+                  block
+                  onClick={() => clearIndex(setEntries, setCards, namespace)}
+                >
+                  Clear Index
+                </Button>
+              </div>
+              <Divider />
+              <TopKSelection />
+              <Divider />
+              <SplittingMethod />
+            </Form>
+            <Divider />
             <form
               onSubmit={handleNewURLSubmit}
               className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
@@ -151,58 +183,41 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                 }
               `}</style>
             </form>
-            <div
-              style={{
-                display: 'flex',
-                gap: '1rem',
-              }}
-            >
-              <Button block onClick={handleClearURLsSubmit}>
-                Clear URL List
-              </Button>
-              <Button
-                block
-                onClick={() => clearIndex(setEntries, setCards, namespace)}
-              >
-                Clear Index
-              </Button>
+          </div>
+          <Form>
+            <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
+              {splittingMethod === 'recursive' && (
+                <div className="my-4 flex flex-col">
+                  <div className="flex flex-col w-full">
+                    <DropdownLabel htmlFor="chunkSize">
+                      Chunk Size: {chunkSize}
+                    </DropdownLabel>
+                    <input
+                      className="p-2 bg-gray-700"
+                      type="range"
+                      id="chunkSize"
+                      min={1}
+                      max={2048}
+                      onChange={(e) => setChunkSize(parseInt(e.target.value))}
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <DropdownLabel htmlFor="overlap">
+                      Overlap: {overlap}
+                    </DropdownLabel>
+                    <input
+                      className="p-2 bg-gray-700"
+                      type="range"
+                      id="overlap"
+                      min={1}
+                      max={200}
+                      onChange={(e) => setOverlap(parseInt(e.target.value))}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-            <Divider />
-            <SplittingMethod />
-            <TopKSelection />
-          </div>
-          <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
-            {splittingMethod === 'recursive' && (
-              <div className="my-4 flex flex-col">
-                <div className="flex flex-col w-full">
-                  <DropdownLabel htmlFor="chunkSize">
-                    Chunk Size: {chunkSize}
-                  </DropdownLabel>
-                  <input
-                    className="p-2 bg-gray-700"
-                    type="range"
-                    id="chunkSize"
-                    min={1}
-                    max={2048}
-                    onChange={(e) => setChunkSize(parseInt(e.target.value))}
-                  />
-                </div>
-                <div className="flex flex-col w-full">
-                  <DropdownLabel htmlFor="overlap">
-                    Overlap: {overlap}
-                  </DropdownLabel>
-                  <input
-                    className="p-2 bg-gray-700"
-                    type="range"
-                    id="overlap"
-                    min={1}
-                    max={200}
-                    onChange={(e) => setOverlap(parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+          </Form>
         </div>
         {buttons}
         <div>

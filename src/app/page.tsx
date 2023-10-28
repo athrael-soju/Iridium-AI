@@ -16,7 +16,7 @@ import type { ContextFormValues, topKOption } from '@/components/Context/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
-  const { watch } = useFormContext<ContextFormValues>();
+const { watch } = useFormContext<ContextFormValues>();
   const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
     required: true,

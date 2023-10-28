@@ -22,13 +22,19 @@ const options: {
 ];
 
 const TopKSelection = () => {
-  const { setValue } = useFormContext();
+  const { setValue, register, watch } = useFormContext();
+
+  // Initialize the value if needed
+  const currentTopK = watch('topKSelection');
+
+  // Register the field so react-hook-form knows about it
+  register('topKSelection');
 
   return (
     <Container>
       <Form.Item name="topKSelection" label="Top K Elements">
         <Select
-          defaultValue={5}
+          value={currentTopK}
           onChange={(selection) => {
             setValue('topKSelection', selection);
           }}
