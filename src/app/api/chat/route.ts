@@ -8,7 +8,6 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 export const runtime = 'edge';
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 export async function POST(req: Request) {
   if (!process.env.PINECONE_ENVIRONMENT) {
     return new Response(
@@ -70,7 +69,6 @@ export async function POST(req: Request) {
     // Respond with the stream
     return new StreamingTextResponse(stream);
   } catch (e) {
-    console.error(e);
     throw e;
   }
 }

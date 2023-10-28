@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { getContext } from '@/utils/context';
 import { ScoredPineconeRecord } from '@pinecone-database/pinecone';
 
-/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 export async function POST(req: Request) {
   try {
     const { messages, namespace, topK } = await req.json();
@@ -18,7 +17,6 @@ export async function POST(req: Request) {
     )) as ScoredPineconeRecord[];
     return NextResponse.json({ context });
   } catch (e) {
-    console.error(e);
     return NextResponse.error();
   }
 }
