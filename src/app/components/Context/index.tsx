@@ -158,36 +158,16 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               <SplittingMethod />
             </Form>
             <Divider />
-            <form
-              onSubmit={handleNewURLSubmit}
-              className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
-            >
-              <Input
-                size="large"
-                type="text"
-                value={newURL}
-                onChange={(e) => setNewURL(e.target.value)}
-              />
-              <span>Add URL ⮐</span>
-              <style jsx>{`
-                form {
-                  position: relative;
-                  margin-bottom: 1rem;
-                }
-
-                span {
-                  position: absolute;
-                  top: 8px;
-                  right: 10px;
-                  color: #fff;
-                }
-              `}</style>
-            </form>
           </div>
           <Form>
             <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
               {splittingMethod === 'recursive' && (
-                <div className="my-4 flex flex-col">
+                <div
+                  className="my-4 flex flex-col"
+                  style={{
+                    color: 'white',
+                  }}
+                >
                   <div className="flex flex-col w-full">
                     <DropdownLabel htmlFor="chunkSize">
                       Chunk Size: {chunkSize}
@@ -218,8 +198,35 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               )}
             </div>
           </Form>
+          <Divider />
+          <form
+            onSubmit={handleNewURLSubmit}
+            className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
+          >
+            <Input
+              size="large"
+              type="text"
+              value={newURL}
+              onChange={(e) => setNewURL(e.target.value)}
+            />
+            <span>Add URL ⮐</span>
+            <style jsx>{`
+              form {
+                position: relative;
+                margin-bottom: 1rem;
+              }
+
+              span {
+                position: absolute;
+                top: 8px;
+                right: 10px;
+                color: #fff;
+              }
+            `}</style>
+          </form>
         </div>
         {buttons}
+        <Divider />
         <div>
           {cards?.map((card) => (
             <Card key={card.metadata.hash} card={card} selected={selected} />
