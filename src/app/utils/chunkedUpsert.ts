@@ -6,7 +6,6 @@ const sliceIntoChunks = <T>(arr: T[], chunkSize: number) => {
   );
 };
 
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 export const chunkedUpsert = async (
   index: Index,
   vectors: Array<PineconeRecord>,
@@ -23,7 +22,7 @@ export const chunkedUpsert = async (
         try {
           await index.namespace(namespace).upsert(vectors);
         } catch (e) {
-          console.log('Error upserting chunk', e);
+          throw new Error(`Error upserting vectors into index: ${e}`);
         }
       })
     );

@@ -23,7 +23,6 @@ interface SeedOptions {
 }
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
 
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 async function seed(
   filename: string,
   path: string,
@@ -77,13 +76,11 @@ async function seed(
     const filesToDelete = readdirSync(path);
 
     filesToDelete.forEach((file) => {
-      console.log('Deleting file: ', file);
       unlinkSync(`${path}/${file}`);
     });
     // TODO: Implement Pagination, or infinite scrolling to avoid performance issues, then remove the limit. Alternatively, only show chunks that have been used in the context.
     return documents.slice(0, 25); // Return the first 25 documents
   } catch (error) {
-    console.error('Error seeding:', error);
     throw error;
   }
 }
@@ -109,7 +106,6 @@ async function embedDocument(doc: Document): Promise<PineconeRecord> {
       },
     } as PineconeRecord;
   } catch (error) {
-    console.log('Error embedding document: ', error);
     throw error;
   }
 }

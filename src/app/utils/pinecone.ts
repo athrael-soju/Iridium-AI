@@ -10,7 +10,6 @@ export type Metadata = {
   hash: string;
 };
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 const getMatchesFromEmbeddings = async (
   embeddings: number[],
   topK: number,
@@ -43,10 +42,8 @@ const getMatchesFromEmbeddings = async (
       topK,
       includeMetadata: true,
     });
-    return queryResult.matches as ScoredPineconeRecord<Metadata>[];
+    return queryResult.matches;
   } catch (e) {
-    // Log the error and throw it
-    console.log('Error querying embeddings: ', e);
     throw new Error(`Error querying embeddings: ${e}`);
   }
 };

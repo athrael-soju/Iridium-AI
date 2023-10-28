@@ -3,7 +3,6 @@ import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import type { SplittingMethodOption } from './types';
 
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 const Container = styled.div`
   margin: 1rem auto;
 
@@ -29,7 +28,6 @@ const SplittingMethod = () => {
         <Select
           defaultValue="markdown"
           onChange={(v) => {
-            console.log(v);
             setValue('splittingMethod', v);
           }}
           options={options}

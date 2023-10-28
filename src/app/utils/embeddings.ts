@@ -1,6 +1,5 @@
 import { OpenAIApi, Configuration } from 'openai-edge';
 
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 export async function getEmbeddings(input: string) {
   if (!process.env.OPENAI_API_KEY) {
     return new Response(
@@ -28,7 +27,6 @@ export async function getEmbeddings(input: string) {
     const result = await response.json();
     return result.data[0].embedding as number[];
   } catch (e) {
-    console.log('Error calling OpenAI embedding API: ', e);
     throw new Error(`Error calling OpenAI embedding API: ${e}`);
   }
 }

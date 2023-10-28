@@ -1,7 +1,6 @@
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
@@ -14,17 +13,15 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const path = process.env.FILE_UPLOAD_PATH as string;
-    
+
     if (!existsSync(path)) {
       mkdirSync(path, { recursive: true });
     }
 
     writeFileSync(path + file.name, buffer);
-    console.log(`Successfullly uploaded ${file.name}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error uploading:', error);
     throw error;
   }
 }

@@ -18,7 +18,6 @@ interface FileUploaderProps {
   setCards: React.Dispatch<React.SetStateAction<any[]>>;
   namespace: string;
 }
-/* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 const FileUpload: React.FC<FileUploaderProps> = ({
   chunkSize,
   overlap,
@@ -48,8 +47,6 @@ const FileUpload: React.FC<FileUploaderProps> = ({
           process: (fieldName, file, metadata, load, error, progress) => {
             let formData = new FormData();
             formData.set('file', file);
-            console.log('File Upload Initiated...');
-
             const config: AxiosRequestConfig = {
               onUploadProgress: function (e: AxiosProgressEvent) {
                 const total = e?.total ?? 0;
@@ -67,9 +64,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
               .post('/api/upload', formData, config)
               .then(async function (response) {
                 load(response.data);
-                console.log('File Upload Successful...');
                 let filename = file.name;
-                console.log('File Ingest Initiated...');
                 const ingestResponse = await axios.post('/api/ingest', {
                   filename,
                   options: options,
@@ -79,12 +74,10 @@ const FileUpload: React.FC<FileUploaderProps> = ({
                   ingestResponse.status >= 200 &&
                   ingestResponse.status < 300
                 ) {
-                  console.log('File Ingest Successful');
                   const { documents } = await ingestResponse.data;
                   setCards(documents);
                   setIngesting(false);
                 } else {
-                  console.log('File Ingest Failed');
                   throw new Error('File Ingest Failed');
                 }
               })
