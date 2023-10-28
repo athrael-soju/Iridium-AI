@@ -154,50 +154,46 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               </div>
               <Divider />
               <TopKSelection />
-              <Divider />
               <SplittingMethod />
+              <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
+                {splittingMethod === 'recursive' && (
+                  <div
+                    className="my-4 flex flex-col"
+                    style={{
+                      color: 'white',
+                    }}
+                  >
+                    <div className="flex flex-col w-full">
+                      <DropdownLabel htmlFor="chunkSize">
+                        Chunk Size: {chunkSize}
+                      </DropdownLabel>
+                      <input
+                        className="p-2 bg-gray-700"
+                        type="range"
+                        id="chunkSize"
+                        min={1}
+                        max={2048}
+                        onChange={(e) => setChunkSize(parseInt(e.target.value))}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <DropdownLabel htmlFor="overlap">
+                        Overlap: {overlap}
+                      </DropdownLabel>
+                      <input
+                        className="p-2 bg-gray-700"
+                        type="range"
+                        id="overlap"
+                        min={1}
+                        max={200}
+                        onChange={(e) => setOverlap(parseInt(e.target.value))}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </Form>
-            <Divider />
           </div>
-          <Form>
-            <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
-              {splittingMethod === 'recursive' && (
-                <div
-                  className="my-4 flex flex-col"
-                  style={{
-                    color: 'white',
-                  }}
-                >
-                  <div className="flex flex-col w-full">
-                    <DropdownLabel htmlFor="chunkSize">
-                      Chunk Size: {chunkSize}
-                    </DropdownLabel>
-                    <input
-                      className="p-2 bg-gray-700"
-                      type="range"
-                      id="chunkSize"
-                      min={1}
-                      max={2048}
-                      onChange={(e) => setChunkSize(parseInt(e.target.value))}
-                    />
-                  </div>
-                  <div className="flex flex-col w-full">
-                    <DropdownLabel htmlFor="overlap">
-                      Overlap: {overlap}
-                    </DropdownLabel>
-                    <input
-                      className="p-2 bg-gray-700"
-                      type="range"
-                      id="overlap"
-                      min={1}
-                      max={200}
-                      onChange={(e) => setOverlap(parseInt(e.target.value))}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </Form>
           <Divider />
           <form
             onSubmit={handleNewURLSubmit}
