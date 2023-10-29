@@ -28,7 +28,6 @@ const SplittingMethod = () => {
         <Select
           defaultValue="markdown"
           onChange={(v) => {
-            console.log(v);
             setValue('splittingMethod', v);
           }}
           options={options}

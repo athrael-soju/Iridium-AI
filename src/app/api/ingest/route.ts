@@ -16,7 +16,6 @@ export async function POST(req: Request) {
     );
     return NextResponse.json({ success: true, documents });
   } catch (error) {
-    console.error('Error seeding:', error);
     return NextResponse.json({ success: false, error });
   }
 }
