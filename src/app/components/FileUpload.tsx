@@ -19,7 +19,6 @@ interface FileUploaderProps {
   setCards: React.Dispatch<React.SetStateAction<any[]>>;
   namespace: string;
 }
-
 const FileUpload: React.FC<FileUploaderProps> = ({
   chunkSize,
   topK,

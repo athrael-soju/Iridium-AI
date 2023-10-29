@@ -17,7 +17,6 @@ export async function POST(req: Request) {
     )) as ScoredPineconeRecord[];
     return NextResponse.json({ context });
   } catch (e) {
-    console.log(e);
     return NextResponse.error();
   }
 }
