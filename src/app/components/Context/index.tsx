@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Form, Button, Drawer, Input, Grid, Divider } from 'antd';
-
 import { useFormContext } from 'react-hook-form';
 import { BG_COLOR_HEX, DEFAULT_CHUNK_SIZE } from '@/constants';
 import { getURLs, addURL, clearURLs } from './urls';
@@ -48,6 +47,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
   const topKSelection: topKOption = watch('topKSelection') ?? 5;
+  const cards = watch('cards');
+  const setCards = (v: any) => setValue('cards', v);
+
   const [newURL, setNewURL] = useState('');
   const screens = useBreakpoint();
   const isMobile = screens.xs;
@@ -162,7 +164,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                         id="chunkSize"
                         min={1}
                         max={2048}
-                        onChange={(e) => setChunkSize(parseInt(e.target.value))}
+                        onChange={(e) =>
+                          setValue('chunkSize', parseInt(e.target.value))
+                        }
                       />
                     </div>
                     <div className="flex flex-col w-full">
@@ -175,7 +179,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                         id="overlap"
                         min={1}
                         max={200}
-                        onChange={(e) => setOverlap(parseInt(e.target.value))}
+                        onChange={(e) =>
+                          setValue('overlap', parseInt(e.target.value))
+                        }
                       />
                     </div>
                   </div>
