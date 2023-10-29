@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { Form, Button, Drawer, Input, Grid, Divider } from 'antd';
 
 import { useFormContext } from 'react-hook-form';
-import { BG_COLOR_HEX } from '@/constants';
+import { BG_COLOR_HEX, DEFAULT_CHUNK_SIZE } from '@/constants';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
-import { Card, ICard } from './Card';
+import { Card } from './Card';
 import { clearIndex, crawlDocument } from './utils';
-import FileUpload from '../FileUpload';
 import SplittingMethod from './SplittingMethod';
 import TopKSelection from './TopKSelection';
 import type {
@@ -43,14 +42,13 @@ const DropdownLabel: React.FC<React.PropsWithChildren<{ htmlFor: string }>> = ({
 export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [entries, setEntries] = useState(getURLs);
-  const [cards, setCards] = useState<ICard[]>([]);
   const showContext = watch('showContext');
+  const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
+  const overlap = watch('overlap') ?? 1;
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
   const topKSelection: topKOption = watch('topKSelection') ?? 5;
   const [newURL, setNewURL] = useState('');
-  const [chunkSize, setChunkSize] = useState(256);
-  const [overlap, setOverlap] = useState(1);
   const screens = useBreakpoint();
   const isMobile = screens.xs;
 
@@ -120,15 +118,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
         <div className="flex flex-col items-start sticky top-0 w-full">
           <div className="flex-grow w-full px-4">
-            <div className="my-2">
-              <FileUpload
-                chunkSize={chunkSize}
-                topK={topKSelection}
-                overlap={overlap}
-                setCards={setCards}
-                namespace={namespace}
-              />
-            </div>
             <Divider />
             <Form
               initialValues={{

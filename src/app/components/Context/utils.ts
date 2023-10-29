@@ -1,10 +1,10 @@
 import { IUrlEntry } from './UrlButton';
-import { ICard } from './Card';
+import { CardProps } from '../../types';
 
 export async function crawlDocument(
   url: string,
   setEntries: React.Dispatch<React.SetStateAction<IUrlEntry[]>>,
-  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
+  setCards: React.Dispatch<React.SetStateAction<CardProps[]>>,
   splittingMethod: string,
   chunkSize: number,
   overlap: number,
@@ -42,7 +42,7 @@ export async function crawlDocument(
 
 export async function clearIndex(
   setEntries: React.Dispatch<React.SetStateAction<IUrlEntry[]>>,
-  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
+  setCards: React.Dispatch<React.SetStateAction<CardProps[]>>,
   namespace: string
 ) {
   const response = await fetch('/api/clearIndex', {
