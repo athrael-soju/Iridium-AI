@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Button, Drawer, Input, Grid, Divider } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import { BG_COLOR_HEX, DEFAULT_CHUNK_SIZE } from '@/constants';
-import type { CardProps } from '@/types';
 import { getURLs, addURL, clearURLs } from './urls';
 import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card } from './Card';
@@ -43,8 +42,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
   const cards = watch('cards');
-
-  console.log('cards', cards);
 
   const setCards = (v: any) => setValue('cards', v);
 

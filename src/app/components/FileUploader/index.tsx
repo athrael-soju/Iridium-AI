@@ -1,42 +1,51 @@
 import React from 'react';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-import { message, Upload } from 'antd';
-import type { UploadProps } from 'antd';
-import styles from './styles.module.css';
-
+import { Upload, Tooltip } from 'antd';
+import styled from 'styled-components';
 import useProcessFile from './useProcessFile';
 
 interface FileUploaderProps {
   namespace: any;
 }
 
-export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
-  const processFile = useProcessFile({ namespace });
+const Container = styled.div`
+  .uploadSvg {
+    position: absolute;
+    left: 15px;
+    bottom: 18.5px;
+    cursor: pointer;
+    color: gray;
+    width: 21px;
+    height: auto;
+    z-index: 1;
+  }
 
-  const props: UploadProps = {
-    name: 'file',
-    showUploadList: false,
-    beforeUpload: (file) => {
-      console.log('beforeUpload', file);
-      return false;
-    },
-    onChange(info) {
-      processFile(info.file);
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+  .ant-upload-wrapper {
+    color: #fff !important;
+    display: block !important;
+    margin-bottom: 20px !important;
+  }
+
+  .ant-upload-list-item-name {
+    padding: 0 !important;
+  }
+
+  .ant-upload-icon {
+    display: none !important;
+  }
+`;
+
+export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
+  const props = useProcessFile({ namespace });
 
   return (
-    <Upload {...props}>
-      <CloudArrowUpIcon className={styles.uploadSvg} />
-    </Upload>
+    <Container>
+      <Upload {...props}>
+        <Tooltip title="Upload file for ingestion and processing into the database">
+          <CloudArrowUpIcon className="uploadSvg" />
+        </Tooltip>
+      </Upload>
+    </Container>
   );
 };
 
