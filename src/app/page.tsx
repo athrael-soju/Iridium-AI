@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState, FormEvent } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { notification } from 'antd';
 import { useChat } from 'ai/react';
 import { useSession } from 'next-auth/react';
@@ -11,10 +12,12 @@ import { ChatScrollAnchor } from '@/components/ChatScrollAnchor';
 import { PromptInput, PromptInputContainer } from '@/components/PromptInput';
 import { FileUploader } from '@/components';
 import { DARK_BG_COLOR_RGB } from '@/constants';
+import type { ContextFormValues, topKOption } from '@/components/Context/types';
 
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
+const { watch } = useFormContext<ContextFormValues>();
   const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
     required: true,
@@ -23,8 +26,7 @@ const Page: React.FC = () => {
   const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
-  const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
-
+  const topK: topKOption = watch('topKSelection') ?? 5;
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       body: {

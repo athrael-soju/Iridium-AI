@@ -14,12 +14,14 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 interface FileUploaderProps {
   chunkSize: number;
+  topK: number;
   overlap: number;
   setCards: React.Dispatch<React.SetStateAction<any[]>>;
   namespace: string;
 }
 const FileUpload: React.FC<FileUploaderProps> = ({
   chunkSize,
+  topK,
   overlap,
   setCards,
   namespace,
@@ -30,6 +32,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
   const [ingesting, setIngesting] = useState(false);
   const options = {
     splittingMethod,
+    topK,
     chunkSize,
     overlap,
     namespace,
@@ -87,9 +90,7 @@ const FileUpload: React.FC<FileUploaderProps> = ({
               });
 
             return {
-              abort: () => {
-                // axios does not provide an abort method, so we leave this empty
-              },
+              abort: () => {},
             };
           },
         }}

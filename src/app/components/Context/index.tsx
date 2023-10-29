@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Drawer, Input, Grid, Divider } from 'antd';
+import { Form, Button, Drawer, Input, Grid, Divider } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import { BG_COLOR_HEX, DEFAULT_CHUNK_SIZE } from '@/constants';
 import { getURLs, addURL, clearURLs } from './urls';
@@ -8,6 +8,7 @@ import UrlButton, { IUrlEntry } from './UrlButton';
 import { Card } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import SplittingMethod from './SplittingMethod';
+import TopKSelection from './TopKSelection';
 import type { ContextFormValues, SplittingMethodOption } from './types';
 
 interface ContextProps {
@@ -42,7 +43,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
   const cards = watch('cards');
-
   const setCards = (v: any) => setValue('cards', v);
 
   const [newURL, setNewURL] = useState('');
@@ -116,88 +116,103 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
         <div className="flex flex-col items-start sticky top-0 w-full">
           <div className="flex-grow w-full px-4">
             <Divider />
-            <form
-              onSubmit={handleNewURLSubmit}
-              className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
-            >
-              <Input
-                size="large"
-                type="text"
-                value={newURL}
-                onChange={(e) => setNewURL(e.target.value)}
-              />
-              <span>Add URL ⮐</span>
-              <style jsx>{`
-                form {
-                  position: relative;
-                  margin-bottom: 1rem;
-                }
-
-                span {
-                  position: absolute;
-                  top: 8px;
-                  right: 10px;
-                  color: #fff;
-                }
-              `}</style>
-            </form>
-            <div
-              style={{
-                display: 'flex',
-                gap: '1rem',
+            <Form
+              initialValues={{
+                splittingMethod: 'markdown',
+                topKSelection: 5,
               }}
             >
-              <Button block onClick={handleClearURLsSubmit}>
-                Clear URL List
-              </Button>
-              <Button
-                block
-                onClick={() => clearIndex(setEntries, setCards, namespace)}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '1rem',
+                }}
               >
-                Clear Index
-              </Button>
-            </div>
-            <Divider />
-            <SplittingMethod />
-          </div>
-          <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
-            {splittingMethod === 'recursive' && (
-              <div className="my-4 flex flex-col">
-                <div className="flex flex-col w-full">
-                  <DropdownLabel htmlFor="chunkSize">
-                    Chunk Size: {chunkSize}
-                  </DropdownLabel>
-                  <input
-                    className="p-2 bg-gray-700"
-                    type="range"
-                    id="chunkSize"
-                    min={1}
-                    max={2048}
-                    onChange={(e) =>
-                      setValue('chunkSize', parseInt(e.target.value))
-                    }
-                  />
-                </div>
-                <div className="flex flex-col w-full">
-                  <DropdownLabel htmlFor="overlap">
-                    Overlap: {overlap}
-                  </DropdownLabel>
-                  <input
-                    className="p-2 bg-gray-700"
-                    type="range"
-                    id="overlap"
-                    min={1}
-                    max={200}
-                    onChange={(e) =>
-                      setValue('overlap', parseInt(e.target.value))
-                    }
-                  />
-                </div>
+                <Button block onClick={handleClearURLsSubmit}>
+                  Clear URL List
+                </Button>
+                <Button
+                  block
+                  onClick={() => clearIndex(setEntries, setCards, namespace)}
+                >
+                  Clear Index
+                </Button>
               </div>
-            )}
+              <Divider />
+              <TopKSelection />
+              <SplittingMethod />
+              <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
+                {splittingMethod === 'recursive' && (
+                  <div
+                    className="my-4 flex flex-col"
+                    style={{
+                      color: 'white',
+                    }}
+                  >
+                    <div className="flex flex-col w-full">
+                      <DropdownLabel htmlFor="chunkSize">
+                        Chunk Size: {chunkSize}
+                      </DropdownLabel>
+                      <input
+                        className="p-2 bg-gray-700"
+                        type="range"
+                        id="chunkSize"
+                        min={1}
+                        max={2048}
+                        onChange={(e) =>
+                          setValue('chunkSize', parseInt(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <DropdownLabel htmlFor="overlap">
+                        Overlap: {overlap}
+                      </DropdownLabel>
+                      <input
+                        className="p-2 bg-gray-700"
+                        type="range"
+                        id="overlap"
+                        min={1}
+                        max={200}
+                        onChange={(e) =>
+                          setValue('overlap', parseInt(e.target.value))
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Form>
           </div>
+          <Divider />
+          <form
+            onSubmit={handleNewURLSubmit}
+            className="mt-5 mb-5 relative bg-gray-700 rounded-lg"
+          >
+            <Input
+              size="large"
+              type="text"
+              value={newURL}
+              onChange={(e) => setNewURL(e.target.value)}
+            />
+            <span>Add URL ⮐</span>
+            <style jsx>{`
+              form {
+                position: relative;
+                margin-bottom: 1rem;
+              }
+
+              span {
+                position: absolute;
+                top: 8px;
+                right: 10px;
+                color: #fff;
+              }
+            `}</style>
+          </form>
         </div>
         {buttons}
+        <Divider />
         <div>
           {cards?.map((card) => (
             <Card key={card.metadata.hash} card={card} selected={selected} />
