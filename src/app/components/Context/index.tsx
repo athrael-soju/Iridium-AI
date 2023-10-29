@@ -9,11 +9,7 @@ import { Card } from './Card';
 import { clearIndex, crawlDocument } from './utils';
 import SplittingMethod from './SplittingMethod';
 import TopKSelection from './TopKSelection';
-import type {
-  ContextFormValues,
-  SplittingMethodOption,
-  topKOption,
-} from './types';
+import type { ContextFormValues, SplittingMethodOption } from './types';
 
 interface ContextProps {
   selected: string[] | null;
@@ -46,7 +42,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
   const overlap = watch('overlap') ?? 1;
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
-  const topKSelection: topKOption = watch('topKSelection') ?? 5;
   const cards = watch('cards');
   const setCards = (v: any) => setValue('cards', v);
 
