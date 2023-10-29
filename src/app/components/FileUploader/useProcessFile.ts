@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
-import { set, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import axios, { AxiosRequestConfig, AxiosProgressEvent } from 'axios';
 import { message } from 'antd';
-import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
+import type { UploadFileStatus } from 'antd/es/upload/interface';
 import type { UploadProps } from 'antd';
 import type { ContextFormValues } from '../Context/types';
 
@@ -40,7 +40,7 @@ const useFileProcessor = ({ namespace }: { namespace: string }) => {
 
       axios
         .post('/api/upload', formData, config)
-        .then(async function (response) {
+        .then(async function () {
           const filename = file?.name;
           message.success('File Uploaded Successfully');
 
@@ -94,15 +94,13 @@ const useFileProcessor = ({ namespace }: { namespace: string }) => {
         ]
       : [],
     maxCount: 1,
-    beforeUpload: (file) => {
+    beforeUpload: () => {
       return false;
     },
     onChange(info) {
       setFileName(info.file.name);
       processFile(info.file);
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
+
       if (info.file.status === 'done') {
         message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === 'error') {
