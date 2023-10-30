@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosProgressEvent } from 'axios';
 import { message } from 'antd';
 import type {
   UploadFileStatus,
-  UploadListProgressProps,
+  // UploadListProgressProps,
 } from 'antd/es/upload/interface';
 import type { UploadProps } from 'antd';
 import type { ContextFormValues } from '../Context/types';
@@ -80,15 +80,15 @@ const useUploadProps = ({ namespace }: { namespace: string }) => {
     [setValue, splittingMethod, chunkSize, overlap, namespace]
   );
 
-  const progress: UploadListProgressProps = {
-    strokeColor: {
-      '0%': '#108ee9',
-      '100%': '#87d068',
-    },
-    size: 3,
-    strokeWidth: 3,
-    format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-  };
+  // const progress: UploadListProgressProps = {
+  //   strokeColor: {
+  //     '0%': '#108ee9',
+  //     '100%': '#87d068',
+  //   },
+  //   size: 3,
+  //   strokeWidth: 3,
+  //   format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
+  // };
 
   const props: UploadProps = {
     name: 'file',
