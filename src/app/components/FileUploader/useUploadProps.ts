@@ -2,11 +2,14 @@ import { useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import axios, { AxiosRequestConfig, AxiosProgressEvent } from 'axios';
 import { message } from 'antd';
-import type { UploadFileStatus } from 'antd/es/upload/interface';
+import type {
+  UploadFileStatus,
+  // UploadListProgressProps,
+} from 'antd/es/upload/interface';
 import type { UploadProps } from 'antd';
 import type { ContextFormValues } from '../Context/types';
 
-const useFileProcessor = ({ namespace }: { namespace: string }) => {
+const useUploadProps = ({ namespace }: { namespace: string }) => {
   const { setValue, watch } = useFormContext<ContextFormValues>();
   const [percent, setPercent] = useState(0);
   const [status, setStatus] = useState<UploadFileStatus>();
@@ -77,6 +80,16 @@ const useFileProcessor = ({ namespace }: { namespace: string }) => {
     [setValue, splittingMethod, chunkSize, overlap, namespace]
   );
 
+  // const progress: UploadListProgressProps = {
+  //   strokeColor: {
+  //     '0%': '#108ee9',
+  //     '100%': '#87d068',
+  //   },
+  //   size: 3,
+  //   strokeWidth: 3,
+  //   format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
+  // };
+
   const props: UploadProps = {
     name: 'file',
     showUploadList: {
@@ -107,17 +120,10 @@ const useFileProcessor = ({ namespace }: { namespace: string }) => {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    progress: {
-      strokeColor: {
-        '0%': '#108ee9',
-        '100%': '#87d068',
-      },
-      strokeWidth: 3,
-      format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-    },
+    // progress,
   };
 
   return props;
 };
 
-export default useFileProcessor;
+export default useUploadProps;
