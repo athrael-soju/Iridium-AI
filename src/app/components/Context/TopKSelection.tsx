@@ -2,6 +2,7 @@ import { Form, Select } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import type { topKOption } from './types';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   margin: 1rem auto;
@@ -24,21 +25,33 @@ const options: {
 const TopKSelection = () => {
   const { setValue, register, watch } = useFormContext();
 
-  // Initialize the value if needed
   const currentTopK = watch('topKSelection');
-
-  // Register the field so react-hook-form knows about it
   register('topKSelection');
+
+  // Set the initial value upon component mount
+  useEffect(() => {
+    if (currentTopK === undefined) {
+      setValue('topKSelection', options[0].value);
+    }
+  }, [setValue, currentTopK]);
+
+  const modifiedOptions = options.map((option) => ({
+    value: option.value,
+    label:
+      currentTopK === option.value
+        ? `Top K Returned: ${option.label}`
+        : option.label,
+  }));
 
   return (
     <Container>
-      <Form.Item name="topKSelection" label="Top K Elements">
+      <Form.Item name="topKSelection">
         <Select
           value={currentTopK}
           onChange={(selection) => {
             setValue('topKSelection', selection);
           }}
-          options={options}
+          options={modifiedOptions}
         />
       </Form.Item>
     </Container>
