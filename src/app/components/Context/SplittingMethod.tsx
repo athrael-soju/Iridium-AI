@@ -2,6 +2,7 @@ import { Form, Select } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import type { SplittingMethodOption } from './types';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   margin: 1rem auto;
@@ -15,28 +16,40 @@ const options: {
   value: SplittingMethodOption;
   label: string;
 }[] = [
-  { value: 'markdown', label: 'Markdown Splitting' },
-  { value: 'recursive', label: 'Recursive Text Splitting' },
+  { value: 'markdown', label: 'Markdown' },
+  { value: 'recursive', label: 'Recursive' },
 ];
 
 const SplittingMethod = () => {
   const { setValue, register, watch } = useFormContext();
 
-  // Initialize the value if needed
   const currentMethod = watch('splittingMethod');
-
-  // Register the field so react-hook-form knows about it
   register('splittingMethod');
+
+  // Set the initial value upon component mount
+  useEffect(() => {
+    if (currentMethod === undefined) {
+      setValue('splittingMethod', options[0].value);
+    }
+  }, [setValue, currentMethod]);
+
+  const modifiedOptions = options.map((option) => ({
+    value: option.value,
+    label:
+      currentMethod === option.value
+        ? `Splitting Method: ${option.label}`
+        : option.label,
+  }));
 
   return (
     <Container>
-      <Form.Item name="splittingMethod" label="Splitting Method">
+      <Form.Item name="splittingMethod">
         <Select
           value={currentMethod}
           onChange={(selection) => {
             setValue('splittingMethod', selection);
           }}
-          options={options}
+          options={modifiedOptions}
         />
       </Form.Item>
     </Container>

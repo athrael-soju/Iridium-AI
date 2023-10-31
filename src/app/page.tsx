@@ -11,13 +11,17 @@ import Chat from '@/components/Chat';
 import { ChatScrollAnchor } from '@/components/ChatScrollAnchor';
 import { PromptInput, PromptInputContainer } from '@/components/PromptInput';
 import { FileUploader } from '@/components';
-import { DARK_BG_COLOR_RGB } from '@/constants';
-import type { ContextFormValues, topKOption } from '@/components/Context/types';
-
+import { DARK_BG_COLOR_RGB, DEFAULT_CHUNK_SIZE } from '@/constants';
+import type {
+  ContextFormValues,
+  topKOption,
+  SplittingMethodOption,
+} from '@/components/Context/types';
+import { crawlDocument } from '@/components/Context/utils';
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
-const { watch } = useFormContext<ContextFormValues>();
+  const { setValue, watch } = useFormContext<ContextFormValues>();
   const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
     required: true,
@@ -27,8 +31,15 @@ const { watch } = useFormContext<ContextFormValues>();
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
   const topK: topKOption = watch('topKSelection') ?? 5;
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
+  const setCards = (v: any) => setValue('cards', v);
+
+  const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
+  const overlap = watch('overlap') ?? 1;
+  const splittingMethod: SplittingMethodOption =
+    watch('splittingMethod') ?? 'markdown';
+
+  let { messages, input, handleInputChange, handleSubmit, isLoading } = useChat(
+    {
       body: {
         namespace: namespace.current,
         topK,
@@ -43,11 +54,26 @@ const { watch } = useFormContext<ContextFormValues>();
           placement: 'bottomRight',
         });
       },
-    });
+    }
+  );
   const prevMessagesLengthRef = useRef(messages.length);
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (input.toLowerCase().startsWith('crawl')) {
+      let crawlInput = input.replace(/^crawl\s*/, '');
+      const url = validateAndReturnURL(crawlInput).toString();
+
+      crawlDocument(
+        url,
+        setCards,
+        splittingMethod,
+        chunkSize,
+        overlap,
+        namespace.current
+      );
+    }
     handleSubmit(e);
     setContext(null);
     setGotMessages(false);
@@ -89,6 +115,17 @@ const { watch } = useFormContext<ContextFormValues>();
 
     prevMessagesLengthRef.current = messages.length;
   }, [messages, gotMessages, topK]);
+
+  const validateAndReturnURL = (newURL: string) => {
+    let url;
+    try {
+      url = new URL(newURL).toString();
+    } catch (e) {
+      const baseUrl = 'https://www.google.com/search?q=';
+      url = new URL(baseUrl + newURL.replaceAll(' ', '%20'));
+    }
+    return url;
+  };
 
   return (
     <div className="container">
