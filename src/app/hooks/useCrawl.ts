@@ -10,7 +10,9 @@ export const useCrawl = () => {
     splittingMethod: string,
     chunkSize: number,
     overlap: number,
-    namespace: string
+    namespace: string,
+    maxDepth: number,
+    maxPages: number
   ) => {
     const config: AxiosRequestConfig = {
       headers: { 'Content-Type': 'application/json' },
@@ -21,6 +23,8 @@ export const useCrawl = () => {
           chunkSize,
           overlap,
           namespace,
+          maxDepth,
+          maxPages,
         },
       },
     };
@@ -33,7 +37,6 @@ export const useCrawl = () => {
       setValue('cards', documents);
     } catch (error) {
       setValue('loading', false);
-      console.error('An error occurred:', error);
     }
   };
 
