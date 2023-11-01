@@ -15,23 +15,27 @@ interface SeedOptions {
   chunkSize: number;
   chunkOverlap: number;
   namespace: string;
+  maxDepth: number;
+  maxPages: number;
 }
 
 type DocumentSplitter = RecursiveCharacterTextSplitter | MarkdownTextSplitter;
-async function seed(
-  url: string,
-  limit: number,
-  indexName: string,
-  options: SeedOptions
-) {
+async function seed(url: string, indexName: string, options: SeedOptions) {
   // Initialize the Pinecone client
   const pinecone = new Pinecone();
 
   // Destructure the options object
-  const { splittingMethod, chunkSize, chunkOverlap, namespace } = options;
+  const {
+    splittingMethod,
+    chunkSize,
+    chunkOverlap,
+    namespace,
+    maxDepth,
+    maxPages,
+  } = options;
 
   // Create a new Crawler with depth 1 and maximum pages as limit
-  const crawler = new Crawler(1, limit || 100);
+  const crawler = new Crawler(maxDepth, maxPages || 100);
 
   // Crawl the given URL and get the pages
   const pages = await crawler.crawl(url);

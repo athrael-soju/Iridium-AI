@@ -7,7 +7,9 @@ export async function crawlDocument(
   splittingMethod: string,
   chunkSize: number,
   overlap: number,
-  namespace: string
+  namespace: string,
+  maxDepth: number,
+  maxPages: number
 ): Promise<void> {
   const response = await fetch('/api/crawl', {
     method: 'POST',
@@ -19,6 +21,8 @@ export async function crawlDocument(
         chunkSize,
         overlap,
         namespace,
+        maxDepth,
+        maxPages,
       },
     }),
   });
