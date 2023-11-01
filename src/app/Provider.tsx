@@ -16,8 +16,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
     defaultValues: {
       chunkSize: DEFAULT_CHUNK_SIZE,
       overlap: DEFAULT_OVERLAP,
-      maxDepth: DEFAULT_MAX_DEPTH,
-      maxPages: DEFAULT_MAX_PAGES,
+      maxDepthSelection: DEFAULT_MAX_DEPTH,
+      maxPagesSelection: DEFAULT_MAX_PAGES,
     },
   });
 
