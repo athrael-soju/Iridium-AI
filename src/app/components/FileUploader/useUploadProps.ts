@@ -61,6 +61,9 @@ const useUploadProps = ({ namespace }: { namespace: string }) => {
             setValue('cards', documents);
             setPercent(100);
             setStatus('done');
+            setTimeout(() => {
+              setFileName('');
+            }, 2000);
           } else {
             message.error('File Ingest Failed');
             throw new Error('File Ingest Failed');
@@ -92,6 +95,7 @@ const useUploadProps = ({ namespace }: { namespace: string }) => {
 
   const props: UploadProps = {
     name: 'file',
+    className: fileName && 'upload-item-added',
     showUploadList: {
       showRemoveIcon: false,
       showDownloadIcon: false,
