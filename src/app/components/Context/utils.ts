@@ -1,3 +1,4 @@
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import { IUrlEntry } from './UrlButton';
 import { CardProps } from '../../types';
 
@@ -9,10 +10,9 @@ export async function crawlDocument(
   overlap: number,
   namespace: string
 ): Promise<void> {
-  const response = await fetch('/api/crawl', {
-    method: 'POST',
+  const config: AxiosRequestConfig = {
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+    data: JSON.stringify({
       url,
       options: {
         splittingMethod,
@@ -21,9 +21,16 @@ export async function crawlDocument(
         namespace,
       },
     }),
-  });
+    onUploadProgress: function (e: AxiosProgressEvent) {
+      const total = e?.total ?? 0;
+      var percentCompleted = Math.round((e.loaded * 100) / total);
+      console.log(percentCompleted);
+    },
+  };
 
-  const { documents } = await response.json();
+  const response = await axios.post('/api/crawl', config);
+
+  const { documents } = await response.data;
 
   setCards(documents);
 }
