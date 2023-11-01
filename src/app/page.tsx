@@ -79,15 +79,15 @@ const Page: React.FC = () => {
       let crawlInput = input.replace(/^crawl\s*/, '');
       const url = validateAndReturnURL(crawlInput).toString();
 
-      await crawlDocument(
+      await crawlDocument({
         url,
         splittingMethod,
         chunkSize,
         overlap,
-        namespace.current,
+        namespace: namespace.current,
         maxDepth,
-        maxPages
-      );
+        maxPages,
+      });
     }
     handleSubmit(e);
     setContext(null);

@@ -30,7 +30,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ namespace }) => {
           z-index: 1;
         }
 
-        .container :global(.ant-upload-wrapper) {
+        .container :global(.upload-item-added) {
           color: #fff !important;
           display: block !important;
           margin-bottom: 20px !important;
