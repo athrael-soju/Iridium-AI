@@ -17,11 +17,11 @@ import type {
   topKOption,
   SplittingMethodOption,
 } from '@/components/Context/types';
-import { crawlDocument } from '@/components/Context/utils';
+import { useCrawl } from '@/hooks';
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
-  const { setValue, watch } = useFormContext<ContextFormValues>();
+  const { watch } = useFormContext<ContextFormValues>();
   const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
     required: true,
@@ -31,15 +31,16 @@ const Page: React.FC = () => {
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
   const topK: topKOption = watch('topKSelection') ?? 5;
-  const setCards = (v: any) => setValue('cards', v);
 
   const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
   const overlap = watch('overlap') ?? 1;
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
 
-  let { messages, input, handleInputChange, handleSubmit, isLoading } = useChat(
-    {
+  const crawlDocument = useCrawl();
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
       body: {
         namespace: namespace.current,
         topK,
@@ -54,8 +55,7 @@ const Page: React.FC = () => {
           placement: 'bottomRight',
         });
       },
-    }
-  );
+    });
   const prevMessagesLengthRef = useRef(messages.length);
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -65,9 +65,8 @@ const Page: React.FC = () => {
       let crawlInput = input.replace(/^crawl\s*/, '');
       const url = validateAndReturnURL(crawlInput).toString();
 
-      crawlDocument(
+      await crawlDocument(
         url,
-        setCards,
         splittingMethod,
         chunkSize,
         overlap,

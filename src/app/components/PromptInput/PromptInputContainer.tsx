@@ -1,5 +1,6 @@
-import React from 'react';
-import { Grid } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { Grid, Progress } from 'antd';
 import { DARK_BG_COLOR_RGB } from '@/constants';
 
 const { useBreakpoint } = Grid;
@@ -11,11 +12,46 @@ export const PromptInputContainer = ({
 }) => {
   const screens = useBreakpoint();
   const isMobile = screens.xs;
+  const { watch } = useFormContext();
+  const loading = watch('loading');
+  const [percent, setPercent] = useState(0);
+  const [showProgress, setShowProgress] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (loading) {
+      setShowProgress(true);
+      timer = setInterval(() => {
+        setPercent((prevPercent) => {
+          if (prevPercent >= 95) {
+            clearInterval(timer);
+            return prevPercent;
+          }
+          return prevPercent + 1;
+        });
+      }, 100);
+    } else {
+      setPercent(100);
+      setTimeout(() => {
+        setShowProgress(false);
+        setPercent(0); // Reset for next loading
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [loading]);
 
   return (
     <>
       <div className="prompt-input-container">
-        <div className="prompt-input-inner">{children}</div>
+        <div className="prompt-input-inner">
+          {showProgress && (
+            <Progress showInfo={false} percent={percent} size="small" />
+          )}
+          {children}
+        </div>
       </div>
       <style jsx>{`
         .prompt-input-container {
