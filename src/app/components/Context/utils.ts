@@ -1,5 +1,36 @@
 import { IUrlEntry } from './UrlButton';
-import { CardProps } from '@/types';
+import { CardProps } from '../../types';
+
+export async function crawlDocument(
+  url: string,
+  setCards: React.Dispatch<React.SetStateAction<CardProps[]>>,
+  splittingMethod: string,
+  chunkSize: number,
+  overlap: number,
+  namespace: string,
+  maxDepth: number,
+  maxPages: number
+): Promise<void> {
+  const response = await fetch('/api/crawl', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      url,
+      options: {
+        splittingMethod,
+        chunkSize,
+        overlap,
+        namespace,
+        maxDepth,
+        maxPages,
+      },
+    }),
+  });
+
+  const { documents } = await response.json();
+
+  setCards(documents);
+}
 
 export async function clearIndex(
   setEntries: React.Dispatch<React.SetStateAction<IUrlEntry[]>>,

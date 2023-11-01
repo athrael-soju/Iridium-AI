@@ -11,11 +11,20 @@ import Chat from '@/components/Chat';
 import { ChatScrollAnchor } from '@/components/ChatScrollAnchor';
 import { PromptInput, PromptInputContainer } from '@/components/PromptInput';
 import { FileUploader } from '@/components';
-import { DARK_BG_COLOR_RGB, DEFAULT_CHUNK_SIZE } from '@/constants';
+import {
+  DARK_BG_COLOR_RGB,
+  DEFAULT_TOPK,
+  DEFAULT_CHUNK_SIZE,
+  DEFAULT_OVERLAP,
+  DEFAULT_MAX_DEPTH,
+  DEFAULT_MAX_PAGES,
+} from '@/constants';
 import type {
   ContextFormValues,
   topKOption,
   SplittingMethodOption,
+  maxDepthOption,
+  maxPagesOption,
 } from '@/components/Context/types';
 import { useCrawl } from '@/hooks';
 import { v4 as uuidv4 } from 'uuid';
@@ -30,10 +39,15 @@ const Page: React.FC = () => {
   const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
-  const topK: topKOption = watch('topKSelection') ?? 5;
 
   const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
-  const overlap = watch('overlap') ?? 1;
+  const overlap = watch('overlap') ?? DEFAULT_OVERLAP;
+
+  const topK: topKOption = watch('topKSelection') ?? DEFAULT_TOPK;
+  const maxDepth: maxDepthOption =
+    watch('maxDepthSelection') ?? DEFAULT_MAX_DEPTH;
+  const maxPages: maxPagesOption =
+    watch('maxPagesSelection') ?? DEFAULT_MAX_PAGES;
   const splittingMethod: SplittingMethodOption =
     watch('splittingMethod') ?? 'markdown';
 
@@ -70,7 +84,9 @@ const Page: React.FC = () => {
         splittingMethod,
         chunkSize,
         overlap,
-        namespace.current
+        namespace.current,
+        maxDepth,
+        maxPages
       );
     }
     handleSubmit(e);

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const options = data?.options;
 
   try {
-    const documents = await seed(url, 1, process.env.PINECONE_INDEX!, options);
+    const documents = await seed(url, process.env.PINECONE_INDEX!, options);
     return NextResponse.json({ success: true, documents });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Failed crawling' });

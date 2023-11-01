@@ -7,6 +7,8 @@ import { Card } from './Card';
 import { clearIndex } from './utils';
 import SplittingMethod from './SplittingMethod';
 import TopKSelection from './TopKSelection';
+import MaxDepthSelection from './MaxDepthSelection';
+import MaxPagesSelection from './MaxPagesSelection';
 import type { ContextFormValues, SplittingMethodOption } from './types';
 
 interface ContextProps {
@@ -52,6 +54,8 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               initialValues={{
                 splittingMethod: 'markdown',
                 topKSelection: 5,
+                maxDepthSelection: 1,
+                maxPagesSelection: 1,
               }}
             >
               <div
@@ -70,6 +74,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               <Divider />
               <TopKSelection />
               <SplittingMethod />
+              <Divider />
+              <MaxDepthSelection />
+              <MaxPagesSelection />
               <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
                 {splittingMethod === 'recursive' && (
                   <div
