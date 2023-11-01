@@ -8,6 +8,7 @@ export type maxPagesOption = 1 | 2 | 4 | 8;
 export interface ContextFormValues {
   chunkSize: number;
   cards: CardProps[];
+  loading: boolean;
   overlap: number;
   showContext: boolean;
   splittingMethod: SplittingMethodOption;

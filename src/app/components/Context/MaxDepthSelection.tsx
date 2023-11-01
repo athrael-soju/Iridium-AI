@@ -29,7 +29,6 @@ const MaxDepthSelection = () => {
   register('maxDepthSelection');
 
   useEffect(() => {
-    console.log('current max depth', currentMaxDepth);
     if (currentMaxDepth === undefined) {
       setValue('maxDepthSelection', options[0].value);
     }
