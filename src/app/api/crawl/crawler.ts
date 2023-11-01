@@ -63,7 +63,7 @@ class Crawler {
   }
 
   private addToQueue(url: string, depth = 0) {
-    this.queue.push({ url, depth });
+      this.queue.push({ url, depth });
   }
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
   private addNewUrlsToQueue(
