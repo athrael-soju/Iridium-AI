@@ -75,6 +75,9 @@ const Page: React.FC = () => {
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+
+    handleSubmit(e);
+
     if (input.toLowerCase().startsWith('crawl')) {
       let crawlInput = input.replace(/^crawl\s*/, '');
       const url = validateAndReturnURL(crawlInput).toString();
@@ -89,7 +92,7 @@ const Page: React.FC = () => {
         maxPages,
       });
     }
-    handleSubmit(e);
+
     setContext(null);
     setGotMessages(false);
   };

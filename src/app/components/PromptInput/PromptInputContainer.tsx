@@ -12,6 +12,7 @@ export const PromptInputContainer = ({
 }) => {
   const screens = useBreakpoint();
   const isMobile = screens.xs;
+  const isTablet = screens.md;
   const { watch } = useFormContext();
   const loading = watch('loading');
   const [percent, setPercent] = useState(0);
@@ -70,7 +71,11 @@ export const PromptInputContainer = ({
         .prompt-input-inner {
           position: relative;
           margin: 0 auto;
-          width: ${isMobile ? 'calc(100% - 40px)' : '700px'};
+          width: ${isMobile
+            ? 'calc(100% - 40px)'
+            : isTablet
+            ? '700px'
+            : '550px'};
         }
       `}</style>
     </>
