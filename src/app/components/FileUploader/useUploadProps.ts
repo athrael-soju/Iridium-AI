@@ -75,24 +75,11 @@ const useUploadProps = ({ namespace }: { namespace: string }) => {
         });
 
       return {
-        abort: () => {
-          // axios does not provide an abort method, so we leave this empty
-        },
+        abort: () => {},
       };
     },
     [setValue, splittingMethod, chunkSize, overlap, namespace]
   );
-
-  // const progress: UploadListProgressProps = {
-  //   strokeColor: {
-  //     '0%': '#108ee9',
-  //     '100%': '#87d068',
-  //   },
-  //   size: 3,
-  //   strokeWidth: 3,
-  //   format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-  // };
-
   const props: UploadProps = {
     name: 'file',
     className: fileName && 'upload-item-added',
@@ -124,7 +111,6 @@ const useUploadProps = ({ namespace }: { namespace: string }) => {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    // progress,
   };
 
   return props;
