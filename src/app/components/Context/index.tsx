@@ -49,7 +49,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
       <div className={`flex flex-col overflow-y-auto rounded-lg  w-full`}>
         <div className="flex flex-col items-start sticky top-0 w-full">
           <div className="flex-grow w-full px-4">
-            <Divider />
             <Form
               initialValues={{
                 splittingMethod: 'markdown',
@@ -74,9 +73,6 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
               <Divider />
               <TopKSelection />
               <SplittingMethod />
-              <Divider />
-              <MaxDepthSelection />
-              <MaxPagesSelection />
               <div className="text-left w-full flex flex-col p-2 subpixel-antialiased">
                 {splittingMethod === 'recursive' && (
                   <div
@@ -117,6 +113,9 @@ export const Context: React.FC<ContextProps> = ({ selected, namespace }) => {
                     </div>
                   </div>
                 )}
+                <Divider />
+                <MaxDepthSelection />
+                <MaxPagesSelection />
               </div>
             </Form>
           </div>
