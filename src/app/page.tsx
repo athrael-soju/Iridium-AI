@@ -156,7 +156,7 @@ const Page: React.FC = () => {
       />
       <ChatScrollAnchor trackVisibility={isLoading} />
       <PromptInputContainer>
-        <FileUploader namespace={namespace ?? ''} />
+        <FileUploader namespace={namespace.current ?? ''} />
         <PromptInput
           input={input}
           handleMessageSubmit={handleMessageSubmit}
