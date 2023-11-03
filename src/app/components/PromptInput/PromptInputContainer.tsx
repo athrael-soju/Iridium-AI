@@ -12,6 +12,7 @@ export const PromptInputContainer = ({
 }) => {
   const screens = useBreakpoint();
   const isMobile = screens.xs;
+  const isTablet = screens.md;
   const { watch } = useFormContext();
   const loading = watch('loading');
   const [percent, setPercent] = useState(0);
@@ -43,6 +44,16 @@ export const PromptInputContainer = ({
     };
   }, [loading]);
 
+  // Refactored width logic
+  let containerWidth;
+  if (isMobile) {
+    containerWidth = 'calc(100% - 40px)';
+  } else if (isTablet) {
+    containerWidth = '700px';
+  } else {
+    containerWidth = '550px';
+  }
+
   return (
     <>
       <div className="prompt-input-container">
@@ -70,7 +81,7 @@ export const PromptInputContainer = ({
         .prompt-input-inner {
           position: relative;
           margin: 0 auto;
-          width: ${isMobile ? 'calc(100% - 40px)' : '700px'};
+          width: ${containerWidth}; // Use the refactored width logic here
         }
       `}</style>
     </>

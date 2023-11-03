@@ -1,4 +1,4 @@
-import { ScoredVector } from '@pinecone-database/pinecone';
+import { ScoredPineconeRecord } from '@pinecone-database/pinecone';
 import { getMatchesFromEmbeddings } from './pinecone';
 import { getEmbeddings } from './embeddings';
 
@@ -16,7 +16,7 @@ export const getContext = async (
   maxTokens = 3000,
   minScore = 0.7,
   getOnlyText = true
-): Promise<string | ScoredVector[]> => {
+): Promise<string | ScoredPineconeRecord[]> => {
   // Get the embeddings of the input message
   const embedding: Response | number[] = await getEmbeddings(message);
 
