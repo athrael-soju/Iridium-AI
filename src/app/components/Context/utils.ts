@@ -1,20 +1,16 @@
 import { IUrlEntry } from './UrlButton';
-import { ICard } from './Card';
+import { CardProps } from '../../types';
 
 export async function crawlDocument(
   url: string,
-  setEntries: React.Dispatch<React.SetStateAction<IUrlEntry[]>>,
-  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
+  setCards: React.Dispatch<React.SetStateAction<CardProps[]>>,
   splittingMethod: string,
   chunkSize: number,
   overlap: number,
-  namespace: string
+  namespace: string,
+  maxDepth: number,
+  maxPages: number
 ): Promise<void> {
-  setEntries((seeded: IUrlEntry[]) =>
-    seeded.map((seed: IUrlEntry) =>
-      seed.url === url ? { ...seed, loading: true } : seed
-    )
-  );
   const response = await fetch('/api/crawl', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -25,6 +21,8 @@ export async function crawlDocument(
         chunkSize,
         overlap,
         namespace,
+        maxDepth,
+        maxPages,
       },
     }),
   });
@@ -32,17 +30,11 @@ export async function crawlDocument(
   const { documents } = await response.json();
 
   setCards(documents);
-
-  setEntries((prevEntries: IUrlEntry[]) =>
-    prevEntries.map((entry: IUrlEntry) =>
-      entry.url === url ? { ...entry, seeded: true, loading: false } : entry
-    )
-  );
 }
 
 export async function clearIndex(
   setEntries: React.Dispatch<React.SetStateAction<IUrlEntry[]>>,
-  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
+  setCards: React.Dispatch<React.SetStateAction<CardProps[]>>,
   namespace: string
 ) {
   const response = await fetch('/api/clearIndex', {

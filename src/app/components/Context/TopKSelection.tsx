@@ -1,7 +1,7 @@
 import { Form, Select } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import type { SplittingMethodOption } from './types';
+import type { topKOption } from './types';
 import { useEffect } from 'react';
 
 const Container = styled.div`
@@ -13,41 +13,43 @@ const Container = styled.div`
 `;
 
 const options: {
-  value: SplittingMethodOption;
+  value: topKOption;
   label: string;
 }[] = [
-  { value: 'markdown', label: 'Markdown' },
-  { value: 'recursive', label: 'Recursive' },
+  { value: 5, label: '5' },
+  { value: 10, label: '10' },
+  { value: 15, label: '15' },
+  { value: 20, label: '20' },
 ];
 
-const SplittingMethod = () => {
+const TopKSelection = () => {
   const { setValue, register, watch } = useFormContext();
 
-  const currentMethod = watch('splittingMethod');
-  register('splittingMethod');
+  const currentTopK = watch('topKSelection');
+  register('topKSelection');
 
   // Set the initial value upon component mount
   useEffect(() => {
-    if (currentMethod === undefined) {
-      setValue('splittingMethod', options[0].value);
+    if (currentTopK === undefined) {
+      setValue('topKSelection', options[0].value);
     }
-  }, [setValue, currentMethod]);
+  }, [setValue, currentTopK]);
 
   const modifiedOptions = options.map((option) => ({
     value: option.value,
     label:
-      currentMethod === option.value
-        ? `Splitting Method: ${option.label}`
+      currentTopK === option.value
+        ? `Top K Returned: ${option.label}`
         : option.label,
   }));
 
   return (
     <Container>
-      <Form.Item name="splittingMethod">
+      <Form.Item name="topKSelection">
         <Select
-          value={currentMethod}
+          value={currentTopK}
           onChange={(selection) => {
-            setValue('splittingMethod', selection);
+            setValue('topKSelection', selection);
           }}
           options={modifiedOptions}
         />
@@ -56,4 +58,4 @@ const SplittingMethod = () => {
   );
 };
 
-export default SplittingMethod;
+export default TopKSelection;

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState, FormEvent } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { notification } from 'antd';
 import { useChat } from 'ai/react';
 import { useSession } from 'next-auth/react';
@@ -8,12 +9,28 @@ import { Context } from '@/components/Context';
 import Header from '@/components/Header';
 import Chat from '@/components/Chat';
 import { ChatScrollAnchor } from '@/components/ChatScrollAnchor';
-import PromptInput from '@/components/PromptInput';
-import { DARK_BG_COLOR_RGB } from '@/constants';
-
+import { PromptInput, PromptInputContainer } from '@/components/PromptInput';
+import { FileUploader } from '@/components';
+import {
+  DARK_BG_COLOR_RGB,
+  DEFAULT_TOPK,
+  DEFAULT_CHUNK_SIZE,
+  DEFAULT_OVERLAP,
+  DEFAULT_MAX_DEPTH,
+  DEFAULT_MAX_PAGES,
+} from '@/constants';
+import type {
+  ContextFormValues,
+  topKOption,
+  SplittingMethodOption,
+  maxDepthOption,
+  maxPagesOption,
+} from '@/components/Context/types';
+import { useCrawl } from '@/hooks';
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: React.FC = () => {
+  const { watch } = useFormContext<ContextFormValues>();
   const [api, contextHolder] = notification.useNotification();
   const { data: session } = useSession({
     required: true,
@@ -22,8 +39,19 @@ const Page: React.FC = () => {
   const namespace = useRef<string>('');
   const [gotMessages, setGotMessages] = useState(false);
   const [context, setContext] = useState<string[] | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const topK = parseInt(process.env.PINECONE_TOPK ?? '10');
+
+  const chunkSize = watch('chunkSize') ?? DEFAULT_CHUNK_SIZE;
+  const overlap = watch('overlap') ?? DEFAULT_OVERLAP;
+
+  const topK: topKOption = watch('topKSelection') ?? DEFAULT_TOPK;
+  const maxDepth: maxDepthOption =
+    watch('maxDepthSelection') ?? DEFAULT_MAX_DEPTH;
+  const maxPages: maxPagesOption =
+    watch('maxPagesSelection') ?? DEFAULT_MAX_PAGES;
+  const splittingMethod: SplittingMethodOption =
+    watch('splittingMethod') ?? 'markdown';
+
+  const crawlDocument = useCrawl();
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
@@ -46,7 +74,25 @@ const Page: React.FC = () => {
 
   const handleMessageSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+
     handleSubmit(e);
+
+    if (input.toLowerCase().startsWith('crawl')) {
+      let crawlInput = input.replace(/^crawl\s*/, '');
+      const url = validateAndReturnURL(crawlInput).toString();
+
+      await crawlDocument({
+        url,
+        splittingMethod,
+        chunkSize,
+        overlap,
+        namespace: namespace.current,
+        maxDepth,
+        maxPages,
+      });
+    }
+
     setContext(null);
     setGotMessages(false);
   };
@@ -88,6 +134,17 @@ const Page: React.FC = () => {
     prevMessagesLengthRef.current = messages.length;
   }, [messages, gotMessages, topK]);
 
+  const validateAndReturnURL = (newURL: string) => {
+    let url;
+    try {
+      url = new URL(newURL).toString();
+    } catch (e) {
+      const baseUrl = 'https://www.google.com/search?q=';
+      url = new URL(baseUrl + newURL.replaceAll(' ', '%20'));
+    }
+    return url;
+  };
+
   return (
     <div className="container">
       {contextHolder}
@@ -98,11 +155,14 @@ const Page: React.FC = () => {
         isLoading={isLoading}
       />
       <ChatScrollAnchor trackVisibility={isLoading} />
-      <PromptInput
-        input={input}
-        handleMessageSubmit={handleMessageSubmit}
-        handleInputChange={handleInputChange}
-      />
+      <PromptInputContainer>
+        <FileUploader namespace={namespace.current ?? ''} />
+        <PromptInput
+          input={input}
+          handleMessageSubmit={handleMessageSubmit}
+          handleInputChange={handleInputChange}
+        />
+      </PromptInputContainer>
       <Context selected={context} namespace={namespace.current} />
       <style jsx>{`
         .container {
@@ -110,6 +170,11 @@ const Page: React.FC = () => {
           margin: 0 auto;
           max-width: 100%;
           background-color: ${DARK_BG_COLOR_RGB};
+        }
+
+        .prompt-container {
+          position: relative;
+          display: block;
         }
       `}</style>
     </div>

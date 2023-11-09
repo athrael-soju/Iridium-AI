@@ -4,9 +4,10 @@ import { useFormContext } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import SpeechRecognition from 'react-speech-recognition';
-import { DARK_BG_COLOR_RGB } from '@/constants';
 
-import WebSpeechBtn from './Header/WebSpeechBtn';
+import WebSpeechBtn from '../Header/WebSpeechBtn';
+
+export * from './PromptInputContainer';
 
 const { useBreakpoint } = Grid;
 
@@ -16,7 +17,7 @@ interface Props {
   handleMessageSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
-const PromptInput: React.FC<Props> = ({
+export const PromptInput: React.FC<Props> = ({
   input,
   handleInputChange,
   handleMessageSubmit,
@@ -63,61 +64,41 @@ const PromptInput: React.FC<Props> = ({
 
   return (
     <>
-      <div className="prompt-input-container">
-        <form
-          onSubmit={handleMessageSubmit}
+      <form onSubmit={handleMessageSubmit}>
+        <input
+          value={input}
+          onChange={(e) => handleInputChange(e)}
           style={{
             width: isMobile ? 'calc(100% - 40px)' : '700px',
           }}
-        >
-          <input
-            value={input}
-            onChange={(e) => handleInputChange(e)}
+        />
+        <span>
+          Send Message ⮐
+          <div
             style={{
-              width: isMobile ? 'calc(100% - 40px)' : '700px',
+              display: 'flex',
+              gap: '10px',
+              paddingLeft: '10px',
             }}
-          />
-          <span>
-            Send Message ⮐
-            <div
-              style={{
-                display: 'flex',
-                gap: '10px',
-                paddingLeft: '10px',
-              }}
+          >
+            <button
+              type="button"
+              className={`ml-2 ${
+                isWebSpeechEnabled
+                  ? 'text-gray-400 animate-pulse-once'
+                  : 'text-gray-500 cursor-not-allowed'
+              }`}
+              onClick={toggleListening}
+              disabled={!isWebSpeechEnabled}
+              title={recordButtonTitle()} // Used the extracted logic here
             >
-              <button
-                type="button"
-                className={`ml-2 ${
-                  isWebSpeechEnabled
-                    ? 'text-gray-400 animate-pulse-once'
-                    : 'text-gray-500 cursor-not-allowed'
-                }`}
-                onClick={toggleListening}
-                disabled={!isWebSpeechEnabled}
-                title={recordButtonTitle()} // Used the extracted logic here
-              >
-                <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
-              </button>
-              <WebSpeechBtn stopSpeaking={stopSpeaking} />
-            </div>
-          </span>
-        </form>
-      </div>
+              <FontAwesomeIcon icon={faMicrophone} fade={isRecording} />
+            </button>
+            <WebSpeechBtn stopSpeaking={stopSpeaking} />
+          </div>
+        </span>
+      </form>
       <style jsx>{`
-        .prompt-input-container {
-          background-color: ${DARK_BG_COLOR_RGB};
-          background-image: linear-gradient(
-            180deg,
-            rgba(53, 55, 64, 0),
-            #353740 58.85%
-          );
-          position: fixed;
-          padding: 20px 0;
-          bottom: 0;
-          width: 100%;
-        }
-
         form {
           background-color: rgb(64, 65, 79);
           border-bottom-color: rgba(32, 33, 35, 0.5);
@@ -161,7 +142,6 @@ const PromptInput: React.FC<Props> = ({
           position: relative;
           tab-size: 4;
           text-size-adjust: 100%;
-          margin: 0 auto;
         }
 
         input:focus {

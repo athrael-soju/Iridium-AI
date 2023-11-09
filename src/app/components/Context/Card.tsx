@@ -1,19 +1,13 @@
 import React, { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
+import type { CardProps } from '@/types';
 
-export interface ICard {
-  pageContent: string;
-  metadata: {
-    hash: string;
-  };
-}
-
-interface ICardProps {
-  card: ICard;
+interface Props {
+  card: CardProps;
   selected: string[] | null;
 }
 
-export const Card: FC<ICardProps> = ({ card, selected }) => (
+export const Card: FC<Props> = ({ card, selected }) => (
   <div id={card.metadata.hash} className={`card`}>
     <ReactMarkdown>{card.pageContent}</ReactMarkdown>
     <b>{card.metadata.hash}</b>

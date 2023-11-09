@@ -1,7 +1,7 @@
 import { Form, Select } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import type { SplittingMethodOption } from './types';
+import type { maxPagesOption } from './types';
 import { useEffect } from 'react';
 
 const Container = styled.div`
@@ -13,41 +13,43 @@ const Container = styled.div`
 `;
 
 const options: {
-  value: SplittingMethodOption;
+  value: maxPagesOption;
   label: string;
 }[] = [
-  { value: 'markdown', label: 'Markdown' },
-  { value: 'recursive', label: 'Recursive' },
+  { value: 1, label: '1' },
+  { value: 2, label: '2' },
+  { value: 4, label: '4' },
+  { value: 8, label: '8' },
 ];
 
-const SplittingMethod = () => {
+const MaxPagesSelection = () => {
   const { setValue, register, watch } = useFormContext();
 
-  const currentMethod = watch('splittingMethod');
-  register('splittingMethod');
+  const currentMaxPages = watch('maxPagesSelection');
+  register('maxPagesSelection');
 
   // Set the initial value upon component mount
   useEffect(() => {
-    if (currentMethod === undefined) {
-      setValue('splittingMethod', options[0].value);
+    if (currentMaxPages === undefined) {
+      setValue('maxPagesSelection', options[0].value);
     }
-  }, [setValue, currentMethod]);
+  }, [setValue, currentMaxPages]);
 
   const modifiedOptions = options.map((option) => ({
     value: option.value,
     label:
-      currentMethod === option.value
-        ? `Splitting Method: ${option.label}`
+      currentMaxPages === option.value
+        ? `Max Crawl Pages: ${option.label}`
         : option.label,
   }));
 
   return (
     <Container>
-      <Form.Item name="splittingMethod">
+      <Form.Item name="maxPagesSelection">
         <Select
-          value={currentMethod}
+          value={currentMaxPages}
           onChange={(selection) => {
-            setValue('splittingMethod', selection);
+            setValue('maxPagesSelection', selection);
           }}
           options={modifiedOptions}
         />
@@ -56,4 +58,4 @@ const SplittingMethod = () => {
   );
 };
 
-export default SplittingMethod;
+export default MaxPagesSelection;

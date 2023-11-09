@@ -7,6 +7,10 @@
         "ignore": ["jsx"]
       }
     ],
-    "no-console": "warn"
+    "no-console": "warn",
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ]
   }
 }
