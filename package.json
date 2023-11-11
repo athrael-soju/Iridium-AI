@@ -23,7 +23,7 @@
         "@vercel/analytics": "^1.0.2",
         "ai": "^2.2.14",
         "antd": "^5.10.2",
-        "axios": "^1.5.1",
+        "axios": "^1.6.0",
         "cheerio": "^1.0.0-rc.12",
         "eslint": "8.50.0",
         "eslint-config-next": "^13.5.4",
